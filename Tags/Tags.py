@@ -14,7 +14,7 @@ class TagPlugin:
     async def tags(self,ctx):
         if ctx.invoked_subcommand is None:
             cmd = self.bot.get_command('help')
-        await ctx.invoke(cmd,command="tags")
+            await ctx.invoke(cmd,command="tags")
     
     @tags.command(name="add")
     async def add_(self,ctx,*,message: commands.clean_content):
