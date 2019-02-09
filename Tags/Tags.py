@@ -7,7 +7,7 @@ class TagPlugin:
         self.db = bot.plugin_db.get_partition(self)
 
     @commands.command()
-    async def info(self,ctx):
+    async def iona(self,ctx):
         await ctx.send('A Plugin Created to server your need for tags!')
     
     @commands.group()
