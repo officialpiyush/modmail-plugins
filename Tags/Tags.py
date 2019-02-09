@@ -19,7 +19,7 @@ class TagPlugin:
     @tags.command(name="add")
     async def add_(self,ctx,*,message: commands.clean_content):
        message = message.split("||")
-       print(message)
+       raise NameError(message)
        # tag = await self.db.find_one({'tagName': message[0]})
 
 def setup(bot):
