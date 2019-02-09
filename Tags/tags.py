@@ -21,3 +21,6 @@ class TagPlugin:
        message = message.split("||")
        print(message)
        #tag = await self.db.find_one({'tagName': message[0]})
+
+def setup(bot):
+    bot.add_cog(TagPlugin(bot))
