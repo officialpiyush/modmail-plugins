@@ -33,7 +33,7 @@ class TagPlugin:
                 )
                 await ctx.send(f"A tag with `{name} has been created succesfully!`")
             except:
-                ctx.send("An Error Occured. Please Check the logs!")
+                await ctx.send("An Error Occured. Please Check the logs!")
        
 
 def setup(bot):
