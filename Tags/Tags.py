@@ -11,7 +11,6 @@ class TagPlugin:
         await ctx.send('A Plugin Created to server your need for tags!')
     
     @commands.group()
-    @checks.has_permissions(manage_messages=True)
     async def tags(self,ctx):
         if ctx.invoked_subcommand is None:
             return
