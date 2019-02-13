@@ -17,21 +17,24 @@ class TagPlugin:
             return
     
     @tags.command(name="add")
-    async def add_(self,ctx,name, *,info):
+    async def add_(self,ctx,message):
+        msg = await message.split("|")
+        name = msg[0]
+        content = msg[0]
         if name is None:
-            await ctx.send('Please Give US The name Of tag')
-        elif info is None:
-            await ctx.send(f"Please Give us the Content of {name} tag and try again.")
+            ctx.send("Give us a name of tag")
+        elif content is None:
+            ctx.send("Give us content of the tag")
         else:
             try:
                 await self.db.find_one_and_update(
                 {'_id': 'tags'},
-                {'$set': {str(name): {info: str(info), user_id: str(ctx.author.id)}}},
+                {'$set': {name: {info: content, user_id: str(ctx.author.id)}}},
                 upsert=True
                 )
                 await ctx.send(f"A tag with `{name} has been created succesfully!`")
             except:
-                ctx.send('There Was AN Error Please try Again!')
+                ctx.send("An Error Occured. Please Check the logs!")
        
 
 def setup(bot):
