@@ -20,7 +20,7 @@ class TagPlugin:
     async def add_(self,ctx,*,message):
         msg = await message.split("|")
         name = msg[0]
-        content = msg[0]
+        content = msg[1]
         if name is None:
             ctx.send("Give us a name of tag")
         elif content is None:
