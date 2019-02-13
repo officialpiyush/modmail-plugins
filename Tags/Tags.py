@@ -21,9 +21,9 @@ class TagPlugin:
         name = msg[0]
         content = msg[1]
         if name is None:
-            ctx.send("Give us a name of tag")
+            await  ctx.send("Give us a name of tag")
         elif content is None:
-            ctx.send("Give us content of the tag")
+            await ctx.send("Give us content of the tag")
         else:
             try:
                 await self.db.find_one_and_update(
