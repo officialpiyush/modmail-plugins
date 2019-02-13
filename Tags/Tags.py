@@ -11,16 +11,28 @@ class TagPlugin:
         await ctx.send('A Plugin Created to server your need for tags!')
     
     @commands.group()
+    @checks.has_permissions(manage_messages=True)
     async def tags(self,ctx):
         if ctx.invoked_subcommand is None:
-            cmd = self.bot.get_command('help')
-            await ctx.invoke(cmd,command="tags")
+            return
     
     @tags.command(name="add")
-    async def add_(self,ctx,*,message: commands.clean_content):
-       message = message.split("||")
-       raise NameError(message)
-       # tag = await self.db.find_one({'tagName': message[0]})
+    async def add_(self,ctx,name: commands.clean_content, * , info: commands.clean_content):
+        if name is None:
+            await ctx.send('Please Give US The name Of tag')
+        elif info is None:
+            await ctx.send(f"Please Give us the Content of {name} tag and try again.")
+        else:
+            try:
+                await self.db.find_one_and_update(
+                {'_id': 'tags'},
+                {'$set': {str(name): {info: str(info), user_id: str(ctx.author.id)}}},
+                upsert=True
+                )
+                await ctx.send(f"A tag with `{name} has been created succesfully!`")
+            except:
+                ctx.send('There Was AN Error Please try Again!')
+       
 
 def setup(bot):
     bot.add_cog(TagPlugin(bot))
