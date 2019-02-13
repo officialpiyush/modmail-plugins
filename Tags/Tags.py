@@ -17,7 +17,7 @@ class TagPlugin:
             return
     
     @tags.command(name="add")
-    async def add_(self,ctx,name: commands.clean_content, * , info: commands.clean_content):
+    async def add_(self,ctx,name, *,info):
         if name is None:
             await ctx.send('Please Give US The name Of tag')
         elif info is None:
