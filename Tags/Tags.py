@@ -27,7 +27,7 @@ class TagPlugin:
         else:
             await self.db.find_one_and_update(
             {'_id': 'tags'},
-            {'$set': {name: {info: content, user_id: str(ctx.author.id)}}},
+            {'$set': {name: {'info': content, 'user_id': str(ctx.author.id)}}},
             upsert=True
             )
             await ctx.send(f"A tag with `{name} has been created succesfully!`")
