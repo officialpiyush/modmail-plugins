@@ -30,7 +30,7 @@ class TagPlugin:
             {'$set': {name: {'info': content, 'user_id': str(ctx.author.id)}}},
             upsert=True
             )
-            await ctx.send(f"A tag with `{name} has been created succesfully!`")
+            await ctx.send(f"A tag with `{name}` has been created succesfully!")
          #   except:
           #      await ctx.send("An Error Occured. Please Check the logs!")
        
