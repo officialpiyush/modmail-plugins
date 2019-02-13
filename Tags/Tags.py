@@ -25,12 +25,16 @@ class TagPlugin:
         elif content is None:
             await ctx.send("Give us content of the tag")
         else:
-            await self.db.find_one_and_update(
-            {'_id': 'tags'},
-            {'$set': {name: {info: content, user_id: str(ctx.author.id)}}},
-            upsert=True
-            )
-            await ctx.send(f"A tag with `{name} has been created succesfully!`")
+            try:
+                await self.db.find_one_and_update(
+                {'_id': 'tags'},
+                {'$set': {name: {info: content, user_id: str(ctx.author.id)}}},
+                upsert=True
+                )
+                await ctx.send(f"A tag with `{name} has been created succesfully!`")
+            except Exeption as e:
+                await ctx.send("An Error Occured. Please Check the logs!")
+                raise Error(e)
        
 
 def setup(bot):
