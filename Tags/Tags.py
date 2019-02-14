@@ -31,8 +31,10 @@ class TagPlugin:
             upsert=True
             )
             await ctx.send(f"A tag with `{name}` has been created succesfully!")
-         #   except:
-          #      await ctx.send("An Error Occured. Please Check the logs!")
+        
+    @commands.command
+    async def tag(self,ctx,arg):
+        await ctx.send("nou")
        
 
 def setup(bot):
