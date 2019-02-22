@@ -16,7 +16,7 @@ class TagPlugin:
             return
     
     @tags.command(name="add")
-    async def add_(self,ctx,name,*,content):
+    async def add_(self,ctx,name,*, content):
         """msg = message.split("|")
         name = msg[0]
         content = msg[1]"""
