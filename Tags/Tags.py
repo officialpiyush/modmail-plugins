@@ -17,11 +17,6 @@ class TagPlugin:
     
     @tags.command(name="add")
     async def add_(self, ctx, name, *, content):
-        if name is None:
-            await  ctx.send("Give us a name of tag")
-        elif content is None:
-            await ctx.send("Give us content of the tag")
-        else:
             await self.db.find_one_and_update(
             {'_id': 'tags'},
             {'$set': {name: {'info': content, 'user_id': str(ctx.author.id)}}},
