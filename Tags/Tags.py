@@ -16,10 +16,10 @@ class TagPlugin:
             return
     
     @tags.command(name="add")
-    async def add_(self,ctx,*,message):
-        msg = message.split("|")
+    async def add_(self,ctx,name,*,content):
+        """msg = message.split("|")
         name = msg[0]
-        content = msg[1]
+        content = msg[1]"""
         if name is None:
             await  ctx.send("Give us a name of tag")
         elif content is None:
