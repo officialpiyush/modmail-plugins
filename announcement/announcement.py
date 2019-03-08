@@ -25,7 +25,7 @@ class AnnoucementPlugin:
             else:
                 await ctx.send(f"No {channel.id} Found!")
         else:
-            ctx.send("Not Configured!")
+            await ctx.send("Not Configured!")
 
 def setup(bot):
     bot.add_cog(AnnoucementPlugin(bot))
