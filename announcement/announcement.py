@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from .utils import checks
 
 class AnnoucementPlugin:
     def __init__(self,bot):
@@ -7,7 +8,7 @@ class AnnoucementPlugin:
         self.db = bot.plugin_db.get_partition(self)
 
     @commands.command(aliases=['setAnnouncementChannel'])
-    @commands.has_permissions(manage_server=True)
+    @checks.has_permissions(manage_server=True)
     async def sac(self,ctx,channel: discord.TextChannel):
         """Set Up The Announcement Channel
         """
@@ -19,7 +20,7 @@ class AnnoucementPlugin:
         await ctx.send(f"{channel.mention} set for announcements!")
 
     @commands.command()
-    @commands.has_permissions(manage_messages=True)
+    @checks.has_permissions(manage_messages=True)
     async def announce(self,ctx,*,message):
         config = (await self.db.find_one({'_id': 'a-config'}))['announcement']
         if config is None:
