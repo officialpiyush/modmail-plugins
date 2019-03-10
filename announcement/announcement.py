@@ -18,14 +18,14 @@ class AnnoucementPlugin:
     @commands.command()
     async def announce(self,ctx,*,message):
         config = (await self.db.find_one({'_id': 'config'}))['announcement']
-        if config:
+        if config is None:
+            await ctx.send("No Channel Configured!")
+        else:
             channel = ctx.guild.get_channel(int(config['channel']))
             if channel:
                 await channel.send(message)
             else:
                 await ctx.send(f"No {channel.id} Found!")
-        else:
-            await ctx.send("Not Configured!")
 
 def setup(bot):
     bot.add_cog(AnnoucementPlugin(bot))
