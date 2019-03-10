@@ -11,7 +11,7 @@ class AnnoucementPlugin:
         if channel is None:
             channel = ctx.channel
         await self.db.find_one_and_update(
-        {'_id': 'config'},
+        {'_id': 'a-config'},
         {'$set': {'announcement': {'channel': str(channel.id)}}},
         upsert=True
         )
@@ -19,7 +19,7 @@ class AnnoucementPlugin:
 
     @commands.command()
     async def announce(self,ctx,*,message):
-        config = (await self.db.find_one({'_id': 'config'}))['announcement']
+        config = (await self.db.find_one({'_id': 'a-config'}))['announcement']
         if config is None:
             await ctx.send("No Channel Configured!")
         else:
