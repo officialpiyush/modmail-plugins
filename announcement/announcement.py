@@ -8,8 +8,7 @@ class AnnoucementPlugin:
 
     @commands.command()
     async def sac(self,ctx,channel: discord.TextChannel):
-        """
-        Set Up The Announcement Channel
+        """Set Up The Announcement Channel
         """
         await self.db.find_one_and_update(
         {'_id': 'a-config'},
