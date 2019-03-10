@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord.ext.commands import has_permissions, CheckFailure
 
 class AnnoucementPlugin:
     def __init__(self,bot):
@@ -19,7 +18,7 @@ class AnnoucementPlugin:
         await ctx.send(f"{channel.mention} set for announcements!")
 
     @commands.command()
-    @has_permissions(manage_messages=True)
+    @commands.has_permissions(manage_messages=True)
     async def announce(self,ctx,*,message):
         config = (await self.db.find_one({'_id': 'a-config'}))['announcement']
         if config is None:
@@ -30,12 +29,6 @@ class AnnoucementPlugin:
                 await channel.send(message)
             else:
                 await ctx.send(f"No {channel.id} Found!")
-
-    # permission Handling
-    @sac.error
-    async def sac_error(self,error,ctx):
-         if isinstance(error, CheckFailure):
-             await self.bot.send_message(ctx.message.channel, "Looks like you don't have the perm.")
 
 def setup(bot):
     bot.add_cog(AnnoucementPlugin(bot))
