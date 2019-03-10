@@ -7,7 +7,7 @@ class AnnoucementPlugin:
         self.db = bot.plugin_db.get_partition(self)
 
     @commands.command()
-    async def setAnnouncementChannel(self,ctx, channel: discord.TextChannel):
+    async def sac(self,ctx, channel: discord.TextChannel):
         await self.db.find_one_and_update(
         {'_id': 'config'},
         {'$set': {'announcement': {'channel': str(channel.id)}}},
