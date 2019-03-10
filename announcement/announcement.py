@@ -7,6 +7,7 @@ class AnnoucementPlugin:
         self.db = bot.plugin_db.get_partition(self)
 
     @commands.command(aliases=['setAnnouncementChannel'])
+    @commands.has_permissions(manage_server=True)
     async def sac(self,ctx,channel: discord.TextChannel):
         """Set Up The Announcement Channel
         """
