@@ -8,7 +8,7 @@ class AnnoucementPlugin:
         self.db = bot.plugin_db.get_partition(self)
 
     @commands.command(aliases=['setAnnouncementChannel'])
-    @checks.has_permissions(manage_server=True)
+    @checks.has_permissions(manage_messages=True)
     async def sac(self,ctx,channel: discord.TextChannel):
         """Set Up The Announcement Channel
         """
@@ -22,6 +22,8 @@ class AnnoucementPlugin:
     @commands.command()
     @checks.has_permissions(manage_messages=True)
     async def announce(self,ctx,*,message):
+        """Announce A Message
+        """
         config = (await self.db.find_one({'_id': 'a-config'}))['announcement']
         if config is None:
             await ctx.send("No Channel Configured!")
