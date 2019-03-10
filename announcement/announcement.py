@@ -8,6 +8,8 @@ class AnnoucementPlugin:
 
     @commands.command()
     async def sac(self,ctx, channel: discord.TextChannel,*,message):
+        if channel is None:
+            channel = ctx.channel
         await self.db.find_one_and_update(
         {'_id': 'config'},
         {'$set': {'announcement': {'channel': str(channel.id)}}},
