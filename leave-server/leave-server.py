@@ -7,7 +7,7 @@ class LeaveGuildPlugin:
     
     @commands.command()
     @commands.is_owner()
-    async def leaveguild(self, ctx, guild_id):
+    async def leaveguild(self, ctx, guild_id: int):
         try:
             toleave = self.bot.get_guild(guild_id)
             await toleave.leave()
