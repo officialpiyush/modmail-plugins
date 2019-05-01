@@ -10,9 +10,9 @@ class LeaveGuildPlugin:
     async def leaveguild(self, ctx, guild_id: int):
         try:    
             await self.bot.get_guild(guild_id).leave()
-            ctx.send("Left!")
+            return ctx.send("Left!")
         except:
-            ctx.send("Error!")
+            return ctx.send("Error!")
             
 def setup(bot):
     bot.add_cog(LeaveGuildPlugin(bot))
