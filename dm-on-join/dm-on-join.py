@@ -7,7 +7,7 @@ class DmOnJoinPlugin:
         self.db = bot.plugin_db.get_partition(self)
     
     @commands.command(aliases=["sdms"])
-    @commands.check(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def setdmmessage(self,ctx,*,message):
         """Set A Message To DM A user after they join."""
         await self.db.find_one_and_update(
