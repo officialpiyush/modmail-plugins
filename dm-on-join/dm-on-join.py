@@ -24,7 +24,7 @@ class DmOnJoinPlugin:
             return
         else:
             try:
-                member.send(config["message"])
+                await member.send(config["message"])
             except: 
                 return
     
