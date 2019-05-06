@@ -11,6 +11,7 @@ class TranslatePlugin:
 
     @commands.command()
     async def translate(self,ctx,msgid: int):
+        """Translate A Sent Message, or a modmail thread message into English."""
         try:
             msg = await ctx.channel.get_message(msgid)
             if not msg.embeds:
@@ -31,6 +32,7 @@ class TranslatePlugin:
 
     @commands.command(aliases=["tt"])
     async def translatetext(self,ctx,*,message):
+        """Translates Given Message Into English"""
         tmsg = self.translator.translate(message)
         embed = discord.Embed()
         embed.color = 4388013
