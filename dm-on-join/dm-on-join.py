@@ -10,6 +10,13 @@ class DmOnJoinPlugin:
     @commands.has_permissions(manage_guild=True)
     async def setdmmessage(self,ctx,*,message):
         """Set A Message To DM A user after they join."""
+        if message.startswith('https://') or message.startswith('http://'):
+            # message is a URL
+            if message.startswith('https://hasteb.in/'):
+                message = 'https://hasteb.in/raw/' + message.split('/')[-1]
+
+            async with self.bot.session.get(message) as resp:
+                message = await resp.text()
         await self.db.find_one_and_update(
         {'_id': 'dm-config'},
         {'$set': {'dm-message': {'message': message}}},
