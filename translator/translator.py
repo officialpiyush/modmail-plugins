@@ -17,7 +17,7 @@ class TranslatePlugin:
                 await ctx.send("Couldnt Find An Embed in that message.")
             
             embed = msg.embeds[0]
-            tmsg = await self.translator.translate(embed.description)
+            tmsg = self.translator.translate(embed.description)
             rembed = discord.Embed()
             rembed.description = tmsg.text
             await ctx.channel.send(embed=rembed)
