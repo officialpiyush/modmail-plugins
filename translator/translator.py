@@ -9,7 +9,7 @@ class TranslatePlugin:
         self.bot = bot
         self.translator = Translator()
 
-    @commands.command
+    @commands.command()
     async def translate(self,ctx,msgid: int):
         try:
             msg = await ctx.channel.get_message(msgid)
