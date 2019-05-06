@@ -1,7 +1,7 @@
 <div align="center">
     <img src="https://i.vgy.me/GHCzHX.png" alt="Translator Image" align="center"></img>
     <br>
-    <strong><i>A Plgun For ModMail Bot To Translate Messages</i></strong>
+    <strong><i>A Plugin For ModMail Bot To Translate Messages</i></strong>
 </div>
 
 ---
