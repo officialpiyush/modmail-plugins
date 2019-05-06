@@ -25,8 +25,6 @@ class TranslatePlugin:
             await ctx.send("The Given Message Was Not Found.")
         except HTTPException:
             await ctx.send("The Try To Retrieve The Message Failed.")
-        except Exception as e:
-            await ctx.send(f"An Error Occured\n{e}")
 
 def setup(bot):
     bot.add_cog(TranslatePlugin(bot))
