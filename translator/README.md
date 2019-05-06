@@ -16,6 +16,10 @@
 
 * To Install this plugin, just run the following command - `<your_prefix>plugins add officialpiyush/modmail-plugins/translator` and you are good to go!
 
+# Support
+
+* All Support for this plugin is provided in my server - [Discord Invite Link](https://discord.gg/hzD72GE)
+
 # Commands
 
 |    Command    	| Aliases 	|                 Description                 	|                      Example                      	| Permission Required 	|                                                               Source Code                                                              	|
