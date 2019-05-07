@@ -105,7 +105,7 @@ class TranslatePlugin:
         if not message.embeds:
             return
         
-        if "Recipient" not in message.embeds[0].footer:
+        if "Recipient" not in message.embeds[0].footer.text:
             return
         
         msg = message.embeds[0].description
