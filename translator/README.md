@@ -22,11 +22,12 @@
 
 # Commands
 
-|    Command    	| Aliases 	|                 Description                 	|                      Example                      	| Permission Required 	|                                                               Source Code                                                              	|
-|:-------------:	|:-------:	|:-------------------------------------------:	|:-------------------------------------------------:	|:-------------------:	|:--------------------------------------------------------------------------------------------------------------------------------------:	|
-|   translate   	|    -    	| Translate a message inside a modmail thread 	|        <your_prefix>translate <message_id>        	|         None        	| [Source](https://github.com/officialpiyush/modmail-plugins/blob/e0aa61e7758766528835aa942bd2098c1da655d9/translator/translator.py#L13) 	|
-| translatetext 	|    tt   	|             Translate a message             	| <your_prefix>translatetext <message_to_translate> 	|         None        	| [Source](https://github.com/officialpiyush/modmail-plugins/blob/e0aa61e7758766528835aa942bd2098c1da655d9/translator/translator.py#L34) 	|
-
+|          Command         	| Aliases 	|                   Description                   	|                      Example                      	| Permission Required 	|                                                               Source Code                                                              	|
+|:------------------------:	|:-------:	|:-----------------------------------------------:	|:-------------------------------------------------:	|:-------------------:	|:--------------------------------------------------------------------------------------------------------------------------------------:	|
+|         translate        	|    -    	|   Translate a message inside a modmail thread   	|        <your_prefix>translate <message_id>        	|         None        	| [Source](https://github.com/officialpiyush/modmail-plugins/blob/d7ad5b46dbe7f4023d435f113d57363057aa850d/translator/translator.py#L23) 	|
+|       translatetext      	|    tt   	|               Translate a message               	| <your_prefix>translatetext <message_to_translate> 	|         None        	| [Source](https://github.com/officialpiyush/modmail-plugins/blob/d7ad5b46dbe7f4023d435f113d57363057aa850d/translator/translator.py#L44) 	|
+|   auto_translate_thread  	|   att   	| Add/Remove a channel from auto translation list 	|                  <your_prefix>att                 	|   Manage Messages   	| [Source](https://github.com/officialpiyush/modmail-plugins/blob/d7ad5b46dbe7f4023d435f113d57363057aa850d/translator/translator.py#L54) 	|
+| toggle_auto_translations 	|   tat   	|     Turn The Auto Translation Service On/Off    	|           <your_prefix>tat <true|false>           	|    Manage Server    	| [Source](https://github.com/officialpiyush/modmail-plugins/blob/d7ad5b46dbe7f4023d435f113d57363057aa850d/translator/translator.py#L75) 	|
 
 # Authors
 
