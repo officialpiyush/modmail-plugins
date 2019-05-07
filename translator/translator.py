@@ -98,7 +98,10 @@ class TranslatePlugin:
 
         if not message.embeds:
             return
-
+        
+        if "Recipient" not in message.embeds[0].footer:
+            return
+        
         msg = message.embeds[0].description
         tmsg = self.translator.translate(msg)
         embed = discord.Embed()
