@@ -104,7 +104,7 @@ class TranslatePlugin:
         embed = discord.Embed()
         embed.description = tmsg.text
         embed.color = 4388013
-        embed.set_footer = "Auto Translator Plugin"
+        embed.set_footer(text=f"Translated From {tmsg.src} | Auto Translator Plugin")
 
         await channel.send(embed=embed)
 
