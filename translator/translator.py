@@ -16,7 +16,7 @@ class TranslatePlugin:
     
     async def _set_config(self):
         config = await self.db.find_one({'_id': 'config'})
-        self.enabled = config.get('enabled', True)
+        self.enabled = config.get('at-enabled', True)
         self.tt = set(config.get('auto-translate', []))
 
     @commands.command()
