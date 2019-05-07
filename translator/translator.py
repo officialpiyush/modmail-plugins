@@ -16,6 +16,12 @@ class TranslatePlugin:
 
     async def _set_config(self):
         config = await self.db.find_one({'_id': 'config'})
+        if config is None:
+            await self.db.find_one_and_update(
+                {'_id': 'config'},
+                {'$set': {'enabled': True, 'translateSet': list([])}},
+                upsert=True
+            )
         self.enabled = config.get('enabled', True)
         self.tt = set(config.get('translateSet', []))
 
@@ -110,16 +116,6 @@ class TranslatePlugin:
         embed.set_footer(text=f"Translated From {tmsg.src} | Auto Translator Plugin")
 
         await channel.send(embed=embed)
-
-    async def on_ready(self):
-        config = await self.db.find_one({'_id': 'config'})
-
-        if config is None:
-            await self.db.find_one_and_update(
-                {'_id': 'config'},
-                {'$set': {'enabled': True, 'translateSet': list([])}},
-                upsert=True
-            )
 
 def setup(bot):
     bot.add_cog(TranslatePlugin(bot))
