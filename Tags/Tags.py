@@ -34,7 +34,7 @@ class TagPlugin:
     @commands.has_permissions(manage_messages=True)
     async def delete(self,ctx,tagName):
         try:
-            config = (await self.deb.find_one({"_id": "tags"}))[tagName]
+            config = (await self.db.find_one({"_id": "tags"}))[tagName]
             if config is None:
                 await ctx.send(":x: | Tag Not Found")
                 return
@@ -44,7 +44,7 @@ class TagPlugin:
         
     @commands.command()
     async def tag(self,ctx,tagName):    
-        config = (await self.deb.find_one({"_id": "tags"}))[tagName]
+        config = (await self.db.find_one({"_id": "tags"}))[tagName]
         if config is None:
             await ctx.send(":x: | Tag Not Found")
             return
@@ -55,7 +55,7 @@ class TagPlugin:
     @commands.has_permissions(manage_messages=True)
     async def update(self,ctx,tagName,*,msg):
         try:
-            config = (await self.deb.find_one({"_id": "tags"}))[tagName]
+            config = (await self.db.find_one({"_id": "tags"}))[tagName]
             if config is None:
                 await ctx.send(":x: | Tag Not Found")
             await self.db.find_one_and_update(
