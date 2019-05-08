@@ -5,10 +5,6 @@ class TagPlugin:
     def __init__(self,bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
-
-    @commands.command()
-    async def iona(self,ctx):
-        await ctx.send('A Plugin Created to server your need for tags!')
     
     @commands.group()
     async def tags(self,ctx):
@@ -16,18 +12,59 @@ class TagPlugin:
             return
     
     @tags.command(name="add")
+    @commands.has_permissions(manage_messages=True)
     async def add_(self, ctx, name, *, content):
             await self.db.find_one_and_update(
             {'_id': 'tags'},
             {'$set': {name: {'info': content, 'user_id': str(ctx.author.id)}}},
             upsert=True
             )
-            await ctx.send(f"A tag with `{name}` has been created succesfully!")
+            await ctx.send(f":white_check_mark: | A tag with `{name}` has been created succesfully!")
+    
+    # @tags.command(name="info")
+    # @commands.has_permissions(manage_messages=True)
+    # async def info(self,ctx,tagName):
+    #     tagCollection = await self.db.find_one({"_id": "tags"})
+    #     tag = tagCollection[tagName]
+    #     if tag is None:
+    #         await ctx.send(f":x: | Tag `{tagName}` Not Found")
+    #         return
         
-    @commands.command
-    async def tag(self,ctx,arg):
-        await ctx.send("nou")
-       
+    @tags.command(name="delete")
+    @commands.has_permissions(manage_messages=True)
+    async def delete(self,ctx,tagName):
+        try:
+            config = (await self.deb.find_one({"_id": "tags"}))[tagName]
+            if config is None:
+                await ctx.send(":x: | Tag Not Found")
+                return
+            await self.db.delete_one(config)
+        except:
+            await ctx.send(":x: | Something Wrong Happened While Deleting The Tag")
+        
+    @commands.command()
+    async def tag(self,ctx,tagName):    
+        config = (await self.deb.find_one({"_id": "tags"}))[tagName]
+        if config is None:
+            await ctx.send(":x: | Tag Not Found")
+            return
+        await ctx.send(config.content)
+        return
+
+    @tags.command(name="update")   
+    @commands.has_permissions(manage_messages=True)
+    async def update(self,ctx,tagName,*,msg):
+        try:
+            config = (await self.deb.find_one({"_id": "tags"}))[tagName]
+            if config is None:
+                await ctx.send(":x: | Tag Not Found")
+            await self.db.find_one_and_update(
+            {'_id': 'tags'},
+            {'$set': {tagName: {'info': msg, 'user_id': str(ctx.author.id)}}},
+            )
+            await ctx.send(f":white_check_mark: | Tag `{tagName}` updated Successfully")
+        except:
+            await ctx.send(":x: | Something Wrong Happened While Updating The Tag")
 
 def setup(bot):
     bot.add_cog(TagPlugin(bot))
