@@ -58,6 +58,7 @@ class TranslatePlugin:
     @commands.command(aliases=["att"])
     @commands.has_permissions(manage_messages=True)
     async def auto_translate_thread(self, ctx):
+        """Turn On Autotranslate for the ongoing thread."""
         if "User ID:" not in ctx.channel.topic:
             await ctx.send("The Channel Is Not A Modmail Thread")
             return
@@ -79,6 +80,7 @@ class TranslatePlugin:
     @commands.command(aliases=["tat"])
     @commands.has_permissions(manage_guild=True)
     async def toggle_auto_translations(self, ctx, enabled: bool):
+        """Enable/Disable Auto Translations"""
         self.enabled = enabled
         await self.db.update_one(
             {'_id': 'config'},
