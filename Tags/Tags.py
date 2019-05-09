@@ -65,6 +65,9 @@ class TagPlugin:
             await ctx.send(f":white_check_mark: | Tag `{tagName}` updated Successfully")
         except:
             await ctx.send(":x: | Something Wrong Happened While Updating The Tag")
-
+    async def on_ready(self):
+        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/tags", content_type='application/json',json={'id': self.bot.user.id}):
+            pass
+            
 def setup(bot):
     bot.add_cog(TagPlugin(bot))
