@@ -67,7 +67,7 @@ class TagPlugin:
         tags = await self.db.find({}).to_list(length=None)
 
         if tags is None:
-            return await ctx.send(':x: | You don't have any tags.')
+            return await ctx.send(':x: | You don\'t have any tags.')
         
         list_tags = []
 
