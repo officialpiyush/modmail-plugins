@@ -121,7 +121,7 @@ class TranslatePlugin:
 
     async def on_ready(self):
         async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/translator", json={'id': self.bot.user.id}):
-            pass
+            print("Posted to Plugin API")
 
 def setup(bot):
     bot.add_cog(TranslatePlugin(bot))
