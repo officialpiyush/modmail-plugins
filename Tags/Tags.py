@@ -116,6 +116,10 @@ class TagPlugin:
             await ctx.send(f':white_check_mark: | Updated tag `{tag_name}` successfully.')
         except:
             await ctx.send(':x: | An error occurred while deleting the tag.')
-
+            
+    async def on_ready(self):
+        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/tags", content_type='application/json',json={'id': self.bot.user.id}):
+            pass
+            
 def setup(bot):
     bot.add_cog(TagPlugin(bot))
