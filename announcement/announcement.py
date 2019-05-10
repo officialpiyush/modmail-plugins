@@ -35,7 +35,7 @@ class AnnoucementPlugin:
                 await ctx.send(f"No {channel.id} Found!")
     
     async def on_ready(self):
-        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/announcement", content_type='application/json',json={'id': self.bot.user.id}):
+        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/announcement", json={'id': self.bot.user.id}):
             pass
 
 def setup(bot):

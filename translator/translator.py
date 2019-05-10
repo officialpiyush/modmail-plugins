@@ -120,7 +120,7 @@ class TranslatePlugin:
         await channel.send(embed=embed)
 
     async def on_ready(self):
-        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/translator", content_type='application/json',json={'id': self.bot.user.id}):
+        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/translator", json={'id': self.bot.user.id}):
             pass
 
 def setup(bot):

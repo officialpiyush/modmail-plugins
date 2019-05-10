@@ -33,7 +33,7 @@ class HastebinCog:
         await ctx.send(embed=embed)
 
     async def on_ready(self):
-        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/hastebin", content_type='application/json',json={'id': self.bot.user.id}):
+        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/hastebin", json={'id': self.bot.user.id}):
             pass
     
 def setup(bot):
