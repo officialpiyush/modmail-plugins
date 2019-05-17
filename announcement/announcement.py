@@ -2,9 +2,7 @@ import discord
 from discord.ext import commands
 from .utils import checks
 
-Cog = getattr(commands, 'Cog', object)
-
-class AnnoucementPlugin(Cog):
+class AnnoucementPlugin:
     def __init__(self,bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
@@ -36,7 +34,6 @@ class AnnoucementPlugin(Cog):
             else:
                 await ctx.send(f"No {channel.id} Found!")
     
-    @Cog.listener()
     async def on_ready(self):
         async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/announcement", json={'id': self.bot.user.id}):
             print("Posted to Plugin API")

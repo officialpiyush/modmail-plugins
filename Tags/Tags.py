@@ -1,9 +1,7 @@
 import discord
 from discord.ext import commands
 
-Cog = getattr(commands, 'Cog', object)
-
-class TagPlugin(Cog):
+class TagPlugin:
     def __init__(self,bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
@@ -118,8 +116,7 @@ class TagPlugin(Cog):
             await ctx.send(f':white_check_mark: | Updated tag `{tag_name}` successfully.')
         except:
             await ctx.send(':x: | An error occurred while deleting the tag.')
-    
-    @Cog.listener()  
+            
     async def on_ready(self):
         async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/tags", json={'id': self.bot.user.id}):
             print("Posted to Plugin API")

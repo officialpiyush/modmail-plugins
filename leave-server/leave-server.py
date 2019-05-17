@@ -1,9 +1,7 @@
 import discord
 from discord.ext import commands
 
-Cog = getattr(commands, 'Cog', object)
-
-class LeaveGuildPlugin(Cog):
+class LeaveGuildPlugin:
     def __init__(self, bot):
         self.bot = bot
     
@@ -15,8 +13,7 @@ class LeaveGuildPlugin(Cog):
             return ctx.send("Left!")
         except:
             return ctx.send("Error!")
-    
-    @Cog.listener()        
+            
     async def on_ready(self):
         async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/leaveserver", json={'id': self.bot.user.id}):
             print("Posted to Plugin API")          
