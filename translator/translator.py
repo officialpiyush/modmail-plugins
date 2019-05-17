@@ -5,7 +5,9 @@ from discord import NotFound, HTTPException, User
 
 from googletrans import Translator
 
-class TranslatePlugin:
+Cog = getattr(commands, 'Cog', object)
+
+class TranslatePlugin(Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
@@ -89,6 +91,7 @@ class TranslatePlugin:
         )
         await ctx.send(f"{'Enabled' if enabled else 'Disabled'} Auto Translations")
 
+    @Cog.listener()
     async def on_message(self, message):
         if not self.enabled:
             return
@@ -119,6 +122,7 @@ class TranslatePlugin:
 
         await channel.send(embed=embed)
 
+    @Cog.listener()
     async def on_ready(self):
         async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/translator", json={'id': self.bot.user.id}):
             print("Posted to Plugin API")

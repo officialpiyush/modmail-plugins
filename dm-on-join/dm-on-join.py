@@ -1,7 +1,9 @@
 import discord
 from discord.ext import commands
 
-class DmOnJoinPlugin:
+Cog = getattr(commands, 'Cog', object)
+
+class DmOnJoinPlugin(Cog):
     def __init__(self,bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
@@ -25,6 +27,7 @@ class DmOnJoinPlugin:
 
         await ctx.send("Successfully Set The Message.")
     
+    @Cog.listener()
     async def on_member_join(self,member):
         config = (await self.db.find_one({'_id': 'dm-config'}))['dm-message']
         if config is None:
@@ -35,6 +38,7 @@ class DmOnJoinPlugin:
             except: 
                 return
     
+    @Cog.listener()
     async def on_ready(self):
         async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/dmonjoin", json={'id': self.bot.user.id}):
             print("Posted to Plugin API")
