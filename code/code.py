@@ -4,9 +4,8 @@ import json
 from discord.ext import commands
 from .utils import CodeBlock
 
-Cog = getattr(commands, 'Cog', object)
 
-class CodeCog(Cog):
+class CodeCog:
     """Compile & Run cpp,c,py,haskell code using coliru
 
     Please Dont Abuse
