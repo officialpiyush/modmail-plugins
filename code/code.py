@@ -59,4 +59,8 @@ class CodeCog(Cog):
                         shared_id = await r.text()
                         await ctx.send(f'Output too big. Coliru link: http://coliru.stacked-crooked.com/a/{shared_id}')
 
+
+def setup(bot):
+    bot.add_cog(CodeCog(bot))
+
 			
