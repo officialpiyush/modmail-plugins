@@ -6,10 +6,12 @@ from discord.ext import commands
 from json import JSONDecodeError
 from aiohttp import ClientResponseError
 
-class HastebinCog:
+Cog = getattr(commands, "Cog" , object)
+
+class HastebinCog(Cog):
     def __init__(self,bot):
         self.bot = bot
-    
+
     @commands.command()
     async def hastebin(self,ctx,*,message):
         """Upload Text To hastebin"""
@@ -31,10 +33,10 @@ class HastebinCog:
             )
             embed.set_footer(text='Hastebin Plugin')
         await ctx.send(embed=embed)
-
+    @Cog.listener()
     async def on_ready(self):
         async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/hastebin", json={'id': self.bot.user.id}):
             print("Posted to Plugin API")
-    
+
 def setup(bot):
     bot.add_cog(HastebinCog(bot))
