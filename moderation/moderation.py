@@ -14,7 +14,7 @@ class ModerationPlugin:
         self.db = bot.plugin_db.get_partition(self)
     
     @commands.command(aliases=["lc", "setmodlogs", "modlogs"])
-    @checks.has_permission(PermissionLevel.Moderator)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def logchanel(self, ctx, channel: discord.TextChannel):
         """Set Up The Log Channel For posting mod-logs
 
@@ -29,7 +29,7 @@ class ModerationPlugin:
         await ctx.send(f"{channel.mention} set for mod-logs!")
 
     @commands.command(aliases=["banhammer"])
-    @checks.has_permission(PermissionLevel.Moderator)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def ban(self, ctx, members: commands.Greedy[discord.Member], delete_days: typing.Optional[int] = 0, *,
                   reason: str = None):
         """Ban A Single User or a group of members
@@ -68,8 +68,8 @@ class ModerationPlugin:
                 raise e
 
     @commands.command(aliases=["getout"])
-    @checks.has_permission(PermissionLevel.Moderator)
-    async def kick(self,ctx,members: commands.Greedy[discord.Member], *, reason: str = None):
+    @checks.has_permissions(PermissionLevel.MODERATOR)
+    async def kick(self, ctx, members: commands.Greedy[discord.Member], *, reason: str = None):
         """Kick a Single member or a group of members
 
                 Usage:
