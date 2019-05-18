@@ -12,6 +12,7 @@ class RebootCog:
     @commands.command()
     @checks.has_permissions(PermissionLevel.OWNER)
     async def reboot(self, ctx):
+        """Reboots The Bot"""
         return sys.exit()
 
 
