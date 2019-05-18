@@ -15,7 +15,7 @@ class CodeCog:
         self.bot = bot
 
     @commands.command(aliases=["code"])
-    async def coliru(self,ctx,code: CodeBlock):
+    async def coliru(self, ctx, code: CodeBlock):
         """Compiles Code Through coliru API
 
         You have to pass in a code block with the language syntax
@@ -31,8 +31,7 @@ class CodeCog:
 
         Please don't spam this for Stacked's sake.
         """
-
-         payload = {
+        payload = {
             'cmd': code.command,
             'src': code.source
         }
