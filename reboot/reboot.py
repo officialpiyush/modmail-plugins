@@ -13,7 +13,8 @@ class RebootCog:
     @checks.has_permissions(PermissionLevel.OWNER)
     async def reboot(self, ctx):
         """Reboots The Bot"""
-        return sys.exit()
+        await ctx.send("Rebooting The Bot..")
+        sys.exit()
 
 
 def setup(bot):
