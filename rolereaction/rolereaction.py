@@ -61,7 +61,7 @@ class ReactionRole:
             upsert=True
         )
 
-        await ctx.send(f"Removed {emoji} from role-reaction list")
+        await ctx.send(f"Removed {emoji} from rolereaction list")
         return
 
     @rolereaction.command(aliases=["sc"])
