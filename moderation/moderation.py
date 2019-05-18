@@ -53,12 +53,12 @@ class ModerationPlugin:
                     embed = discord.Embed(
                         color=discord.Color.red(),
                         title=f"{member.display_name}#{member.discriminator} was banned",
-                        timestamp=datetime
+                        timestamp=datetime.utcnow()
                     )
                     embed.add_field(name="Moderator", value=f"{ctx.author.name}#{ctx.author.discriminator}",
                                     inline=False)
                     if reason:
-                        embed.add_field(name="Reason",value=reason,inline=False)
+                        embed.add_field(name="Reason", value=reason, inline=False)
 
                     await channel.send(embed=embed)
             except discord.Forbidden:
@@ -91,7 +91,7 @@ class ModerationPlugin:
                     embed = discord.Embed(
                         color=discord.Color.red(),
                         title=f"{member.display_name}#{member.discriminator} was kicked",
-                        timestamp=datetime
+                        timestamp=datetime.utcnow()
                     )
                     embed.add_field(name="Moderator", value=f"{ctx.author.name}#{ctx.author.discriminator}",
                                     inline=False)
