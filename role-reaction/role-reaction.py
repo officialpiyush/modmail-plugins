@@ -19,8 +19,7 @@ class ReactionRole:
             return
         self.roles = dict(config.get("roles", {}))
 
-    @commands.group()
-    @checks.has_permissions(PermissionLevel.MODERATOR)
+    @commands.group(aliases=["rr"])
     async def rolereaction(self, ctx):
         if ctx.invoked_subcommand is None:
             return
