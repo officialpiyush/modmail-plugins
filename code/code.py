@@ -11,7 +11,7 @@ class CodeCog:
     Please Dont Abuse
     """
 
-    def __init__(self,bot):
+    def __init__(self, bot):
         self.bot = bot
 
     @commands.command(aliases=["code"])
@@ -39,26 +39,24 @@ class CodeCog:
         data = json.dumps(payload)
 
         async with ctx.session.post('http://coliru.stacked-crooked.com/compile', data=data) as resp:
-                if resp.status != 200:
-                    await ctx.send('Coliru did not respond in time.')
-                    return
+            if resp.status != 200:
+                await ctx.send('Coliru did not respond in time.')
+                return
 
-                output = await resp.text(encoding='utf-8')
+            output = await resp.text(encoding='utf-8')
 
-                if len(output) < 1992:
-                    await ctx.send(f'```\n{output}\n```')
-                    return
+            if len(output) < 1992:
+                await ctx.send(f'```\n{output}\n```')
+                return
 
-                # output is too big so post it in gist
-                async with ctx.session.post('http://coliru.stacked-crooked.com/share', data=data) as r:
-                    if r.status != 200:
-                        await ctx.send('Could not create coliru shared link')
-                    else:
-                        shared_id = await r.text()
-                        await ctx.send(f'Output too big. Coliru link: http://coliru.stacked-crooked.com/a/{shared_id}')
+            # output is too big so post it in gist
+            async with ctx.session.post('http://coliru.stacked-crooked.com/share', data=data) as r:
+                if r.status != 200:
+                    await ctx.send('Could not create coliru shared link')
+                else:
+                    shared_id = await r.text()
+                    await ctx.send(f'Output too big. Coliru link: http://coliru.stacked-crooked.com/a/{shared_id}')
 
 
 def setup(bot):
     bot.add_cog(CodeCog(bot))
-
-			
