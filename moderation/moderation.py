@@ -12,7 +12,7 @@ class ModerationPlugin:
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
-    
+
     @commands.command(aliases=["lc", "setmodlogs", "modlogs"])
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def logchanel(self, ctx, channel: discord.TextChannel):
@@ -39,12 +39,12 @@ class ModerationPlugin:
         ban @member1 @member2 @member3 Spammers
         """
 
-        config = (await self.db.find_one({'_id': 'config'}))['logs']
+        config = (await self.db.find_one({'_id': 'config'}))
         if config is None:
             await ctx.send("No mod-log channel configured")
             return
         else:
-            channel = ctx.guild.get_channel(int(config['channel']))
+            channel = ctx.guild.get_channel(int(config["logs"]['channel']))
 
         if channel:
             try:
@@ -77,12 +77,12 @@ class ModerationPlugin:
                 kick @member1 @member2 @member3 Spammers
                 """
 
-        config = (await self.db.find_one({'_id': 'config'}))['logs']
+        config = (await self.db.find_one({'_id': 'config'}))
         if config is None:
             await ctx.send("No mod-log channel configured")
             return
         else:
-            channel = ctx.guild.get_channel(int(config['channel']))
+            channel = ctx.guild.get_channel(int(config["logs"]['channel']))
 
         if channel:
             try:

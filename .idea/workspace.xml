@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/moderation/moderation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
+            <state relative-caret-position="368">
+              <caret line="46" column="75" selection-start-line="46" selection-start-column="75" selection-end-line="46" selection-end-column="75" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -114,12 +114,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1558156623807</updated>
-      <workItem from="1558156630912" duration="5923000" />
+      <workItem from="1558156630912" duration="7072000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5923000" />
+    <option name="totallyTimeSpent" value="7072000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="100" y="20" width="1400" height="820" extended-state="0" />
@@ -154,8 +154,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/moderation/moderation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
+        <state relative-caret-position="368">
+          <caret line="46" column="75" selection-start-line="46" selection-start-column="75" selection-end-line="46" selection-end-column="75" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
