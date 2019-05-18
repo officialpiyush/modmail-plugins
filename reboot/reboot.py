@@ -1,4 +1,5 @@
 import sys
+import os
 from discord.ext import commands
 
 from core import checks
@@ -14,7 +15,7 @@ class RebootCog:
     async def reboot(self, ctx):
         """Reboots The Bot"""
         await ctx.send("Rebooting The Bot..")
-        sys.exit()
+        os.execl(sys.executable, sys.executable, * sys.argv)
 
 
 def setup(bot):
