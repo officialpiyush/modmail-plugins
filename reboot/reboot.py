@@ -1,4 +1,5 @@
-import sys
+import os
+import signal
 from discord.ext import commands
 
 from core import checks
@@ -14,7 +15,7 @@ class RebootCog:
     async def reboot(self, ctx):
         """Reboots The Bot"""
         await ctx.send("Rebooting The Bot..")
-        sys.exit()
+        os.kill(os.getpid(), signal.SIGKILL)
 
 
 def setup(bot):
