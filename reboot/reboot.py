@@ -14,7 +14,8 @@ class RebootCog:
     @checks.has_permissions(PermissionLevel.OWNER)
     async def reboot(self, ctx):
         """Reboots The Bot"""
-        await ctx.send("Rebooting The Bot..")
+        await ctx.send("Rebooting The Bot...")
+        print("========== Rebooting ==========")
         os.execl(sys.executable, sys.executable, * sys.argv)
 
 
