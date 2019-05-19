@@ -35,7 +35,7 @@ class RebootCog:
         logger.info("==== Rebooting Bot ====")
         await msg.edit(embed=discord.Embed(
             color=discord.Color.blurple(),
-            description="✅ | Cleared Cached Logs\n✅ | Rebooting...."
+            description="`✅ | Cleared Cached Logs`\n\n`✅ | Rebooting....`"
         ))
         os.execl(sys.executable, sys.executable, * sys.argv)
 
