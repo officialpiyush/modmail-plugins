@@ -1,6 +1,6 @@
 import discord
 import typing
-from datetime import datetime
+import datetime
 from discord.ext import commands
 
 from core import checks
@@ -12,6 +12,7 @@ class ModerationPlugin:
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
+        self.mute_list = []
 
     @commands.command(aliases=["lc", "setmodlogs", "modlogs"])
     @checks.has_permissions(PermissionLevel.MODERATOR)
@@ -53,7 +54,7 @@ class ModerationPlugin:
                     embed = discord.Embed(
                         color=discord.Color.red(),
                         title=f"{member.display_name}#{member.discriminator} was banned",
-                        timestamp=datetime.utcnow()
+                        timestamp=datetime.datetime.utcnow()
                     )
                     embed.add_field(name="Moderator", value=f"{ctx.author.name}#{ctx.author.discriminator}",
                                     inline=False)
@@ -91,7 +92,7 @@ class ModerationPlugin:
                     embed = discord.Embed(
                         color=discord.Color.red(),
                         title=f"{member.display_name}#{member.discriminator} was kicked",
-                        timestamp=datetime.utcnow()
+                        timestamp=datetime.datetime.utcnow()
                     )
                     embed.add_field(name="Moderator", value=f"{ctx.author.name}#{ctx.author.discriminator}",
                                     inline=False)
@@ -104,6 +105,81 @@ class ModerationPlugin:
             except Exception as e:
                 await ctx.send("An Error Occurred, Check Logs For More Details")
                 raise e
+
+    # @commands.command()
+    # @checks.has_permissions(PermissionLevel.MODERATOR)
+    # async def mute(self, ctx, members: commands.Greedy[discord.Member], *, reason: str = None):
+    #     """Mute a Single member or a group of members
+    #
+    #                     Usage:
+    #                     mute @member Gave a kick
+    #                     mute @member1 @member2 @member3 Spammers
+    #                     """
+    #
+    #     config = (await self.db.find_one({'_id': 'config'}))
+    #     if config is None:
+    #         await ctx.send("No mod-log channel configured")
+    #         return
+    #     else:
+    #         channel = ctx.guild.get_channel(int(config["logs"]['channel']))
+    #
+    #      if channel:
+
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.MODERATOR)
+    async def warn(self, ctx: commands.Context,  member: discord.Member, *, reason: str):
+        """Warn a member
+
+        Usage:
+        warn @member <...reason>
+        """
+        if member.bot:
+            await ctx.send("Bot's Cannot be warned")
+            return
+
+        chconfig = (await self.db.find_one({'_id': 'config'}))
+        if chconfig is None:
+            await ctx.send("No mod-log channel configured")
+            return
+        else:
+            channel = ctx.guild.get_channel(int(chconfig["logs"]['channel']))
+        if channel:
+            config = await self.db.find_one({"_id": "warns"})
+
+            if config:
+                userwarns = config[member.id]
+
+                if userwarns is None:
+                    userw = []
+                    userw.append({"reason": reason, "mod": ctx.author.id})
+                    await self.db.find_one_and_update(
+                        {"_id": "warns"},
+                        {"$set": {member.id: userw}},
+                        upsert=True
+                    )
+                    await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
+                    del userw
+                    return
+                else:
+                    userw = userwarns.copy()
+                    userw.append({"reason": reason, "mod": ctx.author.id})
+                    await self.db.find_one_and_update(
+                        {"_id": "warns"},
+                        {"$set": {member.id: userw}},
+                        upsert=True)
+                    await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
+                    del userw
+                    return
+            else:
+                userw = []
+                userw.append({"reason": reason, "mod": ctx.author.id})
+                await self.db.find_one_and_update(
+                    {"_id": "warns"},
+                    {"$set": {member.id: userw}},
+                    upsert=True)
+                await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
+                del userw
+                return
 
 
 def setup(bot):

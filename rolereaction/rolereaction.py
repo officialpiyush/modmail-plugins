@@ -108,6 +108,7 @@ class ReactionRole:
             role = await guild.get_role(self.roles[payload.emoji.name or payload.emoji.id])
             await member.add_roles(role)
 
+
 def setup(bot):
     bot.add_cog(ReactionRole(bot))
 
