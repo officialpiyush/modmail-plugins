@@ -147,14 +147,14 @@ class ModerationPlugin(commands.Cog):
             config = await self.db.find_one({"_id": "warns"})
 
             if config:
-                userwarns = config[member.id]
+                userwarns = config[str(member.id)]
 
                 if userwarns is None:
                     userw = []
                     userw.append({"reason": reason, "mod": ctx.author.id})
                     await self.db.find_one_and_update(
                         {"_id": "warns"},
-                        {"$set": {member.id: userw}},
+                        {"$set": {str(member.id): userw}},
                         upsert=True
                     )
                     await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
@@ -165,7 +165,7 @@ class ModerationPlugin(commands.Cog):
                     userw.append({"reason": reason, "mod": ctx.author.id})
                     await self.db.find_one_and_update(
                         {"_id": "warns"},
-                        {"$set": {member.id: userw}},
+                        {"$set": {str(member.id): userw}},
                         upsert=True)
                     await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
                     del userw
@@ -175,7 +175,7 @@ class ModerationPlugin(commands.Cog):
                 userw.append({"reason": reason, "mod": ctx.author.id})
                 await self.db.find_one_and_update(
                     {"_id": "warns"},
-                    {"$set": {member.id: userw}},
+                    {"$set": {str(str(member.id)): userw}},
                     upsert=True)
                 await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
                 del userw
