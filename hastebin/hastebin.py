@@ -6,7 +6,7 @@ from discord.ext import commands
 from json import JSONDecodeError
 from aiohttp import ClientResponseError
 
-class HastebinCog:
+class HastebinCog(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
 
@@ -31,7 +31,8 @@ class HastebinCog:
             )
             embed.set_footer(text='Hastebin Plugin')
         await ctx.send(embed=embed)
-        
+
+    @commands.Cog.listener()
     async def on_ready(self):
         async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/hastebin", json={'id': self.bot.user.id}):
             print("Posted to Plugin API")
