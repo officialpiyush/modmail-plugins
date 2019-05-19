@@ -185,7 +185,7 @@ class ModerationPlugin(commands.Cog):
                 del userw
                 return
 
-    def generateWarnEmbed(self, memberid, modid, warning, reason):
+    async def generateWarnEmbed(self, memberid, modid, warning, reason):
         member: discord.User = await self.bot.fetch_user(int(memberid))
         mod: discord.User = self.bot.fetch_user(int(modid))
         embed = discord.Embed()
