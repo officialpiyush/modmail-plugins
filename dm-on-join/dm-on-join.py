@@ -25,6 +25,7 @@ class DmOnJoinPlugin(commands.Cog):
 
         await ctx.send("Successfully Set The Message.")
     
+    @commands.Cog.listener()
     async def on_member_join(self,member):
         config = (await self.db.find_one({'_id': 'dm-config'}))['dm-message']
         if config is None:
