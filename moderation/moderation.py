@@ -170,7 +170,7 @@ class ModerationPlugin(commands.Cog):
                         {"$set": {str(member.id): userw}},
                         upsert=True)
                     await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
-                    await channel.send(embed=self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason))
+                    await channel.send(embed=(await self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason)))
                     del userw
                     return
             else:
@@ -181,7 +181,7 @@ class ModerationPlugin(commands.Cog):
                     {"$set": {str(str(member.id)): userw}},
                     upsert=True)
                 await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
-                await channel.send(embed=self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason))
+                await channel.send(embed=(await self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason)))
                 del userw
                 return
 
