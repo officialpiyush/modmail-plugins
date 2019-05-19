@@ -25,7 +25,7 @@ class RebootCog:
 
         # Clear The cached logs
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                               '../temp/logs.log'), 'w'):
+                               '../../../temp/logs.log'), 'w'):
             pass
 
         emsg = await msg.edit(embed=discord.Embed(
