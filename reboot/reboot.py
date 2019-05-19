@@ -27,7 +27,7 @@ class RebootCog(commands.Cog):
         #with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
        #                        '../../../temp/logs.log'), 'w'):
           #  pass
-        await ctx.invoke(bot.get_command('debug clear'))
+        await ctx.invoke(self.bot.get_command('debug clear'))
         emsg = await msg.edit(embed=discord.Embed(
             color=discord.Color.blurple(),
             description="✅ Cleared Cached Logs"
