@@ -187,7 +187,7 @@ class ModerationPlugin(commands.Cog):
 
     async def generateWarnEmbed(self, memberid, modid, warning, reason):
         member: discord.User = await self.bot.fetch_user(int(memberid))
-        mod: discord.User = self.bot.fetch_user(int(modid))
+        mod: discord.User = await self.bot.fetch_user(int(modid))
         embed = discord.Embed()
         embed.colour = discord.Colour.red()
         embed.set_author(name=f"Warn | {member.name}", icon_url=member.avatar_url)
