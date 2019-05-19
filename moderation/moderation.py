@@ -10,7 +10,7 @@ from core.models import PermissionLevel
 @commands.guild_only()
 class ModerationPlugin(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
+        self.bot: discord.Client = bot
         self.db = bot.plugin_db.get_partition(self)
         self.mute_list = []
 
@@ -158,6 +158,8 @@ class ModerationPlugin(commands.Cog):
                         upsert=True
                     )
                     await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
+                    await channel.send(
+                        embed=self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason))
                     del userw
                     return
                 else:
@@ -168,6 +170,7 @@ class ModerationPlugin(commands.Cog):
                         {"$set": {str(member.id): userw}},
                         upsert=True)
                     await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
+                    await channel.send(embed=self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason))
                     del userw
                     return
             else:
@@ -178,9 +181,21 @@ class ModerationPlugin(commands.Cog):
                     {"$set": {str(str(member.id)): userw}},
                     upsert=True)
                 await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**`({reason})`")
+                await channel.send(embed=self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason))
                 del userw
                 return
 
+    async def generateWarnEmbed(self, memberid, modid, warning, reason):
+        member: discord.User = await self.bot.fetch_user(int(memberid))
+        mod: discord.User = self.bot.fetch_user(int(modid))
+        embed = discord.Embed()
+        embed.colour = discord.Colour.red()
+        embed.set_author(name=f"Warn | {member.name}", icon_url=member.avatar_url)
+        embed.add_field(name="User", value=f"{member.name}#{member.discriminator}")
+        embed.add_field(name="Moderator", value=f"<@{modid}>`({mod.name}#{mod.discriminator})`")
+        embed.add_field(name="Reason", value=reason)
+        embed.add_field(name="Total Warnings", value=warning)
+        return embed
 
 def setup(bot):
     bot.add_cog(ModerationPlugin(bot))
