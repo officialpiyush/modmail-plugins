@@ -185,6 +185,49 @@ class ModerationPlugin(commands.Cog):
                 del userw
                 return
 
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.MODERATOR)
+    async def pardon(self,ctx,member: discord.Member, *, reason: str):
+        """Remove all warnings of a  member
+
+                Usage:
+                pardon @member <...reason>
+                """
+        if member.bot:
+            await ctx.send("Bot's Cannot be warned, So No Pardon.")
+            return
+
+        chconfig = (await self.db.find_one({'_id': 'config'}))
+        if chconfig is None:
+            await ctx.send("No mod-log channel configured")
+            return
+        else:
+            channel = ctx.guild.get_channel(int(chconfig["logs"]['channel']))
+        if channel:
+            config = await self.db.find_one({"_id": "warns"})
+
+            if config:
+                userwarns = config[str(member.id)]
+
+                if userwarns is None:
+                    await ctx.send("User has No Warnings to be cleared")
+
+                await self.db.find_one_and_update(
+                    {"_id": "warns"},
+                    {"$set": {str(member.id): []}}
+                    )
+                await ctx.send("Done!")
+                embed = discord.Embed()
+                embed.colour = discord.Colour.blue()
+                embed.set_author(name=f"Pardon | {member.name}#{member.discriminator}", icon_url=member.avatar_url)
+                embed.add_field(name="User", value=f"{member.name}#{member.discriminator}")
+                embed.add_field(name="Moderator",
+                                value=f"<@{ctx.author.id}>`({ctx.author.name}#{ctx.author.discriminator})`")
+                embed.add_field(name="Reason", value=reason)
+                embed.add_field(name="Total Warnings", value="0")
+                await channel.send(embed=embed)
+                return
+
     async def generateWarnEmbed(self, memberid, modid, warning, reason):
         member: discord.User = await self.bot.fetch_user(int(memberid))
         mod: discord.User = await self.bot.fetch_user(int(modid))
@@ -196,6 +239,7 @@ class ModerationPlugin(commands.Cog):
         embed.add_field(name="Reason", value=reason)
         embed.add_field(name="Total Warnings", value=warning)
         return embed
+
 
 def setup(bot):
     bot.add_cog(ModerationPlugin(bot))
