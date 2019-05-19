@@ -16,7 +16,7 @@ class ModerationPlugin(commands.Cog):
 
     @commands.command(aliases=["lc", "setmodlogs", "modlogs"])
     @checks.has_permissions(PermissionLevel.MODERATOR)
-    async def logchanel(self, ctx, channel: discord.TextChannel):
+    async def logchannel(self, ctx, channel: discord.TextChannel):
         """Set Up The Log Channel For posting mod-logs
 
         Usage:
