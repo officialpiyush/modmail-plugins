@@ -190,7 +190,7 @@ class ModerationPlugin(commands.Cog):
         mod: discord.User = await self.bot.fetch_user(int(modid))
         embed = discord.Embed()
         embed.colour = discord.Colour.red()
-        embed.set_author(name=f"Warn | {member.name}", icon_url=member.avatar_url)
+        embed.set_author(name=f"Warn | {member.name}#{member.discriminator}", icon_url=member.avatar_url)
         embed.add_field(name="User", value=f"{member.name}#{member.discriminator}")
         embed.add_field(name="Moderator", value=f"<@{modid}>`({mod.name}#{mod.discriminator})`")
         embed.add_field(name="Reason", value=reason)

@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/moderation/moderation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="189" column="34" selection-start-line="189" selection-start-column="34" selection-end-line="189" selection-end-column="34" />
+            <state relative-caret-position="239">
+              <caret line="192" column="74" selection-start-line="192" selection-start-column="74" selection-end-line="192" selection-end-column="74" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -33,11 +33,13 @@
       <find>datetime</find>
       <find>str(member.id)</find>
       <find>member.id</find>
+      <find>await channel.send(embed=self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason))</find>
     </findStrings>
     <replaceStrings>
       <replace>PermissionLevel.MODERATOR</replace>
       <replace>datetime.datetime</replace>
       <replace>str(member.id)</replace>
+      <replace>await channel.send(embed=(await self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason)))</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -127,12 +129,12 @@
       <workItem from="1558156630912" duration="7359000" />
       <workItem from="1558164209327" duration="5624000" />
       <workItem from="1558185534981" duration="11573000" />
-      <workItem from="1558241159075" duration="11502000" />
+      <workItem from="1558241159075" duration="11713000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36058000" />
+    <option name="totallyTimeSpent" value="36269000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="100" y="20" width="1400" height="820" extended-state="0" />
@@ -210,8 +212,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/moderation/moderation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="189" column="34" selection-start-line="189" selection-start-column="34" selection-end-line="189" selection-end-column="34" />
+        <state relative-caret-position="239">
+          <caret line="192" column="74" selection-start-line="192" selection-start-column="74" selection-end-line="192" selection-end-column="74" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
