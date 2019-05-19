@@ -10,7 +10,7 @@ from core.models import PermissionLevel
 logger = logging.getLogger('Modmail')
 
 
-class RebootCog:
+class RebootCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 

@@ -8,7 +8,7 @@ from core.models import PermissionLevel
 
 
 @commands.guild_only()
-class ModerationPlugin:
+class ModerationPlugin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)

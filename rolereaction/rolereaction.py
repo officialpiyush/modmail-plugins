@@ -6,7 +6,7 @@ from core import checks
 from core.models import PermissionLevel
 
 
-class ReactionRole:
+class ReactionRole(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
@@ -92,6 +92,7 @@ class ReactionRole:
             for x in self.roles:
                 await msg.add_reaction(x)
 
+    @commands.Cog.listener()
     async def on_raw_reaction_add(self,payload: discord.RawReactionActionEvent):
         user: discord.User = self.bot.get_user(int(payload.user_id))
         guild: discord.Guild = self.bot.config.get("GUILD_ID")
