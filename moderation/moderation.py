@@ -250,7 +250,7 @@ class ModerationPlugin(commands.Cog):
                 if str(member.id) in self.mutes:
                     await ctx.send("That User is Already Muted")
                     return
-
+                mtime = ""
                 now = datetime.datetime.utcnow()
                 reason = f"`({after.arg})`" if after else None
                 if after and after.dt > now:
@@ -264,7 +264,6 @@ class ModerationPlugin(commands.Cog):
                 await channel.send(embed=embed)
                 await ctx.send(f"Muted **{member.name}#{member.discriminator}** {mtime} {reason} ")
                 await self.handle_mute(member,now)
-
 
     async def handle_mute(self, member: discord.Member, now):
         self.mutes[int(member.id)] = now
