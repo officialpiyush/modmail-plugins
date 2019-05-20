@@ -245,25 +245,25 @@ class ModerationPlugin(commands.Cog):
             return
         else:
             channel = ctx.guild.get_channel(int(config["logs"]['channel']))
-         if channel:
-             for member in members:
-                 if str(member.id) in self.mutes:
-                     await ctx.send("That User is Already Muted")
-                     return
+        if channel:
+            for member in members:
+                if str(member.id) in self.mutes:
+                    await ctx.send("That User is Already Muted")
+                    return
 
-                 now = datetime.utcnow()
-                 reason = f"`({after.arg})`" if after else None
-                 if after and after.dt > now:
-                     mtime = f"for {human_timedelta(after.dt)}"
-                 embed = discord.Embed()
-                 embed.set_author(name=f"Mute | {member.name}#{member.discriminator}", icon_url=member.avatar_url)
-                 embed.add_field(name="User", value=f"{member.name}#{member.discriminator}")
-                 embed.add_field(name="Moderator",
+                now = datetime.utcnow()
+                reason = f"`({after.arg})`" if after else None
+                if after and after.dt > now:
+                    mtime = f"for {human_timedelta(after.dt)}"
+                embed = discord.Embed()
+                embed.set_author(name=f"Mute | {member.name}#{member.discriminator}", icon_url=member.avatar_url)
+                embed.add_field(name="User", value=f"{member.name}#{member.discriminator}")
+                embed.add_field(name="Moderator",
                                 value=f"<@{ctx.author.id}>`({ctx.author.name}#{ctx.author.discriminator})`")
-                 embed.add_field(name="Reason", value=reason)
-                 await channel.send(embed=embed)
-                 await ctx.send(f"Muted **{member.name}#{member.discriminator}** {mtime} {reason} }")
-                 await self.handle_mute(member,now)
+                embed.add_field(name="Reason", value=reason)
+                await channel.send(embed=embed)
+                await ctx.send(f"Muted **{member.name}#{member.discriminator}** {mtime} {reason} }")
+                await self.handle_mute(member,now)
 
 
     async def handle_mute(self, member: discord.Member, now):
