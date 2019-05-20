@@ -74,7 +74,7 @@ class ModerationPlugin(commands.Cog):
                     embed = discord.Embed(
                         color=discord.Color.red(),
                         title=f"{member.display_name}#{member.discriminator} was banned",
-                        timestamp=datetime.datetime.utcnow()
+                        timestamp=datetime.datetime.datetime.utcnow()
                     )
                     embed.add_field(name="Moderator", value=f"{ctx.author.name}#{ctx.author.discriminator}",
                                     inline=False)
@@ -112,7 +112,7 @@ class ModerationPlugin(commands.Cog):
                     embed = discord.Embed(
                         color=discord.Color.red(),
                         title=f"{member.display_name}#{member.discriminator} was kicked",
-                        timestamp=datetime.datetime.utcnow()
+                        timestamp=datetime.datetime.datetime.utcnow()
                     )
                     embed.add_field(name="Moderator", value=f"{ctx.author.name}#{ctx.author.discriminator}",
                                     inline=False)
@@ -251,7 +251,7 @@ class ModerationPlugin(commands.Cog):
                     await ctx.send("That User is Already Muted")
                     return
 
-                now = datetime.utcnow()
+                now = datetime.datetime.utcnow()
                 reason = f"`({after.arg})`" if after else None
                 if after and after.dt > now:
                     mtime = f"for {human_timedelta(after.dt)}"
@@ -269,7 +269,7 @@ class ModerationPlugin(commands.Cog):
     async def handle_mute(self, member: discord.Member, now):
         self.mutes[int(member.id)] = now
         await self.update_mute_db()
-        time = datetime.utcnow() - now
+        time = datetime.datetime.utcnow() - now
         guild: discord.guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
         if time > 0:
             for channel in guild.channels:
