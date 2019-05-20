@@ -28,9 +28,9 @@ class ModerationPlugin(commands.Cog):
             guild: discord.Guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
             member = await guild.get_member(mute)
             if member:
-                if int(member.id) not in self.mutes:
+                if str(member.id) not in self.mutes:
                     continue
-                await self.handle_mute(member,self.mutes[int(member.id)])
+                await self.handle_mute(member,self.mutes[str(member.id)])
             
 
 
@@ -266,7 +266,7 @@ class ModerationPlugin(commands.Cog):
                 await self.handle_mute(member,now)
 
     async def handle_mute(self, member: discord.Member, now):
-        self.mutes[int(member.id)] = now
+        self.mutes[str(member.id)] = now
         await self.update_mute_db()
         time = datetime.datetime.utcnow() - now
         guild: discord.guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
