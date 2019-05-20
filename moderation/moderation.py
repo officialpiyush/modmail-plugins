@@ -19,8 +19,8 @@ class ModerationPlugin(commands.Cog):
         self.mutes = dict()
 
     @commands.Cog.listener()
-    def on_plugin_ready(self):
-        self._set_mutes()
+    async def on_plugin_ready(self):
+        await self._set_mutes()
 
     async def _set_mutes(self):
         config = await self.db.find_one({'_id': 'mutes'})
