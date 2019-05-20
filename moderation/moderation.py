@@ -17,7 +17,10 @@ class ModerationPlugin(commands.Cog):
         self.bot: discord.Client = bot
         self.db = bot.plugin_db.get_partition(self)
         self.mutes = dict()
-        asyncio.create_task(self._set_mutes())
+
+    @commands.Cog.listener()
+    def on_plugin_ready(self):
+        self._set_mutes()
 
     async def _set_mutes(self):
         config = await self.db.find_one({'_id': 'mutes'})
