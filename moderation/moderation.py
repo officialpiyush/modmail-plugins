@@ -262,7 +262,7 @@ class ModerationPlugin(commands.Cog):
                                 value=f"<@{ctx.author.id}>`({ctx.author.name}#{ctx.author.discriminator})`")
                 embed.add_field(name="Reason", value=reason)
                 await channel.send(embed=embed)
-                await ctx.send(f"Muted **{member.name}#{member.discriminator}** {mtime} {reason} }")
+                await ctx.send(f"Muted **{member.name}#{member.discriminator}** {mtime} {reason} ")
                 await self.handle_mute(member,now)
 
 
