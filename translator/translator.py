@@ -60,7 +60,7 @@ class TranslatePlugin(commands.Cog):
         await ctx.channel.send(embed=embed)
 
     @commands.command(aliases=["att"])
-    @checks.has_permissions(PermissionLevel.SUPPORT)
+    @checks.has_permissions(PermissionLevel.SUPPORTER)
     async def auto_translate_thread(self, ctx):
         """Turn On Autotranslate for the ongoing thread."""
         if "User ID:" not in ctx.channel.topic:
