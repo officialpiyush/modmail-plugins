@@ -116,7 +116,11 @@ class TranslatePlugin(commands.Cog):
             return
         
         embed = message.embeds[0]
-        tmsg = self.translator.translate(message.embeds[0].description)
+                       
+        tmsg = await self.bot.loop.run_in_executor(
+            None, self.translator.translate, message.embeds[0].description
+        )
+
         if tmsg.src == "en":
             return
                        
