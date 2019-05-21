@@ -119,7 +119,7 @@ class TranslatePlugin(commands.Cog):
         tmsg = self.translator.translate(msg)
         embed = discord.Embed()
         embed.description = msg
-        embed.add_field(name=f"Translation from **{(tmsg.src).upper()}**")
+        embed.add_field(name=f"Translation from **{(tmsg.src).upper()}**", value=tmsg.text)
         embed.color = self.bot.main_color
         embed.set_footer(text="Recipient")
         embed.timestamp = datetime.datetime.utcnow()
