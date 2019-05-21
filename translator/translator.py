@@ -116,16 +116,25 @@ class TranslatePlugin(commands.Cog):
             return
         
         embed = message.embeds[0]
-        tmsg = self.translator.translate(message.embeds[0].description)
+                       
+        tmsg = await self.bot.loop.run_in_executor(
+            None, self.translator.translate, message.embeds[0].description
+        )
+
         if tmsg.src == "en":
             return
+                       
         field = {
-            'inline': True,
-            'name': 'translation',
-            'value': 'thing'
+            'inline': False,
+            'name': f"Translation [{(tmsg.src).upper()}]",
+            'value': tmsg.text
         }
-        embed._fields.insert(0, field)
-        # embed.add_field(name=f"Translation [{(tmsg.src).upper()}]", value=tmsg.text,inline=False)
+                       
+        try:
+            embed._fields.insert(0, field)
+        except AttributeError:
+            embed._fields = [field]
+                       
 
         await message.edit(embed=embed)
 
