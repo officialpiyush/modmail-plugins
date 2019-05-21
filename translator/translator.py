@@ -115,14 +115,9 @@ class TranslatePlugin(commands.Cog):
         if "Recipient" not in message.embeds[0].footer.text:
             return
         
-        msg = message.embeds[0].description
-        tmsg = self.translator.translate(msg)
-        embed = discord.Embed()
-        embed.description = msg
-        embed.add_field(name=f"Translation from **{(tmsg.src).upper()}**", value=tmsg.text)
-        embed.color = self.bot.main_color
-        embed.set_footer(text="Recipient")
-        embed.timestamp = datetime.datetime.utcnow()
+        embed = message.embeds[0]
+        tmsg = self.translator.translate(message.embeds[0].description)
+        embed.add_field(name=f"Translated from **{(tmsg.src).upper()}**", value=tmsg.text)
 
         await message.edit(embed=embed)
 
