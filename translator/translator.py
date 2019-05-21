@@ -1,7 +1,11 @@
 import discord
 import asyncio
+import datetime
 from discord.ext import commands
 from discord import NotFound, HTTPException, User
+
+from core import checks
+from core.models import PermissionLevel
 
 from googletrans import Translator
 
@@ -56,7 +60,7 @@ class TranslatePlugin(commands.Cog):
         await ctx.channel.send(embed=embed)
 
     @commands.command(aliases=["att"])
-    @commands.has_permissions(manage_messages=True)
+    @checks.has_permissions(PermissionLevel.SUPPORT)
     async def auto_translate_thread(self, ctx):
         """Turn On Autotranslate for the ongoing thread."""
         if "User ID:" not in ctx.channel.topic:
@@ -78,7 +82,7 @@ class TranslatePlugin(commands.Cog):
         await ctx.send(f"{'Removed' if removed else 'Added'} Channel {'from' if removed else 'to'} Auto Translations List.")
 
     @commands.command(aliases=["tat"])
-    @commands.has_permissions(manage_guild=True)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def toggle_auto_translations(self, ctx, enabled: bool):
         """Enable/Disable Auto Translations"""
         self.enabled = enabled
@@ -114,16 +118,20 @@ class TranslatePlugin(commands.Cog):
         msg = message.embeds[0].description
         tmsg = self.translator.translate(msg)
         embed = discord.Embed()
-        embed.description = tmsg.text
-        embed.color = 4388013
-        embed.set_footer(text=f"Translated From {(tmsg.src).upper()} | Auto Translator Plugin")
+        embed.description = msg
+        embed.add_field(name=f"Translation from **{(tmsg.src).upper()}**")
+        embed.color = self.bot.main_color
+        embed.set_footer(text="Recipient")
+        embed.timestamp = datetime.datetime.utcnow()
 
-        await channel.send(embed=embed)
+        await message.edit(embed=embed)
 
     @commands.Cog.listener()
     async def on_ready(self):
-        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/translator", json={'id': self.bot.user.id}):
+        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/translator",
+                                         json={'id': self.bot.user.id}):
             print("Posted to Plugin API")
+
 
 def setup(bot):
     bot.add_cog(TranslatePlugin(bot))
