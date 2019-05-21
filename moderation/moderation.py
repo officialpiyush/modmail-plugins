@@ -16,25 +16,33 @@ class ModerationPlugin(commands.Cog):
     def __init__(self, bot):
         self.bot: discord.Client = bot
         self.db = bot.plugin_db.get_partition(self)
-        self.mutes = dict()
+        # self.mutes = list()
 
-    @commands.Cog.listener()
-    async def on_plugin_ready(self):
-        await self._set_mutes()
+    # @commands.Cog.listener()
+    # async def on_plugin_ready(self):
+    #     config = await self.db.find_one({'_id': 'mutes'})
+    #     if config is None:
+    #         return
+    #     self.mutes = set(config.get('mute_list', []))
+    #     for mute in self.mutes:
+    #         guild: discord.Guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
+    #         member = await guild.get_member(mute)
+    #         if member:
+    #             timeleft = mute["time"]
+    #             if timeleft is None:
+    #                 continue
+    #             self.mutes.append(self.bot.loop.create_task(self.check_mute(member, timeleft)))
+    #     self.loop_list.append(self.bot.loop.create_task(self.mute_list_check()))
+    #
+    # async def mute_list_check(self, member: discord.Member, timeleft):
+    #     no_mute = []
+    #     for mute in self.mutes:
+    #         guild: discord.Guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
+    #         member = await guild.get_member(mute)
+    #         if member:
+    #             if mute["time"] is None:
+    #                 continue
 
-    async def _set_mutes(self):
-        config = await self.db.find_one({'_id': 'mutes'})
-        if config is None:
-            return
-        self.mutes = set(config.get('mute_list', {}))
-        for mute in self.mutes:
-            guild: discord.Guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
-            member = await guild.get_member(mute)
-            if member:
-                if str(member.id) not in self.mutes:
-                    continue
-                await self.handle_mute(member,self.mutes[str(member.id)])
-            
 
 
     @commands.command(aliases=["lc", "setmodlogs", "modlogs"])
@@ -46,9 +54,9 @@ class ModerationPlugin(commands.Cog):
         logchannel #channel
         """
         await self.db.find_one_and_update(
-        {'_id': 'config'},
-        {'$set': {'logs': {'channel': str(channel.id)}}},
-        upsert=True
+            {'_id': 'config'},
+            {'$set': {'logs': {'channel': str(channel.id)}}},
+            upsert=True
         )
         await ctx.send(f"{channel.mention} set for mod-logs!")
 
@@ -219,7 +227,7 @@ class ModerationPlugin(commands.Cog):
                 await self.db.find_one_and_update(
                     {"_id": "warns"},
                     {"$set": {str(member.id): []}}
-                    )
+                )
                 await ctx.send("Done!")
                 embed = discord.Embed()
                 embed.colour = discord.Colour.blue()
@@ -234,7 +242,7 @@ class ModerationPlugin(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
-    async def mute(self,ctx, members: commands.Greedy[discord.Member],*, after: UserFriendlyTime = None):
+    async def mute(self,ctx, members: commands.Greedy[discord.Member], *, reason: str = None):
         """Mute a Single member or a group of members
 
                         Usage:
@@ -250,30 +258,49 @@ class ModerationPlugin(commands.Cog):
             channel = ctx.guild.get_channel(int(config["logs"]['channel']))
         if channel:
             for member in members:
-                if str(member.id) in self.mutes:
-                    await ctx.send("That User is Already Muted")
-                    return
-                mtime = ""
-                now = datetime.datetime.utcnow()
-                reason = f"`({after.arg})`" if after else None
-                if after and after.dt > now:
-                    mtime = f"for {human_timedelta(after.dt)}"
+                await self.mute_em(member)
                 embed = discord.Embed()
                 embed.set_author(name=f"Mute | {member.name}#{member.discriminator}", icon_url=member.avatar_url)
                 embed.add_field(name="User", value=f"{member.name}#{member.discriminator}")
                 embed.add_field(name="Moderator",
                                 value=f"<@{ctx.author.id}>`({ctx.author.name}#{ctx.author.discriminator})`")
-                embed.add_field(name="Reason", value=reason)
+                if reason:
+                    embed.add_field(name="Reason", value=reason)
                 await channel.send(embed=embed)
-                await ctx.send(f"Muted **{member.name}#{member.discriminator}** {mtime} {reason} ")
-                await self.handle_mute(member,now)
+                await ctx.send(f"Muted **{member.name}#{member.discriminator}** {reason} ")
 
-    async def handle_mute(self, member: discord.Member, now):
-        self.mutes[str(member.id)] = now
-        await self.update_mute_db()
-        time = datetime.datetime.utcnow() - now
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.MODERATOR)
+    async def unmute(self, ctx, members: commands.Greedy[discord.Member], *, reason: str = None):
+        """Mute a Single member or a group of members
+
+                        Usage:
+                        unmute @member removed a mute
+                        unmute @member1 @member2 @member3 pardoned
+                        """
+
+        config = (await self.db.find_one({'_id': 'config'}))
+        if config is None:
+            await ctx.send("No mod-log channel configured")
+            return
+        else:
+            channel = ctx.guild.get_channel(int(config["logs"]['channel']))
+        if channel:
+            for member in members:
+                await self.unmute_em(member)
+                embed = discord.Embed()
+                embed.set_author(name=f"Unmute | {member.name}#{member.discriminator}", icon_url=member.avatar_url)
+                embed.add_field(name="User", value=f"{member.name}#{member.discriminator}")
+                embed.add_field(name="Moderator",
+                                value=f"<@{ctx.author.id}>`({ctx.author.name}#{ctx.author.discriminator})`")
+                if reason:
+                    embed.add_field(name="Reason", value=reason)
+                await channel.send(embed=embed)
+                await ctx.send(f"Muted **{member.name}#{member.discriminator}** {reason} ")
+
+    async def mute_em(self,member: discord.Member):
         guild: discord.guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
-        if time > 0:
+        if guild:
             for channel in guild.channels:
                 if not type(channel) is discord.TextChannel:
                     continue
@@ -285,7 +312,10 @@ class ModerationPlugin(commands.Cog):
                         await channel.set_permissions(member, overwrite=overs)
                     except Exception as e:
                         raise e
-            await asyncio.sleep(time)
+
+    async def unmute_em(self,member: discord.Member):
+        guild: discord.guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
+        if guild:
             for channel in guild.channels:
                 if not type(channel) is discord.TextChannel:
                     continue
@@ -307,43 +337,82 @@ class ModerationPlugin(commands.Cog):
                             await channel.set_permissions(member, overwrite=None)
                         except Exception as e:
                             raise e
-                self.mutes.pop(str(member.id))
-                await self.update_mute_db()
-                return
-        else:
-            for channel in guild.channels:
-                if not type(channel) is discord.TextChannel:
-                    continue
-                overs = channel.overwrites_for(member)
-                otherPerms = False
-                for perm in overs:
-                    if not perm[1] == None and not str(perm[0]) == 'send_messages' and not str(perm[0]) == 'add_reactions':
-                        otherPerms = True
-                if overs.send_messages == False:
-                    if otherPerms:
-                        overs.send_messages = None
-                        overs.add_reactions = None
-                        try:
-                            await channel.set_permissions(member, overwrite=overs)
-                        except Exception as e:
-                            raise e
-                    else:
-                        try:
-                            await channel.set_permissions(member, overwrite=None)
-                        except Exception as e:
-                            raise e
-                self.mutes.pop(str(member.id))
-                await self.update_mute_db()
-                return
 
-
-    async def update_mute_db(self):
-        await self.db.find_one_and_update(
-            {"_id": "mutes"},
-            {"$set": {"mute_list": self.mutes}},
-            upsert=True
-        )
-        return
+    # async def handle_mute(self, member: discord.Member, now):
+    #     self.mutes[str(member.id)] = now
+    #     await self.update_mute_db()
+    #     time = datetime.datetime.utcnow() - now
+    #     guild: discord.guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
+    #     if time > 0:
+    #         for channel in guild.channels:
+    #             if not type(channel) is discord.TextChannel:
+    #                 continue
+    #             overs = channel.overwrites_for(member)
+    #             if not overs.send_messages == False:
+    #                 overs.send_messages = False
+    #                 overs.add_reactions = False
+    #                 try:
+    #                     await channel.set_permissions(member, overwrite=overs)
+    #                 except Exception as e:
+    #                     raise e
+    #         await asyncio.sleep(time)
+    #         for channel in guild.channels:
+    #             if not type(channel) is discord.TextChannel:
+    #                 continue
+    #             overs = channel.overwrites_for(member)
+    #             otherPerms = False
+    #             for perm in overs:
+    #                 if not perm[1] == None and not str(perm[0]) == 'send_messages' and not str(perm[0]) == 'add_reactions':
+    #                     otherPerms = True
+    #             if overs.send_messages == False:
+    #                 if otherPerms:
+    #                     overs.send_messages = None
+    #                     overs.add_reactions = None
+    #                     try:
+    #                         await channel.set_permissions(member, overwrite=overs)
+    #                     except Exception as e:
+    #                         raise e
+    #                 else:
+    #                     try:
+    #                         await channel.set_permissions(member, overwrite=None)
+    #                     except Exception as e:
+    #                         raise e
+    #             self.mutes.pop(str(member.id))
+    #             await self.update_mute_db()
+    #             return
+    #     else:
+    #         for channel in guild.channels:
+    #             if not type(channel) is discord.TextChannel:
+    #                 continue
+    #             overs = channel.overwrites_for(member)
+    #             otherPerms = False
+    #             for perm in overs:
+    #                 if not perm[1] == None and not str(perm[0]) == 'send_messages' and not str(perm[0]) == 'add_reactions':
+    #                     otherPerms = True
+    #             if overs.send_messages == False:
+    #                 if otherPerms:
+    #                     overs.send_messages = None
+    #                     overs.add_reactions = None
+    #                     try:
+    #                         await channel.set_permissions(member, overwrite=overs)
+    #                     except Exception as e:
+    #                         raise e
+    #                 else:
+    #                     try:
+    #                         await channel.set_permissions(member, overwrite=None)
+    #                     except Exception as e:
+    #                         raise e
+    #             self.mutes.pop(str(member.id))
+    #             await self.update_mute_db()
+    #             return
+    #
+    # async def update_mute_db(self):
+    #     await self.db.find_one_and_update(
+    #         {"_id": "mutes"},
+    #         {"$set": {"mute_list": self.mutes}},
+    #         upsert=True
+    #     )
+    #     return
 
 
     async def generateWarnEmbed(self, memberid, modid, warning, reason):
