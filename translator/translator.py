@@ -117,7 +117,9 @@ class TranslatePlugin(commands.Cog):
         
         embed = message.embeds[0]
         tmsg = self.translator.translate(message.embeds[0].description)
-        embed.add_field(name=f"Translated from **{(tmsg.src).upper()}**", value=tmsg.text)
+        if tmsg.src == "en":
+            return
+        embed.add_field(name=f"Translation [{(tmsg.src).upper()}]", value=tmsg.text,inline=False)
 
         await message.edit(embed=embed)
 
