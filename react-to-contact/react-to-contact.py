@@ -83,7 +83,7 @@ class ReactToContact(commands.Cog):
         msg: Message = await ctx.send(f"Done! Bot will react on this msg to preview")
 
         guild: Guild = ctx.guild
-        emote = await guild.fetch_emoji(config["emoji"])
+        emote = await guild.fetch_emoji(emoji.id)
         await msg.add_reaction(emote)
         return
 
