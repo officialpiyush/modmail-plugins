@@ -30,7 +30,8 @@ class ReactToContact(commands.Cog):
 
         await self.db.find_one_and_update(
             {"_id": "config"},
-            {"$set": {"message": content}}
+            {"$set": {"message": content}},
+            upsert=True
         )
 
         await ctx.send(f"Done!\nHere is the **preview** of the embed:", embed=Embed(
@@ -54,7 +55,8 @@ class ReactToContact(commands.Cog):
 
         await self.db.find_one_and_update(
             {"_id": "config"},
-            {"$set": {"title": title}}
+            {"$set": {"title": title}},
+            upsert=True
         )
 
         await ctx.send(f"Done!\nHere is the **preview** of the embed:", embed=Embed(
@@ -77,7 +79,8 @@ class ReactToContact(commands.Cog):
 
         await self.db.find_one_and_update(
             {"_id": "config"},
-            {"$set": {"emoji": id}}
+            {"$set": {"emoji": id}},
+            upsert=True
         )
 
         msg: Message = await ctx.send(f"Done! Bot will react on this msg to preview")
@@ -123,7 +126,8 @@ class ReactToContact(commands.Cog):
 
         await self.db.find_one_and_update(
             {"_id": "config"},
-            {"$set": {"channel": msg.channel.id,"mid": msg.id}}
+            {"$set": {"channel": msg.channel.id,"mid": msg.id}},
+            upsert=True
         )
         guild: Guild = ctx.guild
         emote = await guild.fetch_emoji(config["emoji"])
