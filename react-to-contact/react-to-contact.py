@@ -155,7 +155,7 @@ class ReactToContact(commands.Cog):
 
         member: Member = guild.get_member(payload.user_id)
 
-        channel = await guild.get_channel(int(config["channel"]))
+        channel = guild.get_channel(int(config["channel"]))
 
         msg: Message = await channel.fetch_message(int(config["mid"]))
 
