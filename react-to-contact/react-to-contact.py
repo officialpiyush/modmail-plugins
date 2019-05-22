@@ -22,7 +22,7 @@ class ReactToContact(commands.Cog):
         Set the description of the emebd
 
         **Usage:**
-        setmessage Click on he reaction to contact staff
+        setmessage Click on the reaction to contact staff
         """
         if len(content) > 2048:
             await ctx.send(f"You can have only **maximum 2048** characters.\nYou entered `{len(content)}` characters, which is `{len(content) - 2048}` characters more.")
