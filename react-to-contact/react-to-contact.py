@@ -159,7 +159,7 @@ class ReactToContact(commands.Cog):
 
         msg: Message = await channel.fetch_message(int(config["mid"]))
 
-        await msg.remove_reaction(payload.emoji, member.id)
+        await msg.remove_reaction(payload.emoji, member)
 
         try:
             await member.send(embed=Embed(
