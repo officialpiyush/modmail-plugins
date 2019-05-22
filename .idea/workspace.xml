@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/react-to-contact/react-to-contact.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="126" column="36" selection-start-line="126" selection-start-column="36" selection-end-line="126" selection-end-column="36" />
+            <state relative-caret-position="221">
+              <caret line="86" column="37" selection-start-line="86" selection-start-column="37" selection-end-line="86" selection-end-column="37" />
               <folding>
                 <element signature="e#1#14#0" expanded="true" />
               </folding>
@@ -147,7 +147,7 @@
       <workItem from="1558358864659" duration="445000" />
       <workItem from="1558359384112" duration="9090000" />
       <workItem from="1558440326149" duration="8587000" />
-      <workItem from="1558534580056" duration="8115000" />
+      <workItem from="1558534580056" duration="8200000" />
     </task>
     <task id="LOCAL-00001" summary="fix indent level">
       <created>1558367237461</created>
@@ -230,7 +230,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72062000" />
+    <option name="totallyTimeSpent" value="72147000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1600" height="860" extended-state="6" />
@@ -351,8 +351,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/react-to-contact/react-to-contact.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="126" column="36" selection-start-line="126" selection-start-column="36" selection-end-line="126" selection-end-column="36" />
+        <state relative-caret-position="221">
+          <caret line="86" column="37" selection-start-line="86" selection-start-column="37" selection-end-line="86" selection-end-column="37" />
           <folding>
             <element signature="e#1#14#0" expanded="true" />
           </folding>
