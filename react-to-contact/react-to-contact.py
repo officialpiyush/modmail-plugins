@@ -170,7 +170,7 @@ class ReactToContact(commands.Cog):
                 color=self.bot.main_color,
             ))
         except (HTTPException, Forbidden):
-            ch= await self.bot.get_channel(int(self.bot.config.get('log_channel_id')))
+            ch= self.bot.get_channel(int(self.bot.config.get('log_channel_id')))
 
             await ch.send(embed=Embed(
                 title="User Contact failed",

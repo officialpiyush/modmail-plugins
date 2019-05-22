@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/react-to-contact/react-to-contact.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="161" column="55" selection-start-line="161" selection-start-column="55" selection-end-line="161" selection-end-column="55" />
+            <state relative-caret-position="205">
+              <caret line="172" column="16" lean-forward="true" selection-start-line="172" selection-start-column="16" selection-end-line="172" selection-end-column="16" />
               <folding>
                 <element signature="e#1#14#0" expanded="true" />
               </folding>
@@ -148,7 +148,7 @@
       <workItem from="1558358864659" duration="445000" />
       <workItem from="1558359384112" duration="9090000" />
       <workItem from="1558440326149" duration="8587000" />
-      <workItem from="1558534580056" duration="9294000" />
+      <workItem from="1558534580056" duration="9493000" />
     </task>
     <task id="LOCAL-00001" summary="fix indent level">
       <created>1558367237461</created>
@@ -231,7 +231,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="73241000" />
+    <option name="totallyTimeSpent" value="73440000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1600" height="860" extended-state="6" />
@@ -352,8 +352,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/react-to-contact/react-to-contact.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="161" column="55" selection-start-line="161" selection-start-column="55" selection-end-line="161" selection-end-column="55" />
+        <state relative-caret-position="205">
+          <caret line="172" column="16" lean-forward="true" selection-start-line="172" selection-start-column="16" selection-end-line="172" selection-end-column="16" />
           <folding>
             <element signature="e#1#14#0" expanded="true" />
           </folding>
