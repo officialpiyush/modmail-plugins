@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="df30655d-3cff-48b0-ad74-13f70cd955ef" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/react-to-contact/react-to-contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/react-to-contact/react-to-contact.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/react-to-contact/react-to-contact.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="413">
-              <caret line="170" column="34" selection-start-line="170" selection-start-column="34" selection-end-line="170" selection-end-column="34" />
+            <state relative-caret-position="237">
+              <caret line="126" column="36" selection-start-line="126" selection-start-column="36" selection-end-line="126" selection-end-column="36" />
               <folding>
                 <element signature="e#1#14#0" expanded="true" />
               </folding>
@@ -147,7 +147,7 @@
       <workItem from="1558358864659" duration="445000" />
       <workItem from="1558359384112" duration="9090000" />
       <workItem from="1558440326149" duration="8587000" />
-      <workItem from="1558534580056" duration="7181000" />
+      <workItem from="1558534580056" duration="8115000" />
     </task>
     <task id="LOCAL-00001" summary="fix indent level">
       <created>1558367237461</created>
@@ -230,13 +230,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71128000" />
+    <option name="totallyTimeSpent" value="72062000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1600" height="860" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4978166" visible="true" weight="0.24324325" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4978166" visible="true" weight="0.24324325" />
       <window_info id="Structure" order="1" sideWeight="0.5021834" side_tool="true" weight="0.24963072" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -251,7 +251,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.501287" side_tool="true" weight="0.21468927" />
       <window_info anchor="bottom" id="Python Console" order="11" weight="0.32903227" />
-      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.498713" visible="true" weight="0.3227446" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" sideWeight="0.498713" visible="true" weight="0.3227446" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -351,8 +351,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/react-to-contact/react-to-contact.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="170" column="34" selection-start-line="170" selection-start-column="34" selection-end-line="170" selection-end-column="34" />
+        <state relative-caret-position="237">
+          <caret line="126" column="36" selection-start-line="126" selection-start-column="36" selection-end-line="126" selection-end-column="36" />
           <folding>
             <element signature="e#1#14#0" expanded="true" />
           </folding>

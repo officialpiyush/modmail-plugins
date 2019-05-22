@@ -122,8 +122,10 @@ class ReactToContact(commands.Cog):
             {"_id": "config"},
             {"$set": {"channel": msg.channel.id,"mid": msg.id}}
         )
-
-        await msg.add_reaction(config["emoji"])
+        guild: Guild = ctx.guild
+        emote = await guild.fetch_emoji(config["emoji"])
+        await msg.add_reaction(emote)
+        return
 
 
     @commands.Cog.listener()
