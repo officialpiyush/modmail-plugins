@@ -137,6 +137,9 @@ class ReactToContact(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: RawReactionActionEvent):
+        if payload.user_id == self.bot.user.id:
+            return
+
         config = await self.db.find_one({"_id": "config"})
 
         if config is None:
