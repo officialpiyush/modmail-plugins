@@ -155,7 +155,7 @@ class ReactToContact(commands.Cog):
 
         member: Member = guild.get_member(payload.user_id)
 
-        channel: TextChannel = await guild.get_channel(int(config["channel"]))
+        channel = await guild.get_channel(int(config["channel"]))
 
         msg: Message = await channel.fetch_message(int(config["mid"]))
 
@@ -167,7 +167,7 @@ class ReactToContact(commands.Cog):
                 color=self.bot.main_color,
             ))
         except (HTTPException, Forbidden):
-            ch: TextChannel = await self.bot.get_channel(int(self.bot.config.get('log_channel_id')))
+            ch= await self.bot.get_channel(int(self.bot.config.get('log_channel_id')))
 
             await ch.send(embed=Embed(
                 title="User Contact failed",

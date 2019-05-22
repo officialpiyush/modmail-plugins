@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/react-to-contact/react-to-contact.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="129" column="23" selection-start-line="129" selection-start-column="23" selection-end-line="129" selection-end-column="23" />
+            <state relative-caret-position="181">
+              <caret line="169" column="14" selection-start-line="169" selection-start-column="14" selection-end-line="169" selection-end-column="14" />
               <folding>
                 <element signature="e#1#14#0" expanded="true" />
               </folding>
@@ -45,6 +45,7 @@
       <find>mtime</find>
       <find>int</find>
       <find>SUPPORT</find>
+      <find>TextChannel</find>
     </findStrings>
     <replaceStrings>
       <replace>PermissionLevel.MODERATOR</replace>
@@ -147,7 +148,7 @@
       <workItem from="1558358864659" duration="445000" />
       <workItem from="1558359384112" duration="9090000" />
       <workItem from="1558440326149" duration="8587000" />
-      <workItem from="1558534580056" duration="8756000" />
+      <workItem from="1558534580056" duration="8975000" />
     </task>
     <task id="LOCAL-00001" summary="fix indent level">
       <created>1558367237461</created>
@@ -230,7 +231,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72703000" />
+    <option name="totallyTimeSpent" value="72922000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1600" height="860" extended-state="6" />
@@ -351,8 +352,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/react-to-contact/react-to-contact.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="129" column="23" selection-start-line="129" selection-start-column="23" selection-end-line="129" selection-end-column="23" />
+        <state relative-caret-position="181">
+          <caret line="169" column="14" selection-start-line="169" selection-start-column="14" selection-end-line="169" selection-end-column="14" />
           <folding>
             <element signature="e#1#14#0" expanded="true" />
           </folding>
