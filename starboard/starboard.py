@@ -119,7 +119,13 @@ class StarboardPlugin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
+        await self.handleReaction(payload=payload)
+
+    @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
+        await self.handleReaction(payload=payload)
+
+    async def handleReaction(self,payload: discord.RawReactionActionEvent):
         config = await self.db.find_one({"_id": "config"})
 
         if config is None or self.channel is None:
