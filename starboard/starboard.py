@@ -95,9 +95,9 @@ class StarboardPlugin(commands.Cog):
         await ctx.send(f"{'Un' if removed else None}Blacklisted **{member.name}#{member.discriminator}**")
         return
 
-    @blacklist.command()
+    @blacklist.command(name="channel")
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def channel(self,ctx: commands.Context, channel: discord.TextChannel):
+    async def blacklist_channel(self,ctx: commands.Context, channel: discord.TextChannel):
         """
         Blacklist Channels so that messages sent in those channels dont appear on starboard
 
