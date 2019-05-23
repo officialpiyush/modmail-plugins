@@ -134,7 +134,7 @@ class StarboardPlugin(commands.Cog):
         if str(payload.channel_id) in self.channel_blacklist or str(payload.user_id) in self.user_blacklist:
             return
 
-        guild: discord.Guild = await self.bot.get_guild(int(os.getenv("GUILD_ID")))
+        guild: discord.Guild = self.bot.get_guild(int(os.getenv("GUILD_ID")))
         starboard_channel: discord.TextChannel = guild.get_channel(int(self.channel))
         channel: discord.TextChannel = guild.get_channel(int(payload.channel_id))
         user: discord.User = await self.bot.fetch_user(payload.user_id)
@@ -143,6 +143,9 @@ class StarboardPlugin(commands.Cog):
             return
 
         message: discord.Message = await channel.fetch_message(payload.message_id)
+
+        if message.author.id == payload.user_id:
+            return
 
         if "⭐" not in message.reactions:
             return
