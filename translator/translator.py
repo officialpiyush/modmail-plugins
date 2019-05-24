@@ -9,6 +9,7 @@ from core.models import PermissionLevel
 
 from googletrans import Translator
 
+
 class TranslatePlugin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -112,7 +113,7 @@ class TranslatePlugin(commands.Cog):
         if not message.embeds:
             return
         
-        if "Recipient" not in message.embeds[0].footer.text:
+        if message.embeds[0].footer.text and "Recipient" not in message.embeds[0].footer.text:
             return
         
         embed = message.embeds[0]
