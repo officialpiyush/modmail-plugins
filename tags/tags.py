@@ -2,21 +2,22 @@ import discord
 from datetime import datetime
 from discord.ext import commands
 
+from core import checks
+from core.models import PermissionLevel 
 
 class TagsPlugin(commands.Cog):
     def __init__(self, bot):
         self.bot: discord.Client = bot
         self.db = bot.plugin_db.get_partition(self)
 
-    @commands.group()
+    @commands.group(invoke_without_command=True)
     @commands.guild_only()
+    @checks.has_permissions(PermissionLevel.REGULAR)
     async def tags(self, ctx: commands.Context):
         """
         Create Edit & Manage Tags
-        :param ctx:
-        :return:
         """
-        return
+        await ctx.send_help(ctx.command)
 
     @tags.command()
     async def add(self, ctx: commands.Context, name: str, *, content: str):
@@ -168,7 +169,14 @@ class TagsPlugin(commands.Cog):
             return
         else:
             await msg.channel.send(tag["content"])
-
+            await self.db.find_one_and_update(
+                {"name": name},
+                {"$set": {
+                    "uses": tag["uses"]+1
+                }}
+            )
+            return
+            
     async def find_db(self, name: str):
         return (
             await self.db.find_one({"name": name})
@@ -177,3 +185,4 @@ class TagsPlugin(commands.Cog):
 
 def setup(bot):
     bot.add_cog(TagsPlugin(bot))
+    
