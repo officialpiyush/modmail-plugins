@@ -112,7 +112,6 @@ class ReportUser(commands.Cog):
             embed.title = "User Report"
             embed.add_field(name="Against", value=f"{member.name}#{member.discriminator}",inline=False)
             embed.add_field(name="Reason", value=reason,inline=False)
-            await ctx.message.delete()
             embed.set_footer(text=f"Case {self.current_case}")
             m: discord.Message = await channel.send(embed=embed)
             await ctx.author.send(self.message)
