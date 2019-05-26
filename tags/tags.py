@@ -30,7 +30,7 @@ class TagPlugin(commands.Cog):
                 }
             )
 
-            await ctx.send(f":white_check_mark: | Tag with name {name} has been successfully created!")
+            await ctx.send(f":white_check_mark: | Tag with name `{name}` has been successfully created!")
             return
 
     @tags.command()
@@ -107,8 +107,8 @@ class TagPlugin(commands.Cog):
             embed.title = f"{name}'s Info"
             embed.add_field(name="Created By", value=f"{user.name}#{user.discriminator}")
             embed.add_field(name="Created At", value=tag["createdAt"])
-            embed.add_field(name="Last Modified At", value=tag["updatedAt"])
-            embed.add_field(name="Uses", value=tag["uses"])
+            embed.add_field(name="Last Modified At", value=tag["updatedAt"], inline=False)
+            embed.add_field(name="Uses", value=tag["uses"], inline=False)
             await ctx.send(embed=embed)
             return
 
