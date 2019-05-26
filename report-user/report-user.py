@@ -95,11 +95,13 @@ class ReportUser(commands.Cog):
         Report a user
         """
         if ctx.author.id in self.blacklist:
+            await ctx.message.delete()
             return
 
         if self.channel is None:
             await ctx.message.delete()
             await ctx.author.send("Reports Channel for the guild has not been set.")
+            return
         else:
             channel: discord.TextChannel = self.bot.get_channel(int(self.channel))
             embed = discord.Embed(
@@ -115,7 +117,7 @@ class ReportUser(commands.Cog):
             m: discord.Message = await channel.send(embed=embed)
             await ctx.author.send(self.message)
             await ctx.message.delete()
-            # await m.add_reaction("\U00002705")
+            await m.add_reaction("\U00002705")
             await self.db.insert_one({
                 "case": self.current_case,
                 "author": str(ctx.author.id),
