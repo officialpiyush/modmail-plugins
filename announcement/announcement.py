@@ -8,6 +8,9 @@ from core.models import PermissionLevel
 
 
 class AnnoucementPlugin(commands.Cog):
+    """
+    Easily Make plain text or Embedded Announcements
+    """
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
