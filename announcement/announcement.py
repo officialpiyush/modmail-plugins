@@ -33,10 +33,10 @@ class AnnoucementPlugin(commands.Cog):
 
         **Example:**
         __Announcement With Role Mention:__
-        [p]announcement start everyone
+        {prefix}announcement start everyone
 
         __Announcement Without Role Mention__
-        [p]announcement start
+        {prefix}announcement start
         """
 
         role_mention = f"<@&{role.id}>" if role else ""
@@ -204,7 +204,7 @@ class AnnoucementPlugin(commands.Cog):
         An Old way of making announcements
 
         **Usage:**
-        [p]announcement quick #channel <OPTIONAL role> message
+        {prefix}announcement quick #channel <OPTIONAL role> message
         """
         if role:
             guild: discord.Guild = ctx.guild
