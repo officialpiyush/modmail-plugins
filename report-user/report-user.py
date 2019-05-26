@@ -176,10 +176,11 @@ class ReportUser(commands.Cog):
 
         await channel.send("Enter Your Report which will be sent to the reporter")
         reportr = await self.bot.wait_for("message", check=check)
-        user1 = await self.bot.get_user(int(casedb["author"]))
+        user1 = self.bot.get_user(int(casedb["author"]))
         await user1.send(f"**Reply From Staff Team:**\n{reportr.content}")
         await channel.send("DM'd")
         return
+
 
 def setup(bot):
     bot.add_cog(ReportUser(bot))
