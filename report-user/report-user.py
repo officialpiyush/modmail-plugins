@@ -74,7 +74,7 @@ class ReportUser(commands.Cog):
             {"$set": {"channel": str(channel.id)}},
             upsert=True
         )
-        self.channel = str(channel.id)
+        self.channel = channel
         await ctx.send("Done!")
 
     @ru.command()
