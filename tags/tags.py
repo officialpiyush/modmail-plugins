@@ -170,7 +170,7 @@ class TagsPlugin(commands.Cog):
         else:
             await msg.channel.send(tag["content"])
             await self.db.find_one_and_update(
-                {"name": name},
+                {"name": names[0]},
                 {"$set": {
                     "uses": tag["uses"]+1
                 }}
