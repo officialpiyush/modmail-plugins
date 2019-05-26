@@ -26,9 +26,7 @@ class ReportUser(commands.Cog):
             return
         else:
             self.blacklist = config.get("blacklist", [])
-            if config["channel"]:
-                channel = self.bot.get_channel(config["channel"])
-                self.channel = str(channel.id)
+            self.channel = config.get("channel",None)
             self.current_case = config.get("case", 1)
             self.message = config.get("message", "Thanks for reporting, our Staff will look into it soon.")
 
