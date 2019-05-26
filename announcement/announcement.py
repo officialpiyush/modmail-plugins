@@ -17,6 +17,7 @@ class AnnoucementPlugin(commands.Cog):
 
     @commands.group(aliases=["a"], invoke_without_command=True)
     @commands.guild_only()
+    @checks.has_permissions(PermissionLevel.REGULAR)
     async def announcement(self, ctx: commands.Context):
         """
         Make Announcements Easily
