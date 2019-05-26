@@ -121,7 +121,8 @@ class ReportUser(commands.Cog):
                 "case": self.current_case,
                 "author": str(ctx.author.id),
                 "against": str(member.id),
-                "reason": reason
+                "reason": reason,
+                "resolved": False
             })
             self.current_case = self.current_case+1
             await self.update()
@@ -141,9 +142,10 @@ class ReportUser(commands.Cog):
             embed = discord.Embed(
                 color=discord.Colour.red()
             )
-            embed.add_field(name="By", value=f"{user1.name}#{user1.discriminator}")
-            embed.add_field(name="Against", value=f"{user2.name}#{user2.discriminator}")
-            embed.add_field(name="Reason",value=case["reason"])
+            embed.add_field(name="By", value=f"{user1.name}#{user1.discriminator}", inline=False)
+            embed.add_field(name="Against", value=f"{user2.name}#{user2.discriminator}", inline=False)
+            embed.add_field(name="Reason",value=case["reason"], inline=False)
+            embed.add_field(name="Resolved", value=case["resolved"], inline=False)
             embed.title = "Report Log"
             await ctx.send(embed=embed)
 
@@ -179,6 +181,10 @@ class ReportUser(commands.Cog):
         user1 = self.bot.get_user(int(casedb["author"]))
         await user1.send(f"**Reply From Staff Team:**\n{reportr.content}")
         await channel.send("DM'd")
+        await self.db.find_one_and_update(
+            {"case": case},
+            {"$set": {"resolved": True}}
+        )
         return
 
 
