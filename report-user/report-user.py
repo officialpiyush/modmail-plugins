@@ -129,11 +129,11 @@ class ReportUser(commands.Cog):
 
     @ru.command()
     @checks.has_permissions(PermissionLevel.MOD)
-    async def info(self, ctx: commands.Context, case: int):
-        case = await self.db.find_one({"case": case})
+    async def info(self, ctx: commands.Context, casen: int):
+        case = await self.db.find_one({"case": casen})
 
         if case is None:
-            await ctx.send(f"Case `#{case}` dose'nt exist")
+            await ctx.send(f"Case `#{casen}` dose'nt exist")
             return
         else:
             user1: discord.User = await self.bot.fetch_user(int(case["author"]))
