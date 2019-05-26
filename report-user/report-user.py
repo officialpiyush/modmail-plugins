@@ -28,7 +28,7 @@ class ReportUser(commands.Cog):
             self.blacklist = config.get("blacklist", [])
             if config["channel"]:
                 channel = self.bot.get_channel(config["channel"])
-                self.channel = channel
+                self.channel = str(channel.id)
             self.current_case = config.get("case", 1)
             self.message = config.get("message", "Thanks for reporting, our Staff will look into it soon.")
 
@@ -74,7 +74,7 @@ class ReportUser(commands.Cog):
             {"$set": {"channel": str(channel.id)}},
             upsert=True
         )
-        self.channel = channel
+        self.channel = str(channel.id)
         await ctx.send("Done!")
 
     @ru.command()
@@ -103,6 +103,7 @@ class ReportUser(commands.Cog):
             await ctx.message.delete()
             await ctx.author.send("Reports Channel for the guild has not been set.")
         else:
+            channel: discord.TextChannel = self.bot.get_channel(int(self.channel))
             embed = discord.Embed(
                 color=discord.Colour.red(),
                 timestamp=datetime.utcnow()
@@ -113,10 +114,10 @@ class ReportUser(commands.Cog):
             embed.add_field(name="Reason", value=reason,inline=False)
             await ctx.message.delete()
             embed.set_footer(text=f"Case {self.current_case}")
-            m: discord.Message = await self.channel.send(embed=embed)
+            m: discord.Message = await channel.send(embed=embed)
             await ctx.author.send(self.message)
             await ctx.message.delete()
-            await m.add_reaction("\U00002705")
+            # await m.add_reaction("\U00002705")
             await self.db.insert_one({
                 "case": self.current_case,
                 "author": str(ctx.author.id),
@@ -152,7 +153,7 @@ class ReportUser(commands.Cog):
         if payload.user_id == self.bot.user.id:
             return
 
-        if str(payload.channel_id) != str(self.channel.id) or str(payload.emoji.name) != "✅":
+        if str(payload.channel_id) != str(self.channel) or str(payload.emoji.name) != "✅":
             return
 
         channel: discord.TextChannel = self.bot.get_channel(payload.channel_id)
