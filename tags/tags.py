@@ -3,7 +3,7 @@ from datetime import datetime
 from discord.ext import commands
 
 
-class TagPlugin(commands.Cog):
+class TagsPlugin(commands.Cog):
     def __init__(self, bot):
         self.bot: discord.Client = bot
         self.db = bot.plugin_db.get_partition(self)
@@ -176,4 +176,4 @@ class TagPlugin(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(TagPlugin(bot))
+    bot.add_cog(TagsPlugin(bot))
