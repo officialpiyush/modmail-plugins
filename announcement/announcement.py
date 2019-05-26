@@ -8,16 +8,17 @@ from core.models import PermissionLevel
 
 
 class AnnoucementPlugin(commands.Cog):
-    def __init__(self,bot):
+    def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
 
-    @commands.group(aliases=["a"])
+    @commands.group(aliases=["a"], invoke_without_command=True)
     @commands.guild_only()
     async def announcement(self, ctx: commands.Context):
-        """Make Announcements Easily"""
-        if ctx.invoked_subcommand is None:
-            await ctx.send_help(ctx.command)
+        """
+        Make Announcements Easily
+        """
+        await ctx.send_help(ctx.command)
 
     @announcement.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
