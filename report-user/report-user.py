@@ -173,6 +173,10 @@ class ReportUser(commands.Cog):
         if casedb is None:
             return
 
+        if casedb["resolved"] is True:
+            await channel.send(f"Case `#{case}`Already resolved.")
+            return
+
         def check(messge: discord.Message):
             return payload.user_id == messge.author.id and payload.channel_id == messge.channel.id
 
