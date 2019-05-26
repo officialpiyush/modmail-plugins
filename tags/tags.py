@@ -112,6 +112,22 @@ class TagPlugin(commands.Cog):
             await ctx.send(embed=embed)
             return
 
+    @commands.command()
+    async def tag(self, ctx: commands.Context, name: str):
+        tag = await self.find_db(name=name)
+        if tag is None:
+            await ctx.send(f":x: | Tag {name} not found.")
+            return
+        else:
+            await ctx.send(tag["content"])
+            await self.db.find_one_and_update(
+                {"name": name},
+                {"$set": {
+                    "uses": tag["uses"]+1
+                }}
+            )
+            return
+
     async def find_db(self, name: str):
         return await self.db.find_one({"name": name})
 
