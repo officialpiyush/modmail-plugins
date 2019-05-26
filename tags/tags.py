@@ -155,6 +155,20 @@ class TagPlugin(commands.Cog):
             )
             return
 
+    @commands.Cog.listener()
+    async def on_message(self, msg: discord.Message):
+        if not msg.content.startswith(self.bot.prefix):
+            return
+        content = msg.content.replace(self.bot.prefix, "")
+        names = content.split(' ')
+
+        tag = await self.db.find_one({"name": names[0]})
+
+        if tag is None:
+            return
+        else:
+            await msg.channel.send(tag["content"])
+
     async def find_db(self, name: str):
         return (
             await self.db.find_one({"name": name})
