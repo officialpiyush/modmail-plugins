@@ -11,10 +11,18 @@ class TagPlugin(commands.Cog):
     @commands.group()
     @commands.guild_only()
     async def tags(self, ctx: commands.Context):
+        """
+        Create Edit & Manage Tags
+        :param ctx:
+        :return:
+        """
         return
 
     @tags.command()
     async def add(self, ctx: commands.Context, name: str, *, content: str):
+        """
+        Make a new tag
+        """
         if (await self.find_db(name=name)) is not None:
             await ctx.send(f":x: | Tag with name `{name}` already exists!")
             return
@@ -35,6 +43,11 @@ class TagPlugin(commands.Cog):
 
     @tags.command()
     async def edit(self, ctx: commands.Context, name: str, *, content: str):
+        """
+        Edit an existing tag
+
+        Only owner of tag or user with Manage Server permissions can use this command
+        """
         tag = await self.find_db(name=name)
 
         if tag is None:
@@ -59,6 +72,11 @@ class TagPlugin(commands.Cog):
 
     @tags.command()
     async def delete(self, ctx: commands.Context, name: str):
+        """
+        Delete a tag.
+
+        Only owner of tag or user with Manage Server permissions can use this command
+        """
         tag = await self.find_db(name=name)
         if tag is None:
             await ctx.send(":x: | Tag `{name}` not found in the database.")
@@ -72,6 +90,9 @@ class TagPlugin(commands.Cog):
 
     @tags.command()
     async def claim(self, ctx: commands.Context, name: str):
+        """
+        Claim a tag is the user has left the server
+        """
         tag = await self.find_db(name=name)
 
         if tag is None:
@@ -96,6 +117,9 @@ class TagPlugin(commands.Cog):
 
     @tags.command()
     async def info(self, ctx: commands.Context, name: str):
+        """
+        Get info on a tag
+        """
         tag = await self.find_db(name=name)
 
         if tag is None:
@@ -114,6 +138,9 @@ class TagPlugin(commands.Cog):
 
     @commands.command()
     async def tag(self, ctx: commands.Context, name: str):
+        """
+        Use a tag!
+        """
         tag = await self.find_db(name=name)
         if tag is None:
             await ctx.send(f":x: | Tag {name} not found.")
