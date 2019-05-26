@@ -4,7 +4,7 @@ from discord.ext import commands
 
 
 class TagPlugin(commands.Cog):
-    def ___init__(self, bot):
+    def __init__(self, bot):
         self.bot: discord.Client = bot
         self.db = bot.plugin_db.get_partition(self)
 
@@ -129,7 +129,9 @@ class TagPlugin(commands.Cog):
             return
 
     async def find_db(self, name: str):
-        return await self.db.find_one({"name": name})
+        return (
+            await self.db.find_one({"name": name})
+        )
 
 
 def setup(bot):
