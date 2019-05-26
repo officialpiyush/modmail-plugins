@@ -164,14 +164,14 @@ class StarboardPlugin(commands.Cog):
         else:
             should_delete = False
 
-        messages = await channel.history(limit=200).flatten()
+        messages = await channel.history(limit=30, around=message.created_at).flatten()
 
         for mesg in messages:
             if not mesg.embeds:
                 continue
 
             if mesg.embeds[0].footer.text is None:
-                 continue
+                continue
 
             if mesg.embeds[0].footer.text.endswith(str(payload.message_id)):
                 msg: discord.Message = mesg
@@ -206,6 +206,7 @@ class StarboardPlugin(commands.Cog):
                     pass
             await starboard_channel.send(f"{channel.mention}",embed=embed)
             return
+
 
 def setup(bot):
     bot.add_cog(StarboardPlugin(bot))
