@@ -38,9 +38,8 @@ class BackupDB(commands.Cog):
         port = cs[1].split(":")[1]
         user = (cs[0].replace("mongodb://", "")).split(":")[0]
         passw = (cs[0].replace("mongodb://", "")).split(":")[1]
-        backup_client = AsyncIOMotorClient(host, int(port))
+        backup_client = AsyncIOMotorClient(backup_url)
         bdb = backup_client[db_name]
-        bdb.authenticate(user, passw)
         await ctx.send("Connected to backup DB. Removing all documents")
         if bdb.collection_name:
             for collection in bdb.collection_names:
@@ -50,7 +49,7 @@ class BackupDB(commands.Cog):
         await backup_client.admin.command("copydb",
                          fromdb="modmail_bot",
                          todb=db_name,
-                         fromhost=odb)
+                         fromhost=odb_uri)
         await ctx.send("DB Was Successfully Backed Up!")
 
 
