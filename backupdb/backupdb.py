@@ -55,7 +55,7 @@ class BackupDB(commands.Cog):
             await ctx.send("No Existing collections found! Nothing was deleted!")
         du = self.bot.db.list_collection_names()
         for coll in du:
-        	if collection == "system.indexes":
+        	if coll == "system.indexes":
                     continue
                     
                 for doc in self.bot.db[coll].find():
