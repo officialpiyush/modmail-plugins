@@ -46,7 +46,7 @@ class BackupDB(commands.Cog):
         if len(collections) > 0:
             for collection in collections:
                 if collection == "system.indexes":
-                    return
+                    continue
 
                 await bdb[collection].drop()
             await ctx.send("Deleted all documents from backup db")
