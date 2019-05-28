@@ -56,7 +56,7 @@ class BackupDB(commands.Cog):
         await backup_client.admin.command("copydb",
                          fromdb="modmail_bot",
                          todb=db_name,
-                         fromhost=f"[{odb_uri}]")
+                         fromhost=odb_uri)
         await ctx.send("DB Was Successfully Backed Up!")
 
 
