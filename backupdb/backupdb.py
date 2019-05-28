@@ -55,11 +55,12 @@ class BackupDB(commands.Cog):
             await ctx.send("No Existing collections found! Nothing was deleted!")
         du = self.bot.db.list_collection_names()
         for coll in du:
-        	if collection == "system.indexes":
-								continue
- 							for doc in self.bot.db[coll].find():
-								await bdb[coll].insert_one(doc)
-							await ctx.send(f"Backed up `{coll}` collection")
+        	if coll == "system.indexes":
+        		continue
+        	
+        	for doc in self.bot.db[coll].find():
+        		await bdb[coll].insert_one(doc)
+        	await ctx.send(f"Backed up `{coll}` collection!")
         
   #      await backup_client.admin.command("copydb",
 #                         fromdb="modmail_bot",
