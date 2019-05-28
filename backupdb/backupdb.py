@@ -33,8 +33,14 @@ class BackupDB(commands.Cog):
         odb = odb_uri.replace(f"/{odb_n}", "")
 
         connection_string = backup_url.replace(f"/{db_name}", "")
-        backup_client = AsyncIOMotorClient(connection_string)
+        cs = connection_string.split("@")
+        host = cs[1].split(":")[0]
+        port = cs[1].split(":")[1]
+        user = (cs[0].replace("mongodb://", "")).split(":")[0]
+        passw = (cs[0].replace("mongodb://", "")).split(":")[1]
+        backup_client = AsyncIOMotorClient(host, port)
         bdb = backup_client[db_name]
+        bdb.authenticate(user, passw)
         await ctx.send("Connected to backup DB. Removing all documents")
         if bdb.collection_name:
             for collection in bdb.collection_names:
