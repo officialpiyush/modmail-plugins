@@ -1,3 +1,4 @@
+
 import os
 from discord.ext import commands
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -52,11 +53,18 @@ class BackupDB(commands.Cog):
             await ctx.send("Deleted all documents from backup db")
         else:
             await ctx.send("No Existing collections found! Nothing was deleted!")
-
-        await backup_client.admin.command("copydb",
-                         fromdb="modmail_bot",
-                         todb=db_name,
-                         fromhost=odb_uri)
+        du = self.bot.db.list_collection_names()
+        for coll in du:
+        	if collection == "system.indexes":
+                    continue
+                    
+                for doc in self.bot.db[coll].find():
+             	    await bdb[coll].insert_one(doc)
+        
+  #      await backup_client.admin.command("copydb",
+#                         fromdb="modmail_bot",
+#                         todb=db_name,
+#                         fromhost=odb_uri)
         await ctx.send("DB Was Successfully Backed Up!")
 
 
