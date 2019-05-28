@@ -23,7 +23,7 @@ class BackupDB(commands.Cog):
 
         **Deletes Existing data from the backup db**
         """
-        backup_url = await os.getenv("BACKUP_MONGO_URI", None)
+        backup_url = os.getenv("BACKUP_MONGO_URI", None)
         if backup_url is None:
             await ctx.send(":x: | No `BACKUP_MONGO_URI` found in env variables.")
             return
