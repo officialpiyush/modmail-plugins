@@ -41,7 +41,8 @@ class BackupDB(commands.Cog):
         backup_client = AsyncIOMotorClient(backup_url)
         bdb = backup_client[db_name]
         await ctx.send("Connected to backup DB. Removing all documents")
-        if bdb.collection_name:
+        await ctx.send(bdb.collection_names)
+        if bdb.collection_names:
             for collection in bdb.collection_names:
                 await bdb[collection].drop()
                 await ctx.send("Deleted all documents from backup db")
