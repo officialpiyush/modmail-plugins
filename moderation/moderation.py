@@ -342,7 +342,7 @@ class ModerationPlugin(commands.Cog):
 
             embed.set_author(name=f"Unmute | {member.name}#{member.discriminator}", icon_url=member.avatar_url)
             embed.add_field(name="User", value=f"{member.name}#{member.discriminator}")
-            embed.add_field(name="Moderator", value=f"<@{ctx.author.id}> - `({ctx.author.name}#{ctx.author.discriminator})`")
+            embed.add_field(name="Moderator", value=f"<@{ctx.author.id}> - `{ctx.author.name}#{ctx.author.discriminator}`")
 
             if reason:
                 embed.add_field(name="Reason", value=reason)
