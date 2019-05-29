@@ -95,6 +95,7 @@ class ModerationPlugin(commands.Cog):
                 if reason:
                     embed.add_field(name="Reason", value=reason, inline=False)
 
+                await ctx.send(f"{member.name} is kicked!")
                 await channel.send(embed=embed)
 
         except discord.Forbidden:
@@ -138,6 +139,7 @@ class ModerationPlugin(commands.Cog):
                 if reason is not None:
                     embed.add_field(name="Reason", value=reason, inline=False)
 
+                await ctx.send(f"{member.name} is kicked!")
                 await channel.send(embed=embed)
 
         except discord.Forbidden:
