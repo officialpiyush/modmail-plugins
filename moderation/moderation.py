@@ -2,7 +2,7 @@ import discord
 import typing
 import datetime
 # import time
-import os
+# import os
 # import asyncio
 from discord.ext import commands
 
@@ -273,15 +273,9 @@ class ModerationPlugin(commands.Cog):
         if channel is None:
             return
 
-        guild_id = self.bot.config.get("GUILD_ID")
-        guild: discord.guild = await self.bot.get_guild(guild_id)
-
-        if guild is None:
-            return
-
         for member in members:
 
-            for channel in guild.channels:
+            for channel in ctx.guild.channels:
                 if not type(channel) is discord.TextChannel:
                     continue
 
@@ -299,7 +293,7 @@ class ModerationPlugin(commands.Cog):
 
             embed.set_author(name=f"Mute | {member.name}#{member.discriminator}", icon_url=member.avatar_url)
             embed.add_field(name="User", value=f"{member.name}#{member.discriminator}")
-            embed.add_field(name="Moderator", value=f"<@{ctx.author.id}> - `({ctx.author.name}#{ctx.author.discriminator})`")
+            embed.add_field(name="Moderator", value=f"<@{ctx.author.id}> - `{ctx.author.name}#{ctx.author.discriminator}`")
 
             if reason is not None:
                 embed.add_field(name="Reason", value=reason)
@@ -327,15 +321,9 @@ class ModerationPlugin(commands.Cog):
         if channel is None:
             return
 
-        guild_id = self.bot.config.get("GUILD_ID")
-        guild: discord.guild = await self.bot.get_guild(guild_id)
-
-        if guild is None:
-            return
-
         for member in members:
 
-            for channel in guild.channels:
+            for channel in ctx.guild.channels:
                 if not type(channel) is discord.TextChannel:
                     continue
 
