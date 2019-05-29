@@ -95,7 +95,7 @@ class ModerationPlugin(commands.Cog):
                 if reason:
                     embed.add_field(name="Reason", value=reason, inline=False)
 
-                await ctx.send(f"{member.name} is kicked!")
+                await ctx.send(f"{member.name} is banned!")
                 await channel.send(embed=embed)
 
         except discord.Forbidden:
@@ -173,28 +173,33 @@ class ModerationPlugin(commands.Cog):
 
         config = await self.db.find_one({'_id': 'warns'})
 
-        if config:
+        if config is None:
+            config = await self.insert_one({'_id': 'warns'})
+
+        try:
             userwarns = config[str(member.id)]
+        except KeyError:
+            userwarns = config[str(member.id)] = []
 
-            if userwarns is None:
-                userw = []
-            else:
-                userw = userwarns.copy()
+        if userwarns is None:
+            userw = []
+        else:
+            userw = userwarns.copy()
 
-            userw.append({'reason': reason, 'mod': ctx.author.id})
+        userw.append({'reason': reason, 'mod': ctx.author.id})
 
-            await self.db.find_one_and_update(
-                {'_id': 'warns'},
-                {'$set': {str(member.id): userw}},
-                upsert=True
-            )
+        await self.db.find_one_and_update(
+            {'_id': 'warns'},
+            {'$set': {str(member.id): userw}},
+            upsert=True
+        )
 
-            await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**\n`({reason})`")
+        await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**\n`({reason})`")
 
-            await channel.send(
-                embed=self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason))
-            del userw
-            return
+        await channel.send(
+            embed=self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason))
+        del userw
+        return
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
@@ -223,7 +228,10 @@ class ModerationPlugin(commands.Cog):
         if config is None:
             return
 
-        userwarns = config[str(member.id)]
+        try:
+            userwarns = config[str(member.id)]
+        except KeyError:
+            return await ctx.send(f"{member.name} doesn't have any warnings.")
 
         if userwarns is None:
             await ctx.send(f"{member.name} doesn't have any warnings.")
