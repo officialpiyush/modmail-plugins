@@ -194,7 +194,7 @@ class ModerationPlugin(commands.Cog):
             upsert=True
         )
 
-        await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**\n`({reason})`")
+        await ctx.send(f"Successfully warned **{member.name}#{member.discriminator}**\n`{reason}`")
 
         await channel.send(
             embed=self.generateWarnEmbed(str(member.id), str(ctx.author.id), len(userw), reason))
@@ -241,7 +241,7 @@ class ModerationPlugin(commands.Cog):
             {'$set': {str(member.id): []}}
         )
 
-        await ctx.send("Done!")
+        await ctx.send(f"Successfully pardoned **{member.name}#{member.discriminator}**\n`{reason}`")
 
         embed = discord.Embed(color=discord.Color.blue())
 
