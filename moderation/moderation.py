@@ -247,7 +247,7 @@ class ModerationPlugin(commands.Cog):
 
         embed.set_author(name=f"Pardon | {member.name}#{member.discriminator}", icon_url=member.avatar_url)
         embed.add_field(name="User", value=f"{member.name}#{member.discriminator}")
-        embed.add_field(name="Moderator", value=f"<@{ctx.author.id}> - `({ctx.author.name}#{ctx.author.discriminator})`")
+        embed.add_field(name="Moderator", value=f"<@{ctx.author.id}> - `{ctx.author.name}#{ctx.author.discriminator}`")
         embed.add_field(name="Reason", value=reason)
         embed.add_field(name="Total Warnings", value="0")
 
@@ -273,7 +273,8 @@ class ModerationPlugin(commands.Cog):
         if channel is None:
             return
 
-        guild: discord.guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
+        guild_id = self.bot.config.get("GUILD_ID")
+        guild: discord.guild = await self.bot.get_guild(guild_id)
 
         if guild is None:
             return
@@ -326,7 +327,8 @@ class ModerationPlugin(commands.Cog):
         if channel is None:
             return
 
-        guild: discord.guild = await self.bot.get_guild(os.getenv("GUILD_ID"))
+        guild_id = self.bot.config.get("GUILD_ID")
+        guild: discord.guild = await self.bot.get_guild(guild_id)
 
         if guild is None:
             return
