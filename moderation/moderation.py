@@ -46,7 +46,7 @@ class ModerationPlugin(commands.Cog):
     @commands.command(aliases=["lc", "setmodlogs", "modlogs"])
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def logchannel(self, ctx, channel: discord.TextChannel):
-        """Set Up The Log Channel For posting mod-logs
+        """Set up a logchannel for the mod logs.
 
         Usage:
         {prefix}logchannel #channel
@@ -87,7 +87,7 @@ class ModerationPlugin(commands.Cog):
                 embed = discord.Embed(
                     color=discord.Color.red(),
                     title=f"{member.display_name}#{member.discriminator} was banned!",
-                    timestamp=datetime.utcnow()
+                    timestamp=datetime.datetime.utcnow()
                 )
 
                 embed.add_field(name="Moderator", value=f"{ctx.author.name}#{ctx.author.discriminator}", inline=False)
@@ -130,7 +130,7 @@ class ModerationPlugin(commands.Cog):
                 embed = discord.Embed(
                     color=discord.Color.red(),
                     title=f"{member.display_name}#{member.discriminator} was kicked!",
-                    timestamp=datetime.utcnow()
+                    timestamp=datetime.datetime.utcnow()
                 )
 
                 embed.add_field(name="Moderator", value=f"{ctx.author.name}#{ctx.author.discriminator}", inline=False)
@@ -150,7 +150,7 @@ class ModerationPlugin(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def warn(self, ctx, member: discord.Member, *, reason: str):
-        """Warn a member
+        """Warn a member.
 
         Usage:
         {prefix}warn @member Spoilers
@@ -197,7 +197,7 @@ class ModerationPlugin(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def pardon(self, ctx, member: discord.Member, *, reason: str):
-        """Remove all warnings of a  member
+        """Remove all warnings of a  member.
 
         Usage:
         {prefix}pardon @member Nice guy
