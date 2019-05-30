@@ -54,7 +54,7 @@ class BackupDB(commands.Cog):
                 del item
             del le
             await ctx.send(f"Backed up {str(collection)}")
-        await ctx.send("Backed Up Everything!")
+        await ctx.send(":tada: | Backed Up Everything!")
 
 
 def setup(bot):
