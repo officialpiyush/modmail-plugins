@@ -44,12 +44,13 @@ class BackupDB(commands.Cog):
         else:
             await ctx.send("No Existing collections found! Nothing was deleted!")
         du = self.bot.db.list_collection_names()
-        for coll in du:
-            if coll == "system.indexes":
-                continue
-            async for doc in self.bot.db[str(coll)].find({}):
-                await bdb[str(coll)].insert_one(doc)
-            await ctx.send(f"Backed up `{str(coll)}` collection!")
+        for collection in du:
+            le = await self.bot.db[str(collection)].find().to_list(None)
+            for item in le:
+                await bdb[str(collection)].insert_one(item)
+        await ctx.send("Backed Up!")
+
+
 
 
 def setup(bot):
