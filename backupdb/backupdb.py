@@ -51,6 +51,8 @@ class BackupDB(commands.Cog):
             le = await self.bot.db[str(collection)].find().to_list(None)
             for item in le:
                 await bdb[str(collection)].insert_one(item)
+                del item
+            del le
         await ctx.send("Backed Up!")
 
 
