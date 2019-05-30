@@ -11,7 +11,7 @@ class BackupDB(commands.Cog):
     """
     Take Backup of your mongodb database with a single command!
 
-    **Requires `BACKUP_MONGO_URI` in environment variables or config.json**
+    **Requires `BACKUP_MONGO_URI` in environment variables**
     """
     def __init__(self, bot):
         self.bot = bot
@@ -24,7 +24,7 @@ class BackupDB(commands.Cog):
 
         **Deletes Existing data from the backup db**
         """
-        backup_url = self.bot.config.get("BACKUP_MONGO_URI", None) #os.getenv("BACKUP_MONGO_URI", None)
+        backup_url = os.getenv("BACKUP_MONGO_URI", None)
         if backup_url is None:
             await ctx.send(":x: | No `BACKUP_MONGO_URI` found in env variables or config.json.")
             return
