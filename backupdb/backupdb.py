@@ -11,7 +11,7 @@ class BackupDB(commands.Cog):
     """
     Take Backup of your mongodb database with a single command!
 
-    **Requires `BACKUP_MONGO_URI` in Heroku environment variables**
+    **Requires `BACKUP_MONGO_URI` in environment variables or config.json**
     """
     def __init__(self, bot):
         self.bot = bot
@@ -26,7 +26,7 @@ class BackupDB(commands.Cog):
         """
         backup_url = self.bot.config.get("BACKUP_MONGO_URI", None) #os.getenv("BACKUP_MONGO_URI", None)
         if backup_url is None:
-            await ctx.send(":x: | No `BACKUP_MONGO_URI` found in env variables.")
+            await ctx.send(":x: | No `BACKUP_MONGO_URI` found in env variables or config.json.")
             return
         db_name = (backup_url.split("/"))[-1]
         backup_client = AsyncIOMotorClient(backup_url)
