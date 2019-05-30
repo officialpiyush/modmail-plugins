@@ -43,9 +43,9 @@ class BackupDB(commands.Cog):
             await ctx.send("Deleted all documents from backup db")
         else:
             await ctx.send("No Existing collections found! Nothing was deleted!")
-        du = self.bot.db.list_collection_names()
+        du = await self.bot.db.list_collection_names()
         for collection in du:
-            le = yield self.bot.db[str(collection)].find().to_list(None)
+            le = await self.bot.db[str(collection)].find().to_list(None)
             for item in le:
                 await bdb[str(collection)].insert_one(item)
         await ctx.send("Backed Up!")
