@@ -33,7 +33,7 @@ class BackupDB(commands.Cog):
         bdb = backup_client[db_name]
         await ctx.send("Connected to backup DB. Removing all documents")
         collections = await bdb.list_collection_names()
-        await ctx.send(collections)
+
         if len(collections) > 0:
             for collection in collections:
                 if collection == "system.indexes":
@@ -53,9 +53,8 @@ class BackupDB(commands.Cog):
                 await bdb[str(collection)].insert_one(item)
                 del item
             del le
-        await ctx.send("Backed Up!")
-
-
+            await ctx.send(f"Backed up {str(collection)}")
+        await ctx.send("Backed Up Everything!")
 
 
 def setup(bot):
