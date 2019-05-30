@@ -174,7 +174,7 @@ class ModerationPlugin(commands.Cog):
         config = await self.db.find_one({'_id': 'warns'})
 
         if config is None:
-            config = await self.insert_one({'_id': 'warns'})
+            config = await self.db.insert_one({'_id': 'warns'})
 
         try:
             userwarns = config[str(member.id)]
