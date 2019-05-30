@@ -53,7 +53,7 @@ class BackupDB(commands.Cog):
                 await bdb[str(collection)].insert_one(item)
                 del item
             del le
-            await ctx.send(f"Backed up {str(collection)}")
+            await ctx.send(f"Backed up `{str(collection)}`")
         await ctx.send(":tada: | Backed Up Everything!")
 
 
