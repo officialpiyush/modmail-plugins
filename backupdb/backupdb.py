@@ -29,16 +29,6 @@ class BackupDB(commands.Cog):
             await ctx.send(":x: | No `BACKUP_MONGO_URI` found in env variables.")
             return
         db_name = (backup_url.split("/"))[-1]
-        odb_uri = os.getenv("MONGO_URI")
-        odb_n = (odb_uri.split("/"))[-1]
-        odb = odb_uri.replace(f"/{odb_n}", "")
-
-        connection_string = backup_url.replace(f"/{db_name}", "")
-        cs = connection_string.split("@")
-        host = cs[1].split(":")[0]
-        port = cs[1].split(":")[1]
-        user = (cs[0].replace("mongodb://", "")).split(":")[0]
-        passw = (cs[0].replace("mongodb://", "")).split(":")[1]
         backup_client = AsyncIOMotorClient(backup_url)
         bdb = backup_client[db_name]
         await ctx.send("Connected to backup DB. Removing all documents")
