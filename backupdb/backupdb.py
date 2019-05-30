@@ -47,9 +47,9 @@ class BackupDB(commands.Cog):
         for coll in du:
             if coll == "system.indexes":
                 continue
-            for doc in self.bot.db[coll].find():
-                await bdb[coll].insert_one(doc)
-            await ctx.send(f"Backed up `{coll}` collection!")
+            for doc in self.bot.db[str(coll)].find({}):
+                await bdb[str(coll)].insert_one(doc)
+            await ctx.send(f"Backed up `{str(coll)}` collection!")
 
 
 def setup(bot):
