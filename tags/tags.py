@@ -177,3 +177,5 @@ class TagsPlugin(commands.Cog):
 
 def setup(bot):
     bot.add_cog(TagsPlugin(bot))
+
+    
