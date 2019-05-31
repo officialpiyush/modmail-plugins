@@ -24,8 +24,8 @@ class BackupDB(commands.Cog):
 
         **Deletes Existing data from the backup db**
         """
-        if os.path.exists("../config.json"):
-            with open("../config.json") as f:
+        if os.path.exists("./config.json"):
+            with open("./config.json") as f:
 
                 jd = json.load(f)
             try:
