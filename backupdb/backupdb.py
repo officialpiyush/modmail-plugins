@@ -1,5 +1,6 @@
 import json
 import os
+import discord
 from discord.ext import commands
 from motor.motor_asyncio import AsyncIOMotorClient
 
@@ -46,7 +47,7 @@ class BackupDB(commands.Cog):
             bdb = backup_client[db_name]
         else:
             bdb = backup_client["backup_modmail_bot"]
-        await ctx.send("Connected to backup DB. Removing all documents")
+        await ctx.send(embed=await self.generate_embed("Connected to backup DB. Removing all documents"))
         collections = await bdb.list_collection_names()
 
         if len(collections) > 0:
@@ -55,9 +56,9 @@ class BackupDB(commands.Cog):
                     continue
 
                 await bdb[collection].drop()
-            await ctx.send("Deleted all documents from backup db")
+            await ctx.send(embed=await self.generate_embed("Deleted all documents from backup db"))
         else:
-            await ctx.send("No Existing collections found! Nothing was deleted!")
+            await ctx.send(embed=await self.generate_embed("No Existing collections found! Nothing was deleted!"))
         du = await self.bot.db.list_collection_names()
         for collection in du:
             if collection == "system.indexes":
@@ -68,9 +69,15 @@ class BackupDB(commands.Cog):
                 await bdb[str(collection)].insert_one(item)
                 del item
             del le
-            await ctx.send(f"Backed up `{str(collection)}`")
-        await ctx.send(":tada: | Backed Up Everything!")
+            await ctx.send(embed=await self.generate_embed(f"Backed up `{str(collection)}`"))
+        await ctx.send(embed=await self.generate_embed(":tada: Backed Up Everything!"))
 
+    async def generate_embed(self, msg: str):
+        embed = discord.Embed(
+            description=msg,
+            color=discord.Colour.blurple()
+        )
+        return embed
 
 def setup(bot):
     bot.add_cog(BackupDB(bot))
