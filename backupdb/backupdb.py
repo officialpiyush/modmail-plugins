@@ -42,10 +42,10 @@ class BackupDB(commands.Cog):
                 return
         db_name = (backup_url.split("/"))[-1]
         backup_client = AsyncIOMotorClient(backup_url)
-        if "mongodb.net" in backup_url:
-            bdb = backup_client["backup_modmail_bot"]
-        else:
+        if "mlab.com" in backup_url:
             bdb = backup_client[db_name]
+        else:
+            bdb = backup_client["backup_modmail_bot"]
         await ctx.send("Connected to backup DB. Removing all documents")
         collections = await bdb.list_collection_names()
 
