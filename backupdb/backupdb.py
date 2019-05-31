@@ -28,16 +28,18 @@ class BackupDB(commands.Cog):
             with open("../config.json") as f:
 
                 jd = json.load(f)
-
-        try:
-            backup_url = os.getenv("BACKUP_MONGO_URI") or jd["BACKUP_MONGO_URI"]
-        except KeyError:
-            await ctx.send(":x: | No `BACKUP_MONGO_URI` found in env variables or config.json.")
-            return
-
-        if backup_url is None:
-            await ctx.send(":x: | No `BACKUP_MONGO_URI` found in env variables or config.json.")
-            return
+            try:
+                backup_url = jd["BACKUP_MONGO_URI"]
+            except KeyError:
+                backup_url = os.getenv("BACKUP_MONGO_URI")
+                if backup_url is None:
+                    await ctx.send(":x: | No `BACKUP_MONGO_URI` found in `config.json` or environment variables")
+                    return
+        else:
+            backup_url = os.getenv("BACKUP_MONGO_URI")
+            if backup_url is None:
+                await ctx.send(":x: | No `BACKUP_MONGO_URI` found in `config.json` or environment variables")
+                return
         db_name = (backup_url.split("/"))[-1]
         backup_client = AsyncIOMotorClient(backup_url)
         bdb = backup_client[db_name]

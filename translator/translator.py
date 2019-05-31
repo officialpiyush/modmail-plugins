@@ -136,7 +136,6 @@ class TranslatePlugin(commands.Cog):
         except AttributeError:
             embed._fields = [field]
                        
-
         await message.edit(embed=embed)
 
     @commands.Cog.listener()
