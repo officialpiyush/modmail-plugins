@@ -22,6 +22,8 @@ class BackupDB(commands.Cog):
         """
         Backup Your Mongodb database using this command.
 
+        **If Using __ATLAS__ , please make sure that Database has the name `backup_modmail_bot`**
+
         **Deletes Existing data from the backup db**
         """
         if os.path.exists("./config.json"):
