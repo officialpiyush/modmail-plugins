@@ -80,7 +80,8 @@ class TranslatePlugin(commands.Cog):
             upsert=True
         )
 
-        await ctx.send(f"{'Removed' if removed else 'Added'} Channel {'from' if removed else 'to'} Auto Translations List.")
+        await ctx.send(
+            f"{'Removed' if removed else 'Added'} Channel {'from' if removed else 'to'} Auto Translations List.")
 
     @commands.command(aliases=["tat"])
     @checks.has_permissions(PermissionLevel.MODERATOR)
@@ -112,30 +113,30 @@ class TranslatePlugin(commands.Cog):
 
         if not message.embeds:
             return
-        
+
         if message.embeds[0].footer.text and "Recipient" not in message.embeds[0].footer.text:
             return
-        
+
         embed = message.embeds[0]
-                       
+
         tmsg = await self.bot.loop.run_in_executor(
             None, self.translator.translate, message.embeds[0].description
         )
 
         if tmsg.src == "en":
             return
-                       
+
         field = {
             'inline': False,
             'name': f"Translation [{(tmsg.src).upper()}]",
             'value': tmsg.text
         }
-                       
+
         try:
             embed._fields.insert(0, field)
         except AttributeError:
             embed._fields = [field]
-                       
+
         await message.edit(embed=embed)
 
     @commands.Cog.listener()
