@@ -1,4 +1,4 @@
-
+import json
 import os
 from discord.ext import commands
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -11,7 +11,7 @@ class BackupDB(commands.Cog):
     """
     Take Backup of your mongodb database with a single command!
 
-    **Requires `BACKUP_MONGO_URI` in environment variables**
+    **Requires `BACKUP_MONGO_URI` in environment variables or config.json**
     """
     def __init__(self, bot):
         self.bot = bot
@@ -24,7 +24,17 @@ class BackupDB(commands.Cog):
 
         **Deletes Existing data from the backup db**
         """
-        backup_url = os.getenv("BACKUP_MONGO_URI", None)
+        if os.path.exists("config.json"):
+            with open("config.json") as f:
+
+                jd = json.load(f)
+
+        try:
+            backup_url = os.getenv("BACKUP_MONGO_URI") or jd["BACKUP_MONGO_URI"]
+        except KeyError:
+            await ctx.send(":x: | No `BACKUP_MONGO_URI` found in env variables or config.json.")
+            return
+
         if backup_url is None:
             await ctx.send(":x: | No `BACKUP_MONGO_URI` found in env variables or config.json.")
             return
