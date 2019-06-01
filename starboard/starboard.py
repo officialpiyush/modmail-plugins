@@ -144,7 +144,7 @@ class StarboardPlugin(commands.Cog):
         ):
             return
 
-        guild: discord.Guild = self.bot.get_guild(int(self.bot.config["main_guild_id"]))
+        guild: discord.Guild = self.bot.get_guild(int(self.bot.config["guild_id"]))
         starboard_channel: discord.TextChannel = guild.get_channel(int(self.channel))
         channel: discord.TextChannel = guild.get_channel(int(payload.channel_id))
         user: discord.User = await self.bot.fetch_user(payload.user_id)
