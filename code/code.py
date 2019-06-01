@@ -47,7 +47,7 @@ class CodeCog(commands.Cog):
                 return
 
             # output is too big so post it in gist
-            async with ctx.session.post(
+            async with self.bot.session.post(
                 "http://coliru.stacked-crooked.com/share", data=data
             ) as r:
                 if r.status != 200:
