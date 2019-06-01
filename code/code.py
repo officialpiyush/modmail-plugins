@@ -1,8 +1,7 @@
-import discord
-import aiohttp
 import json
 from discord.ext import commands
-from .utils import CodeBlock
+from .util import CodeBlock
+
 
 class CodeCog(commands.Cog):
     """Compile & Run cpp,c,py,haskell code using coliru
@@ -30,31 +29,34 @@ class CodeCog(commands.Cog):
 
         Please don't spam this for Stacked's sake.
         """
-        payload = {
-            'cmd': code.command,
-            'src': code.source
-        }
+        payload = {"cmd": code.command, "src": code.source}
 
         data = json.dumps(payload)
 
-        async with ctx.session.post('http://coliru.stacked-crooked.com/compile', data=data) as resp:
+        async with ctx.session.post(
+            "http://coliru.stacked-crooked.com/compile", data=data
+        ) as resp:
             if resp.status != 200:
-                await ctx.send('Coliru did not respond in time.')
+                await ctx.send("Coliru did not respond in time.")
                 return
 
-            output = await resp.text(encoding='utf-8')
+            output = await resp.text(encoding="utf-8")
 
             if len(output) < 1992:
-                await ctx.send(f'```\n{output}\n```')
+                await ctx.send(f"```\n{output}\n```")
                 return
 
             # output is too big so post it in gist
-            async with ctx.session.post('http://coliru.stacked-crooked.com/share', data=data) as r:
+            async with ctx.session.post(
+                "http://coliru.stacked-crooked.com/share", data=data
+            ) as r:
                 if r.status != 200:
-                    await ctx.send('Could not create coliru shared link')
+                    await ctx.send("Could not create coliru shared link")
                 else:
                     shared_id = await r.text()
-                    await ctx.send(f'Output too big. Coliru link: http://coliru.stacked-crooked.com/a/{shared_id}')
+                    await ctx.send(
+                        f"Output too big. Coliru link: http://coliru.stacked-crooked.com/a/{shared_id}"
+                    )
 
 
 def setup(bot):
