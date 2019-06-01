@@ -1,5 +1,6 @@
 import json
 import os
+import datetime
 import discord
 from discord.ext import commands
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -46,6 +47,7 @@ class BackupDB(commands.Cog):
                     ":x: | No `BACKUP_MONGO_URI` found in `config.json` or environment variables"
                 )
                 return
+
         db_name = (backup_url.split("/"))[-1]
         backup_client = AsyncIOMotorClient(backup_url)
         if "mlab.com" in backup_url:
@@ -87,6 +89,11 @@ class BackupDB(commands.Cog):
             await ctx.send(
                 embed=await self.generate_embed(f"Backed up `{str(collection)}`")
             )
+        await self.bot.db["config"].find_one_and_update(
+            {"_id": "config"},
+            {"$set": {"backedupAt": str(datetime.datetime.utcnow())}},
+            upsert=True,
+        )
         await ctx.send(embed=await self.generate_embed(":tada: Backed Up Everything!"))
 
     async def generate_embed(self, msg: str):
