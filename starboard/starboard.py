@@ -194,13 +194,15 @@ class StarboardPlugin(commands.Cog):
 
                     if (
                         mesg.embeds[0].footer.text is None
-                        or "⭐" in mesg.embeds[0].footer.text
+                        or "⭐" not in mesg.embeds[0].footer.text
                     ):
                         continue
 
                     if mesg.embeds[0].footer.text.endswith(str(payload.message_id)):
                         msg: discord.Message = mesg
                         break
+                    else:
+                        continue
                         # re_res = re.search(r'^\⭐\s([0-9]{1,3})\s\|\s([0-9]{17,20})', message.embeds[0].footer.text)
                         # if (re_res):
                         #     arr = [s for s in re_res.groups()]
