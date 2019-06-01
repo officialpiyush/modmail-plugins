@@ -120,6 +120,7 @@ class BackupDB(commands.Cog):
         if config is None or config["backedupAt"] is None:
             await ctx.send("No previous backup found, exiting")
             return
+
         await ctx.send(
             embed=await self.generate_embed(
                 f"Are you sure you wanna restore data from backup db which"
