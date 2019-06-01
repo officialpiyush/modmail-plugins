@@ -189,7 +189,7 @@ class StarboardPlugin(commands.Cog):
                 ).flatten()
 
                 for mesg in messages:
-                    if not mesg.embeds or mesg.embeds[0] is None:
+                    if not mesg.embeds:
                         continue
 
                     if (
