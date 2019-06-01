@@ -1,4 +1,4 @@
-import os
+import asyncio
 from datetime import datetime
 import discord
 from discord.ext import commands
@@ -20,6 +20,7 @@ class StarboardPlugin(commands.Cog):
         self.stars = 2
         self.user_blacklist = list()
         self.channel_blacklist = list()
+        asyncio.create_task(self._set_val())
 
     async def _update_db(self):
         await self.db.find_one_and_update(
@@ -36,6 +37,17 @@ class StarboardPlugin(commands.Cog):
             },
             upsert=True,
         )
+
+    async def _set_db(self):
+        config = await self.db.find_one({"_id": "config"})
+
+        if config is None:
+            return
+
+        self.channel = config["channel"]
+        self.stars = config["stars"]
+        self.user_blacklist = config["blacklist"]["user"]
+        self.channel_blacklist = config["blacklist"]["channel"]
 
     @commands.group(aliases=["st"])
     @checks.has_permissions(PermissionLevel.ADMIN)
