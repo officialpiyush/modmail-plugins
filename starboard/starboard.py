@@ -176,7 +176,7 @@ class StarboardPlugin(commands.Cog):
             if em.emoji == "⭐":
                 reaction: discord.Reaction = em
 
-                list_reaction = await reaction.users().flatten()
+                # list_reaction = await reaction.users().flatten()
                 count = reaction.count
 
                 if count < self.stars:
@@ -184,7 +184,7 @@ class StarboardPlugin(commands.Cog):
                 else:
                     should_delete = False
 
-                messages = await channel.history(
+                messages = await starboard_channel.history(
                     limit=30, around=message.created_at
                 ).flatten()
 
