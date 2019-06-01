@@ -33,7 +33,7 @@ class CodeCog(commands.Cog):
 
         data = json.dumps(payload)
 
-        async with ctx.session.post(
+        async with self.bot.session.post(
             "http://coliru.stacked-crooked.com/compile", data=data
         ) as resp:
             if resp.status != 200:
