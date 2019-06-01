@@ -11,6 +11,7 @@ class AnnoucementPlugin(commands.Cog):
     """
     Easily Make plain text or Embedded Announcements
     """
+
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
@@ -50,17 +51,23 @@ class AnnoucementPlugin(commands.Cog):
 
         def title_check(msg: discord.Message):
             return (
-                    ctx.author == msg.author and ctx.channel == msg.channel and (len(msg.content) < 256)
+                ctx.author == msg.author
+                and ctx.channel == msg.channel
+                and (len(msg.content) < 256)
             )
 
         def description_check(msg: discord.Message):
             return (
-                    ctx.author == msg.author and ctx.channel == msg.channel and (len(msg.content) < 2048)
+                ctx.author == msg.author
+                and ctx.channel == msg.channel
+                and (len(msg.content) < 2048)
             )
 
         def footer_check(msg: discord.Message):
             return (
-                    ctx.author == msg.author and ctx.channel == msg.channel and (len(msg.content) < 2048)
+                ctx.author == msg.author
+                and ctx.channel == msg.channel
+                and (len(msg.content) < 2048)
             )
 
         # def author_check(msg: discord.Message):
@@ -81,22 +88,34 @@ class AnnoucementPlugin(commands.Cog):
 
         await ctx.send("Starting an interactive process to make an announcement")
 
-        await ctx.send(embed=await self.generate_embed("Do you want it to be an embed? `[y/n]`"))
+        await ctx.send(
+            embed=await self.generate_embed("Do you want it to be an embed? `[y/n]`")
+        )
 
         embed_res: discord.Message = await self.bot.wait_for("message", check=check)
         if cancel_check(embed_res) is True:
             await ctx.send("Cancelled!")
             return
         elif cancel_check(embed_res) is False and embed_res.content.lower() == "n":
-            await ctx.send(embed=await self.generate_embed("Okay, Lets do a no-embed announcement."
-                                                           "\nWhat's The Announcement?"))
+            await ctx.send(
+                embed=await self.generate_embed(
+                    "Okay, Lets do a no-embed announcement."
+                    "\nWhat's The Announcement?"
+                )
+            )
             announcement = await self.bot.wait_for("message", check=check)
             if cancel_check(announcement) is True:
                 await ctx.send("Cancelled!")
                 return
             else:
-                await ctx.send(embed=await self.generate_embed("In which channel should I send the announcement?"))
-                channel: discord.Message = await self.bot.wait_for("message", check=check)
+                await ctx.send(
+                    embed=await self.generate_embed(
+                        "In which channel should I send the announcement?"
+                    )
+                )
+                channel: discord.Message = await self.bot.wait_for(
+                    "message", check=check
+                )
                 if cancel_check(channel) is True:
                     await ctx.send("Cancelled!")
                     return
@@ -105,74 +124,121 @@ class AnnoucementPlugin(commands.Cog):
                         await ctx.send("Cancelled as no channel was provided")
                         return
                     else:
-                        await channel.channel_mentions[0].send(f"{role_mention}\n{announcement.content}")
+                        await channel.channel_mentions[0].send(
+                            f"{role_mention}\n{announcement.content}"
+                        )
         elif cancel_check(embed_res) is False and embed_res.content.lower() == "y":
             embed = discord.Embed()
-            await ctx.send(embed=await self.generate_embed("Should the embed have an title? `[y/n]`"))
+            await ctx.send(
+                embed=await self.generate_embed(
+                    "Should the embed have an title? `[y/n]`"
+                )
+            )
             t_res = await self.bot.wait_for("message", check=check)
             if cancel_check(t_res) is True:
                 await ctx.send("Cancelled")
                 return
             elif cancel_check(t_res) is False and t_res.content.lower() == "y":
-                await ctx.send(embed=await self.generate_embed("What should be the title of the embed?"
-                                                               "\n**Must not exceed 256 characters**"))
+                await ctx.send(
+                    embed=await self.generate_embed(
+                        "What should be the title of the embed?"
+                        "\n**Must not exceed 256 characters**"
+                    )
+                )
                 tit = await self.bot.wait_for("message", check=title_check)
                 embed.title = tit.content
-            await ctx.send(embed=await self.generate_embed("Will the embed have an description?`[y/n]`"))
+            await ctx.send(
+                embed=await self.generate_embed(
+                    "Will the embed have an description?`[y/n]`"
+                )
+            )
             d_res: discord.Message = await self.bot.wait_for("message", check=check)
             if cancel_check(d_res) is True:
                 await ctx.send("Cancelled")
                 return
             elif cancel_check(d_res) is False and d_res.content.lower() == "y":
-                await ctx.send(embed=await self.generate_embed("What should be the description of the embed?"
-                                                               "\n**Must not exceed 2048 characters**"))
+                await ctx.send(
+                    embed=await self.generate_embed(
+                        "What should be the description of the embed?"
+                        "\n**Must not exceed 2048 characters**"
+                    )
+                )
                 des = await self.bot.wait_for("message", check=description_check)
                 embed.description = des.content
 
-            await ctx.send(embed=await self.generate_embed("Will the embed have a thumbnail?`[y/n]`"))
+            await ctx.send(
+                embed=await self.generate_embed(
+                    "Will the embed have a thumbnail?`[y/n]`"
+                )
+            )
             th_res: discord.Message = await self.bot.wait_for("message", check=check)
             if cancel_check(th_res) is True:
                 await ctx.send("Cancelled")
                 return
             elif cancel_check(th_res) is False and th_res.content.lower() == "y":
-                await ctx.send(embed=await self.generate_embed("What should be the thumbnail of the embed?Give a "
-                                                               "valid URL"))
+                await ctx.send(
+                    embed=await self.generate_embed(
+                        "What should be the thumbnail of the embed?Give a " "valid URL"
+                    )
+                )
                 thu = await self.bot.wait_for("message", check=check)
                 embed.set_thumbnail(url=thu.content)
 
-            await ctx.send(embed=await self.generate_embed("Will the embed have a footer?`[y/n]`"))
+            await ctx.send(
+                embed=await self.generate_embed("Will the embed have a footer?`[y/n]`")
+            )
             f_res: discord.Message = await self.bot.wait_for("message", check=check)
             if cancel_check(f_res) is True:
                 await ctx.send("Cancelled")
                 return
             elif cancel_check(f_res) is False and f_res.content.lower() == "y":
-                await ctx.send(embed=await self.generate_embed("What should be the footer of the embed?"
-                                                               "\n**Must not exceed 2048 characters**"))
+                await ctx.send(
+                    embed=await self.generate_embed(
+                        "What should be the footer of the embed?"
+                        "\n**Must not exceed 2048 characters**"
+                    )
+                )
                 foo = await self.bot.wait_for("message", check=footer_check)
                 embed.set_footer(text=foo.content)
 
-            await ctx.send(embed=await self.generate_embed("Do you want it to have a color?"))
+            await ctx.send(
+                embed=await self.generate_embed("Do you want it to have a color?")
+            )
             c_res: discord.Message = await self.bot.wait_for("message", check=check)
             if cancel_check(c_res) is True:
                 await ctx.send("Cancelled!")
                 return
             elif cancel_check(c_res) is False and c_res.content.lower() == "y":
-                await ctx.send(embed=await self.generate_embed("What Colour should the embed have? "
-                                                               "Please provide a valid hex color"))
+                await ctx.send(
+                    embed=await self.generate_embed(
+                        "What Colour should the embed have? "
+                        "Please provide a valid hex color"
+                    )
+                )
                 colo = await self.bot.wait_for("message", check=check)
                 if cancel_check(colo) is True:
                     await ctx.send("Cancelled!")
                     return
                 else:
-                    match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', colo.content)  # uwu thanks stackoverflow
+                    match = re.search(
+                        r"^#(?:[0-9a-fA-F]{3}){1,2}$", colo.content
+                    )  # uwu thanks stackoverflow
                     if match:
-                        embed.colour = int(colo.content.replace("#", "0x"), 0)  # Basic Computer Science
+                        embed.colour = int(
+                            colo.content.replace("#", "0x"), 0
+                        )  # Basic Computer Science
                     else:
-                        await ctx.send("Failed! Not a valid hex color, get yours from "
-                                       "https://www.google.com/search?q=color+picker")
+                        await ctx.send(
+                            "Failed! Not a valid hex color, get yours from "
+                            "https://www.google.com/search?q=color+picker"
+                        )
                         return
 
-            await ctx.send(embed=await self.generate_embed("In which channel should I send the announcement?"))
+            await ctx.send(
+                embed=await self.generate_embed(
+                    "In which channel should I send the announcement?"
+                )
+            )
             channel: discord.Message = await self.bot.wait_for("message", check=check)
             if cancel_check(channel) is True:
                 await ctx.send("Cancelled!")
@@ -183,7 +249,9 @@ class AnnoucementPlugin(commands.Cog):
                     return
                 else:
                     schan = channel.channel_mentions[0]
-            await ctx.send("Here is how the embed looks like: Send it? `[y/n]`", embed=embed)
+            await ctx.send(
+                "Here is how the embed looks like: Send it? `[y/n]`", embed=embed
+            )
             s_res = await self.bot.wait_for("message", check=check)
             if cancel_check(s_res) is True or s_res.content.lower() == "n":
                 await ctx.send("Cancelled")
@@ -198,8 +266,14 @@ class AnnoucementPlugin(commands.Cog):
 
     @announcement.command(aliases=["native", "n", "q"])
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def quick(self, ctx: commands.Context, channel: discord.TextChannel, role: typing.Optional[discord.Role],
-                    *, msg: str):
+    async def quick(
+        self,
+        ctx: commands.Context,
+        channel: discord.TextChannel,
+        role: typing.Optional[discord.Role],
+        *,
+        msg: str,
+    ):
         """
         An Old way of making announcements
 
@@ -223,8 +297,10 @@ class AnnoucementPlugin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/announcement",
-                                         json={'id': self.bot.user.id}):
+        async with self.bot.session.post(
+            "https://counter.modmail-plugins.ionadev.ml/api/instances/announcement",
+            json={"id": self.bot.user.id},
+        ):
             print("Posted to Plugin API")
 
     @staticmethod

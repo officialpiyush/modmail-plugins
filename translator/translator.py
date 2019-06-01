@@ -20,15 +20,15 @@ class TranslatePlugin(commands.Cog):
         asyncio.create_task(self._set_config())
 
     async def _set_config(self):
-        config = await self.db.find_one({'_id': 'config'})
+        config = await self.db.find_one({"_id": "config"})
         if config is None:
             await self.db.find_one_and_update(
-                {'_id': 'config'},
-                {'$set': {'enabled': True, 'translateSet': list([])}},
-                upsert=True
+                {"_id": "config"},
+                {"$set": {"enabled": True, "translateSet": list([])}},
+                upsert=True,
             )
-        self.enabled = config.get('enabled', True)
-        self.tt = set(config.get('translateSet', []))
+        self.enabled = config.get("enabled", True)
+        self.tt = set(config.get("translateSet", []))
 
     @commands.command()
     async def translate(self, ctx, msgid: int):
@@ -75,13 +75,12 @@ class TranslatePlugin(commands.Cog):
             removed = False
 
         await self.db.update_one(
-            {'_id': 'config'},
-            {'$set': {'translateSet': list(self.tt)}},
-            upsert=True
+            {"_id": "config"}, {"$set": {"translateSet": list(self.tt)}}, upsert=True
         )
 
         await ctx.send(
-            f"{'Removed' if removed else 'Added'} Channel {'from' if removed else 'to'} Auto Translations List.")
+            f"{'Removed' if removed else 'Added'} Channel {'from' if removed else 'to'} Auto Translations List."
+        )
 
     @commands.command(aliases=["tat"])
     @checks.has_permissions(PermissionLevel.MODERATOR)
@@ -89,9 +88,7 @@ class TranslatePlugin(commands.Cog):
         """Enable/Disable Auto Translations"""
         self.enabled = enabled
         await self.db.update_one(
-            {'_id': 'config'},
-            {'$set': {'enabled': self.enabled}},
-            upsert=True
+            {"_id": "config"}, {"$set": {"enabled": self.enabled}}, upsert=True
         )
         await ctx.send(f"{'Enabled' if enabled else 'Disabled'} Auto Translations")
 
@@ -114,7 +111,10 @@ class TranslatePlugin(commands.Cog):
         if not message.embeds:
             return
 
-        if message.embeds[0].footer.text and "Recipient" not in message.embeds[0].footer.text:
+        if (
+            message.embeds[0].footer.text
+            and "Recipient" not in message.embeds[0].footer.text
+        ):
             return
 
         embed = message.embeds[0]
@@ -127,9 +127,9 @@ class TranslatePlugin(commands.Cog):
             return
 
         field = {
-            'inline': False,
-            'name': f"Translation [{(tmsg.src).upper()}]",
-            'value': tmsg.text
+            "inline": False,
+            "name": f"Translation [{(tmsg.src).upper()}]",
+            "value": tmsg.text,
         }
 
         try:
@@ -141,8 +141,10 @@ class TranslatePlugin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/translator",
-                                         json={'id': self.bot.user.id}):
+        async with self.bot.session.post(
+            "https://counter.modmail-plugins.ionadev.ml/api/instances/translator",
+            json={"id": self.bot.user.id},
+        ):
             print("Posted to Plugin API")
 
 

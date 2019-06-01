@@ -1,4 +1,3 @@
-
 import typing
 import datetime
 import discord
@@ -12,6 +11,7 @@ class ReactToContact(commands.Cog):
     """
     Make users start modmail thread by clicking an emoji
     """
+
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
@@ -19,8 +19,12 @@ class ReactToContact(commands.Cog):
     @commands.command(aliases=["setmessage"])
     @commands.guild_only()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def setreaction(self, ctx: commands.Context, channel: typing.Optional[discord.TextChannel],
-                          messageid: discord.Message.id):
+    async def setreaction(
+        self,
+        ctx: commands.Context,
+        channel: typing.Optional[discord.TextChannel],
+        messageid: discord.Message.id,
+    ):
         """
         Set the message on which the bot will look reactions on.
         Creates an interactive session to use emoji **(Supports Unicode Emoji Too)**
@@ -56,7 +60,9 @@ class ReactToContact(commands.Cog):
         if config["mid"] is None or (payload.message_id != config["mid"]):
             return
 
-        guild: discord.Guild = discord.utils.find(lambda g: g.id == payload.guild_id, self.bot.guilds)
+        guild: discord.Guild = discord.utils.find(
+            lambda g: g.id == payload.guild_id, self.bot.guilds
+        )
 
         member: discord.Member = guild.get_member(payload.user_id)
 
@@ -67,23 +73,23 @@ class ReactToContact(commands.Cog):
         await msg.remove_reaction(payload.emoji, member)
 
         try:
-            await member.send(embed=discord.Embed(
-                description="Hello, how may we help you?",
-                color=self.bot.main_color,
-            ))
+            await member.send(
+                embed=discord.Embed(
+                    description="Hello, how may we help you?", color=self.bot.main_color
+                )
+            )
         except (discord.HTTPException, discord.Forbidden):
-            ch = self.bot.get_channel(int(self.bot.config.get('log_channel_id')))
+            ch = self.bot.get_channel(int(self.bot.config.get("log_channel_id")))
 
-            await ch.send(embed=discord.Embed(
-                title="User Contact failed",
-                description=f"**{member.name}#{member.discriminator}** tried contacting, but the bot couldnt dm him/her.",
-                color=self.bot.main_color,
-                timestamp=datetime.datetime.utcnow()
-            ))
+            await ch.send(
+                embed=discord.Embed(
+                    title="User Contact failed",
+                    description=f"**{member.name}#{member.discriminator}** tried contacting, but the bot couldnt dm him/her.",
+                    color=self.bot.main_color,
+                    timestamp=datetime.datetime.utcnow(),
+                )
+            )
 
 
 def setup(bot):
     bot.add_cog(ReactToContact(bot))
-
-
-
