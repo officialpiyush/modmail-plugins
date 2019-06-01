@@ -18,6 +18,7 @@ class BackupDB(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.db = bot.plugin_db.get_partition(self)
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.OWNER)
@@ -89,7 +90,7 @@ class BackupDB(commands.Cog):
             await ctx.send(
                 embed=await self.generate_embed(f"Backed up `{str(collection)}`")
             )
-        await self.bot.db["config"].find_one_and_update(
+        await self.db.find_one_and_update(
             {"_id": "config"},
             {"$set": {"backedupAt": str(datetime.datetime.utcnow())}},
             upsert=True,
