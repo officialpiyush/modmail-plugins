@@ -24,15 +24,17 @@ class StarboardPlugin(commands.Cog):
     async def _update_db(self):
         await self.db.find_one_and_update(
             {"_id": "config"},
-            {"$set": {
-                "channel": self.channel,
-                "stars": self.stars,
-                "blacklist": {
-                    "user": self.user_blacklist,
-                    "channel": self.channel_blacklist
+            {
+                "$set": {
+                    "channel": self.channel,
+                    "stars": self.stars,
+                    "blacklist": {
+                        "user": self.user_blacklist,
+                        "channel": self.channel_blacklist,
+                    },
                 }
-            }},
-            upsert=True
+            },
+            upsert=True,
         )
 
     @commands.group(aliases=["st"])
@@ -67,7 +69,9 @@ class StarboardPlugin(commands.Cog):
         self.stars = stars
         await self._update_db()
 
-        await ctx.send(f"Done.Now this server needs `{stars}` :star: to appear on the starboard channel.")
+        await ctx.send(
+            f"Done.Now this server needs `{stars}` :star: to appear on the starboard channel."
+        )
 
     @starboard.group()
     @checks.has_permissions(PermissionLevel.ADMIN)
@@ -92,12 +96,16 @@ class StarboardPlugin(commands.Cog):
             self.user_blacklist.append(str(member.id))
             removed = False
 
-        await ctx.send(f"{'Un' if removed else None}Blacklisted **{member.name}#{member.discriminator}**")
+        await ctx.send(
+            f"{'Un' if removed else None}Blacklisted **{member.name}#{member.discriminator}**"
+        )
         return
 
     @blacklist.command(name="channel")
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def blacklist_channel(self,ctx: commands.Context, channel: discord.TextChannel):
+    async def blacklist_channel(
+        self, ctx: commands.Context, channel: discord.TextChannel
+    ):
         """
         Blacklist Channels so that messages sent in those channels dont appear on starboard
 
@@ -116,7 +124,6 @@ class StarboardPlugin(commands.Cog):
         await ctx.send(f"{'Un' if removed else None}Blacklisted {channel.mention}")
         return
 
-
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
         await self.handleReaction(payload=payload)
@@ -125,13 +132,16 @@ class StarboardPlugin(commands.Cog):
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         await self.handleReaction(payload=payload)
 
-    async def handleReaction(self,payload: discord.RawReactionActionEvent):
+    async def handleReaction(self, payload: discord.RawReactionActionEvent):
         config = await self.db.find_one({"_id": "config"})
 
         if config is None or self.channel is None:
             return
 
-        if str(payload.channel_id) in self.channel_blacklist or str(payload.user_id) in self.user_blacklist:
+        if (
+            str(payload.channel_id) in self.channel_blacklist
+            or str(payload.user_id) in self.user_blacklist
+        ):
             return
 
         guild: discord.Guild = self.bot.get_guild(int(os.getenv("GUILD_ID")))
@@ -147,78 +157,69 @@ class StarboardPlugin(commands.Cog):
         if message.author.id == payload.user_id:
             return
 
-        if "⭐" not in message.reactions:
+        if message.reactions[0] is None:
             return
 
-        reaction: discord.Reaction = message.reactions["⭐"]
+        for em in message.reactions:
+            if em.emoji == "⭐":
+                reaction: discord.Reaction = em
 
-        # idk ill check once again
-        if reaction.emoji != "⭐":
-            return
+                list_reaction = await reaction.users().flatten()
+                count = len(list_reaction)
 
-        list_reaction = await reaction.users().flatten()
-        count = len(list_reaction)
+                if count < self.stars:
+                    should_delete = True
+                else:
+                    should_delete = False
 
-        if count < self.stars:
-            should_delete = True
-        else:
-            should_delete = False
+                messages = await channel.history(
+                    limit=30, around=message.created_at
+                ).flatten()
 
-        messages = await channel.history(limit=30, around=message.created_at).flatten()
+                for mesg in messages:
+                    if not mesg.embeds:
+                        continue
 
-        for mesg in messages:
-            if not mesg.embeds:
-                continue
+                    if mesg.embeds[0].footer.text is None:
+                        continue
 
-            if mesg.embeds[0].footer.text is None:
-                continue
+                    if mesg.embeds[0].footer.text.endswith(str(payload.message_id)):
+                        msg: discord.Message = mesg
+                        break
+                        # re_res = re.search(r'^\⭐\s([0-9]{1,3})\s\|\s([0-9]{17,20})', message.embeds[0].footer.text)
+                        # if (re_res):
+                        #     arr = [s for s in re_res.groups()]
+                        #     stars = arr[0]
+                        #     break
 
-            if mesg.embeds[0].footer.text.endswith(str(payload.message_id)):
-                msg: discord.Message = mesg
-                break
-                # re_res = re.search(r'^\⭐\s([0-9]{1,3})\s\|\s([0-9]{17,20})', message.embeds[0].footer.text)
-                # if (re_res):
-                #     arr = [s for s in re_res.groups()]
-                #     stars = arr[0]
-                #     break
+                if msg:
+                    if should_delete:
+                        await msg.delete()
+                        return
+                    else:
+                        msg.embeds[0].footer.text = f"⭐ {count} | {payload.message_id}"
 
-        if msg:
-            if should_delete:
-                await msg.delete()
-                return
-            else:
-                msg.embeds[0].footer.text = f"⭐ {count} | {payload.message_id}"
-
-        else:
-            if should_delete:
-                return
-            embed = discord.Embed(
-                color=discord.Colour.gold(),
-                description=msg.content,
-                timestamp=datetime.utcnow()
-            )
-            embed.set_author(name=f"{user.name}#{user.discriminator}", icon_url=user.avatar_url)
-            embed.set_footer(text=f"⭐ {count} | {payload.message_id}")
-            if len(msg.attachments) > 1:
-                try:
-                    embed.set_image(url=msg.attachments[0].url)
-                except:
-                    pass
-            await starboard_channel.send(f"{channel.mention}",embed=embed)
-            return
+                else:
+                    if should_delete:
+                        return
+                    embed = discord.Embed(
+                        color=discord.Colour.gold(),
+                        description=msg.content,
+                        timestamp=datetime.utcnow(),
+                    )
+                    embed.set_author(
+                        name=f"{user.name}#{user.discriminator}",
+                        icon_url=user.avatar_url,
+                    )
+                    embed.set_footer(text=f"⭐ {count} | {payload.message_id}")
+                    if len(msg.attachments) > 1:
+                        try:
+                            embed.set_image(url=msg.attachments[0].url)
+                        except:
+                            pass
+                    await starboard_channel.send(f"{channel.mention}", embed=embed)
+                    return
 
 
 def setup(bot):
     bot.add_cog(StarboardPlugin(bot))
-
-
-
-
-
-
-
-
-
-
-
-
