@@ -169,7 +169,7 @@ class BackupDB(commands.Cog):
                 if collection == "system.indexes":
                     continue
 
-                await bdb[collection].drop()
+                await self.bot.db[collection].drop()
             await ctx.send(
                 embed=await self.generate_embed("Deleted all documents from backup db")
             )
@@ -197,7 +197,7 @@ class BackupDB(commands.Cog):
             {"$set": {"restoredAt": str(datetime.datetime.utcnow())}},
             upsert=True,
         )
-        await ctx.send(embed=await self.generate_embed(":tada: Backed Up Everything!"))
+        await ctx.send(embed=await self.generate_embed(":tada: Restored Everything!"))
 
     async def generate_embed(self, msg: str):
         embed = discord.Embed(description=msg, color=discord.Colour.blurple())
