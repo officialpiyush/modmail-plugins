@@ -177,7 +177,7 @@ class StarboardPlugin(commands.Cog):
                 reaction: discord.Reaction = em
 
                 list_reaction = await reaction.users().flatten()
-                count = len(list_reaction)
+                count = reaction.count
 
                 if count < self.stars:
                     should_delete = True
