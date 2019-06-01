@@ -49,11 +49,10 @@ class StarboardPlugin(commands.Cog):
         self.user_blacklist = config["blacklist"]["user"]
         self.channel_blacklist = config["blacklist"]["channel"]
 
-    @commands.group(aliases=["st"])
+    @commands.group(aliases=["st", "sb"], invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def starboard(self, ctx: commands.Context):
-        if ctx.invoked_subcommand is None:
-            await ctx.send_help()
+        await ctx.send_help(ctx.command)
 
     @starboard.command(aliases=["setchannel", "setch", "sc"])
     @checks.has_permissions(PermissionLevel.ADMIN)
