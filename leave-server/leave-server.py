@@ -1,22 +1,33 @@
 import discord
 from discord.ext import commands
 
+
 class LeaveGuildPlugin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command()
     @commands.is_owner()
     async def leaveguild(self, ctx, guild_id: int):
-        try:    
+        """
+            Make your bot leave a server
+        """
+        try:
             await self.bot.get_guild(guild_id).leave()
-            return ctx.send("Left!")
+            await ctx.send("Left!")
+            return
         except:
-            return ctx.send("Error!")
+            await ctx.send("Error!")
+            return
 
-    @commands.Cog.listener()  
+    @commands.Cog.listener()
     async def on_ready(self):
-        async with self.bot.session.post("https://counter.modmail-plugins.ionadev.ml/api/instances/leaveserver", json={'id': self.bot.user.id}):
-            print("Posted to Plugin API")          
+        async with self.bot.session.post(
+            "https://counter.modmail-plugins.ionadev.ml/api/instances/leaveserver",
+            json={"id": self.bot.user.id},
+        ):
+            print("Posted to Plugin API")
+
+
 def setup(bot):
     bot.add_cog(LeaveGuildPlugin(bot))
