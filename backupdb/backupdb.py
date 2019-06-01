@@ -20,7 +20,7 @@ class BackupDB(commands.Cog):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
 
-    @commands.command()
+    @commands.group()
     @checks.has_permissions(PermissionLevel.OWNER)
     async def backup(self, ctx: commands.Context):
         """
@@ -28,6 +28,108 @@ class BackupDB(commands.Cog):
 
         **Deletes Existing data from the backup db**
         """
+        if ctx.invoked_subcommand is None:
+            if os.path.exists("./config.json"):
+                with open("./config.json") as f:
+
+                    jd = json.load(f)
+                try:
+                    backup_url = jd["BACKUP_MONGO_URI"]
+                except KeyError:
+                    backup_url = os.getenv("BACKUP_MONGO_URI")
+                    if backup_url is None:
+                        await ctx.send(
+                            ":x: | No `BACKUP_MONGO_URI` found in `config.json` or environment variables"
+                        )
+                        return
+            else:
+                backup_url = os.getenv("BACKUP_MONGO_URI")
+                if backup_url is None:
+                    await ctx.send(
+                        ":x: | No `BACKUP_MONGO_URI` found in `config.json` or environment variables"
+                    )
+                    return
+
+            db_name = (backup_url.split("/"))[-1]
+            backup_client = AsyncIOMotorClient(backup_url)
+            if "mlab.com" in backup_url:
+                bdb = backup_client[db_name]
+            else:
+                bdb = backup_client["backup_modmail_bot"]
+            await ctx.send(
+                embed=await self.generate_embed(
+                    "Connected to backup DB. Removing all documents"
+                )
+            )
+            collections = await bdb.list_collection_names()
+
+            if len(collections) > 0:
+                for collection in collections:
+                    if collection == "system.indexes":
+                        continue
+
+                    await bdb[collection].drop()
+                await ctx.send(
+                    embed=await self.generate_embed(
+                        "Deleted all documents from backup db"
+                    )
+                )
+            else:
+                await ctx.send(
+                    embed=await self.generate_embed(
+                        "No Existing collections found! Nothing was deleted!"
+                    )
+                )
+            du = await self.bot.db.list_collection_names()
+            for collection in du:
+                if collection == "system.indexes":
+                    continue
+
+                le = await self.bot.db[str(collection)].find().to_list(None)
+                for item in le:
+                    await bdb[str(collection)].insert_one(item)
+                    del item
+                del le
+                await ctx.send(
+                    embed=await self.generate_embed(f"Backed up `{str(collection)}`")
+                )
+            await self.db.find_one_and_update(
+                {"_id": "config"},
+                {"$set": {"backedupAt": str(datetime.datetime.utcnow())}},
+                upsert=True,
+            )
+            await ctx.send(
+                embed=await self.generate_embed(":tada: Backed Up Everything!")
+            )
+            return
+
+    @backup.command()
+    @checks.has_permissions(PermissionLevel.OWNER)
+    async def restore(self, ctx: commands.Context):
+        """
+            Restore Your Mongodb database using this command.
+
+            **Deletes Existing data from the original db and overwrites it with data in backup db**
+            """
+
+        def check(msg: discord.Message):
+            return ctx.author == msg.author and ctx.channel == msg.channel
+
+        config = await self.db.find_one({"_id": "config"})
+
+        if config is None or config["backedupAt"] is None:
+            await ctx.send("No previous backup found, exiting")
+            return
+        await ctx.send(
+            embed=await self.generate_embed(
+                f"Are you sure you wanna restore data from backup db which"
+                f" was last updated on **{config['backedupAt']} UTC**? `[y/n]`"
+            )
+        )
+        msg: discord.Message = await self.bot.wait_for("message", check=check)
+        if msg.content.lower() == "n":
+            await ctx.send("Exiting!")
+            return
         if os.path.exists("./config.json"):
             with open("./config.json") as f:
 
@@ -57,10 +159,10 @@ class BackupDB(commands.Cog):
             bdb = backup_client["backup_modmail_bot"]
         await ctx.send(
             embed=await self.generate_embed(
-                "Connected to backup DB. Removing all documents"
+                "Connected to backup DB. Removing all documents from original db."
             )
         )
-        collections = await bdb.list_collection_names()
+        collections = await self.bot.db.list_collection_names()
 
         if len(collections) > 0:
             for collection in collections:
@@ -77,22 +179,22 @@ class BackupDB(commands.Cog):
                     "No Existing collections found! Nothing was deleted!"
                 )
             )
-        du = await self.bot.db.list_collection_names()
+        du = await bdb.list_collection_names()
         for collection in du:
             if collection == "system.indexes":
                 continue
 
-            le = await self.bot.db[str(collection)].find().to_list(None)
+            le = await bdb[str(collection)].find().to_list(None)
             for item in le:
-                await bdb[str(collection)].insert_one(item)
+                await self.bot.db[str(collection)].insert_one(item)
                 del item
             del le
             await ctx.send(
-                embed=await self.generate_embed(f"Backed up `{str(collection)}`")
+                embed=await self.generate_embed(f"Restored `{str(collection)}`")
             )
         await self.db.find_one_and_update(
             {"_id": "config"},
-            {"$set": {"backedupAt": str(datetime.datetime.utcnow())}},
+            {"$set": {"restoredAt": str(datetime.datetime.utcnow())}},
             upsert=True,
         )
         await ctx.send(embed=await self.generate_embed(":tada: Backed Up Everything!"))
