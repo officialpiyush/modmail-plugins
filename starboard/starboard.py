@@ -38,7 +38,7 @@ class StarboardPlugin(commands.Cog):
             upsert=True,
         )
 
-    async def _set_db(self):
+    async def _set_val(self):
         config = await self.db.find_one({"_id": "config"})
 
         if config is None:
