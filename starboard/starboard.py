@@ -189,10 +189,13 @@ class StarboardPlugin(commands.Cog):
                 ).flatten()
 
                 for mesg in messages:
-                    if mesg.embeds[0] is None:
+                    if not mesg.embeds or mesg.embeds[0] is None:
                         continue
 
-                    if mesg.embeds[0].footer.text is None:
+                    if (
+                        mesg.embeds[0].footer.text is None
+                        or "⭐" in mesg.embeds[0].footer.text
+                    ):
                         continue
 
                     if mesg.embeds[0].footer.text.endswith(str(payload.message_id)):
