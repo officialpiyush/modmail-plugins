@@ -171,7 +171,7 @@ class BackupDB(commands.Cog):
 
                 await self.bot.db[collection].drop()
             await ctx.send(
-                embed=await self.generate_embed("Deleted all documents from backup db")
+                embed=await self.generate_embed("Deleted all documents from main db")
             )
         else:
             await ctx.send(
