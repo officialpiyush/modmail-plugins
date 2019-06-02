@@ -19,7 +19,7 @@ class ReactToContact(commands.Cog):
         self.reaction = None
         self.channel = None
         self.message = None
-        asyncio.create_task(self._set_db)
+        asyncio.create_task(self._set_db())
 
     async def _set_db(self):
         config = await self.db.find_one({"_id": "config"})
