@@ -19,6 +19,7 @@ class BackupDB(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
+        self.running = False
 
     @commands.group()
     @checks.has_permissions(PermissionLevel.OWNER)
@@ -29,6 +30,9 @@ class BackupDB(commands.Cog):
         **Deletes Existing data from the backup db**
         """
         if ctx.invoked_subcommand is None:
+            if self.running is True:
+                await ctx.send("A backup/restore process is already running, please wait until it finishes")
+                return
             if os.path.exists("./config.json"):
                 with open("./config.json") as f:
 
@@ -49,7 +53,7 @@ class BackupDB(commands.Cog):
                         ":x: | No `BACKUP_MONGO_URI` found in `config.json` or environment variables, please add one.\nNote: Backup db is different from original db!"
                     )
                     return
-
+            self.running = True
             db_name = (backup_url.split("/"))[-1]
             backup_client = AsyncIOMotorClient(backup_url)
             if "mlab.com" in backup_url:
@@ -101,6 +105,7 @@ class BackupDB(commands.Cog):
             await ctx.send(
                 embed=await self.generate_embed(":tada: Backed Up Everything!\nTo restore your backup at any time, type `{self.bot.prefix}backup restore`.")
             )
+            self.running = False
             return
 
     @backup.command()
@@ -114,6 +119,10 @@ class BackupDB(commands.Cog):
 
         def check(msg: discord.Message):
             return ctx.author == msg.author and ctx.channel == msg.channel
+
+        if self.running is True:
+            await ctx.send("A backup/restore process is already running, please wait until it finishes")
+            return
 
         config = await self.db.find_one({"_id": "config"})
 
@@ -131,6 +140,7 @@ class BackupDB(commands.Cog):
         if msg.content.lower() == "n":
             await ctx.send("Exiting!")
             return
+        self.running = True
         if os.path.exists("./config.json"):
             with open("./config.json") as f:
 
@@ -199,6 +209,8 @@ class BackupDB(commands.Cog):
             upsert=True,
         )
         await ctx.send(embed=await self.generate_embed(":tada: Restored Everything!"))
+        self.running = False
+        return
 
     async def generate_embed(self, msg: str):
         embed = discord.Embed(description=msg, color=discord.Colour.blurple())
