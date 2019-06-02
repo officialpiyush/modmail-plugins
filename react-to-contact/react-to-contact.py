@@ -34,7 +34,7 @@ class ReactToContact(commands.Cog):
     @commands.command(aliases=["sr"])
     @commands.guild_only()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def setreaction(self, ctx: commands.Context, link: discord.Message.jump_url):
+    async def setreaction(self, ctx: commands.Context, link: str):
         """
         Set the message on which the bot will look reactions on.
         Creates an interactive session to use emoji **(Supports Unicode Emoji Too)**
