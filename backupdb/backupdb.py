@@ -99,7 +99,7 @@ class BackupDB(commands.Cog):
                 upsert=True,
             )
             await ctx.send(
-                embed=await self.generate_embed(":tada: Backed Up Everything!")
+                embed=await self.generate_embed(":tada: Backed Up Everything!\nTo restore your backup at any time, type `{self.bot.prefix}backup restore`.")
             )
             return
 
