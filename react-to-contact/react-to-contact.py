@@ -48,25 +48,26 @@ class ReactToContact(commands.Cog):
 
         regex = r"discordapp\.com"
 
-        if not re.match(regex, link):
-            await ctx.send("Please give a valid message link")
-            return
-        else:
+        if re.match(regex, link):
             sl = link.split("/")
             msg = sl[-1]
             channel = sl[-2]
 
-        # TODO: Better English
-        await ctx.send(
-            "React to this message with the emoji."
-            " `(This Reaction Should be added on the message previously or it won't work.)`"
-        )
-        reaction, user = await self.bot.wait_for("reaction_add", check=check)
-        await self.db.find_one_and_update(
-            {"_id": "config"},
-            {"$set": {"channel": channel, "message": msg, "reaction": reaction.name}},
-        )
-        await ctx.send("Done!")
+            # TODO: Better English
+            await ctx.send(
+                "React to this message with the emoji."
+                " `(This Reaction Should be added on the message previously or it won't work.)`"
+            )
+            reaction, user = await self.bot.wait_for("reaction_add", check=check)
+            await self.db.find_one_and_update(
+                {"_id": "config"},
+                {"$set": {"channel": channel, "message": msg, "reaction": reaction.name}},
+            )
+            await ctx.send("Done!")
+
+        else:
+            await ctx.send("Please give a valid message link")
+            return
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
