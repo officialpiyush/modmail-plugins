@@ -1,4 +1,5 @@
-import typing
+import re
+import asyncio
 import datetime
 import discord
 from discord.ext import commands
@@ -15,31 +16,57 @@ class ReactToContact(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
+        self.reaction = None
+        self.channel = None
+        self.message = None
+        asyncio.create_task(self._set_db)
 
-    @commands.command(aliases=["setmessage"])
+    async def _set_db(self):
+        config = await self.db.find_one({"_id": "config"})
+
+        if config is None:
+            return
+        else:
+            self.channel = config.get("channel", None)
+            self.reaction = config.get("emote", None)
+            self.message = config.get("message", None)
+
+    @commands.command(aliases=["sr"])
     @commands.guild_only()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def setreaction(
-        self,
-        ctx: commands.Context,
-        channel: typing.Optional[discord.TextChannel],
-        messageid: discord.Message.id,
-    ):
+    async def setreaction(self, ctx: commands.Context, link: discord.Message.jump_url):
         """
         Set the message on which the bot will look reactions on.
         Creates an interactive session to use emoji **(Supports Unicode Emoji Too)**
 
         **Usage:**
-        {prefix}setreaction [channel] <message_id>
+        {prefix}setreaction <message_url>
         """
 
-        if channel is None:
-            channel: discord.TextChannel = ctx.channel
+        def check(reaction, user):
+            return user == ctx.message.author
+
+        regex = r"discordapp\.com"
+
+        if not re.match(regex, link):
+            await ctx.send("Please give a valid message link")
+            return
         else:
-            channel = ctx.channel
-        msg: discord.Message = await channel.fetch_message(int(messageid))
-        await ctx.send(f"Message with Message id `{messageid}` found.")
-        await ctx.send()
+            sl = link.split("/")
+            msg = sl[-1]
+            channel = sl[-2]
+
+        # TODO: Better English
+        await ctx.send(
+            "React to this message with the emoji."
+            " `(This Reaction Should be added on the message previously or it won't work.)`"
+        )
+        reaction, user = await self.bot.wait_for("reaction_add", check=check)
+        await self.db.find_one_and_update(
+            {"_id": "config"},
+            {"$set": {"channel": channel, "message": msg, "reaction": reaction.name}},
+        )
+        await ctx.send("Done!")
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
@@ -51,13 +78,13 @@ class ReactToContact(commands.Cog):
         if config is None:
             return
 
-        if config["emoji"] is None or (config["emoji"] != payload.emoji.id):
+        if config["reaction"] is None or (config["emoji"] != payload.emoji.name):
             return
 
         if config["channel"] is None or (payload.channel_id != config["channel"]):
             return
 
-        if config["mid"] is None or (payload.message_id != config["mid"]):
+        if config["message"] is None or (payload.message_id != config["message"]):
             return
 
         guild: discord.Guild = discord.utils.find(
@@ -68,7 +95,7 @@ class ReactToContact(commands.Cog):
 
         channel = guild.get_channel(int(config["channel"]))
 
-        msg: discord.Message = await channel.fetch_message(int(config["mid"]))
+        msg: discord.Message = await channel.fetch_message(int(config["message"]))
 
         await msg.remove_reaction(payload.emoji, member)
 
