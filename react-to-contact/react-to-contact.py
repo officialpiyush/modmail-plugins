@@ -87,7 +87,7 @@ class ReactToContact(commands.Cog):
         if config is None:
             return
 
-        if config["reaction"] is None or (config["reaction"] != payload.emoji.name):
+        if config["reaction"] is None or (payload.emoji.name != config["reaction"]):
             return
 
         if config["channel"] is None or (payload.channel_id != config["channel"]):
