@@ -31,7 +31,9 @@ class BackupDB(commands.Cog):
         """
         if ctx.invoked_subcommand is None:
             if self.running is True:
-                await ctx.send("A backup/restore process is already running, please wait until it finishes")
+                await ctx.send(
+                    "A backup/restore process is already running, please wait until it finishes"
+                )
                 return
             if os.path.exists("./config.json"):
                 with open("./config.json") as f:
@@ -103,7 +105,9 @@ class BackupDB(commands.Cog):
                 upsert=True,
             )
             await ctx.send(
-                embed=await self.generate_embed(f":tada: Backed Up Everything!\nTo restore your backup at any time, type `{self.bot.prefix}backup restore`.")
+                embed=await self.generate_embed(
+                    f":tada: Backed Up Everything!\nTo restore your backup at any time, type `{self.bot.prefix}backup restore`."
+                )
             )
             self.running = False
             return
@@ -121,7 +125,9 @@ class BackupDB(commands.Cog):
             return ctx.author == msg.author and ctx.channel == msg.channel
 
         if self.running is True:
-            await ctx.send("A backup/restore process is already running, please wait until it finishes")
+            await ctx.send(
+                "A backup/restore process is already running, please wait until it finishes"
+            )
             return
 
         config = await self.db.find_one({"_id": "config"})

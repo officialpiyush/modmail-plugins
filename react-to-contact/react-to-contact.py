@@ -61,7 +61,13 @@ class ReactToContact(commands.Cog):
             reaction, user = await self.bot.wait_for("reaction_add", check=check)
             await self.db.find_one_and_update(
                 {"_id": "config"},
-                {"$set": {"channel": channel, "message": msg, "reaction": reaction.name}},
+                {
+                    "$set": {
+                        "channel": channel,
+                        "message": msg,
+                        "reaction": reaction.name,
+                    }
+                },
             )
             await ctx.send("Done!")
 

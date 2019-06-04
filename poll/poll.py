@@ -5,6 +5,7 @@ import asyncio
 from core import checks
 from core.models import PermissionLevel
 
+
 def to_emoji(c):
     base = 0x1F1E6
     return chr(base + c)
