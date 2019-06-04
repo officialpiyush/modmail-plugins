@@ -69,6 +69,7 @@ class ReactToContact(commands.Cog):
                         "reaction": f"{reaction.emoji.name if isinstance(reaction.emoji, discord.Emoji) else reaction.emoji}",
                     }
                 },
+                upsert=True
             )
             await ctx.send("Done!")
 
