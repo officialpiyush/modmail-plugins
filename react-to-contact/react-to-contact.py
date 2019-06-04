@@ -65,7 +65,7 @@ class ReactToContact(commands.Cog):
                     "$set": {
                         "channel": channel,
                         "message": msg,
-                        "reaction": reaction.name,
+                        "reaction": reaction.emoji.name,
                     }
                 },
             )
