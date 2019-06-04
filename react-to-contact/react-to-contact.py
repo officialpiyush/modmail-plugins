@@ -85,15 +85,19 @@ class ReactToContact(commands.Cog):
         config = await self.db.find_one({"_id": "config"})
 
         if config is None:
+            print("No Config")
             return
 
         if config["reaction"] is None or (payload.emoji.name != config["reaction"]):
+            print("No Reaction")
             return
 
         if config["channel"] is None or (payload.channel_id != config["channel"]):
+            print("No Channel")
             return
 
         if config["message"] is None or (payload.message_id != config["message"]):
+            print("No Message")
             return
 
         guild: discord.Guild = discord.utils.find(
