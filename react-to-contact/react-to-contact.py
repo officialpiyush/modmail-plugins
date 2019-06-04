@@ -56,7 +56,7 @@ class ReactToContact(commands.Cog):
             # TODO: Better English
             await ctx.send(
                 "React to this message with the emoji."
-                " `(This Reaction Should be added on the message previously or it won't work.)`"
+                " `(This Reaction Should be added on this message or it won't work.)`"
             )
             reaction, user = await self.bot.wait_for("reaction_add", check=check)
 
