@@ -2,6 +2,8 @@
 from discord.ext import commands
 import asyncio
 
+from core import checks
+from core.models import PermissionLevel
 
 def to_emoji(c):
     base = 0x1F1E6
@@ -16,6 +18,7 @@ class Polls(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    @checks.has_permissions(PermissionLevel.ADMIN)
     async def poll(self, ctx, *, question):
         """Interactively creates a poll with the following question.
 
@@ -69,6 +72,7 @@ class Polls(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    @checks.has_permissions(PermissionLevel.ADMIN)
     async def quickpoll(self, ctx, *questions_and_choices: str):
         """Makes a poll quickly.
 
