@@ -69,7 +69,7 @@ class ReactToContact(commands.Cog):
                     "$set": {
                         "channel": channel,
                         "message": msg,
-                        "reaction": f"{reaction.emoji.name if reaction.emoji.name else reaction.emoji}",
+                        "reaction": f"{reaction.emoji.name if isinstance(reaction.emoji, discord.Emoji) else reaction.emoji}",
                     }
                 },
             )
