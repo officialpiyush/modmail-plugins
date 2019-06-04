@@ -59,10 +59,7 @@ class ReactToContact(commands.Cog):
                 " `(This Reaction Should be added on the message previously or it won't work.)`"
             )
             reaction, user = await self.bot.wait_for("reaction_add", check=check)
-            # if isinstance(reaction.emoji, str):
-            #     react = reaction.emoji
-            # elif isinstance(reaction.emoji, discord.Emoji):
-            #     react = reaction.emoji.name
+
             await self.db.find_one_and_update(
                 {"_id": "config"},
                 {
