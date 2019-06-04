@@ -92,11 +92,11 @@ class ReactToContact(commands.Cog):
             print("No Reaction")
             return
 
-        if config["channel"] is None or (payload.channel_id != config["channel"]):
+        if config["channel"] is None or (payload.channel_id != int(config["channel"])):
             print("No Channel")
             return
 
-        if config["message"] is None or (payload.message_id != config["message"]):
+        if config["message"] is None or (payload.message_id != int(config["message"])):
             print("No Message")
             return
 
