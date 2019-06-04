@@ -37,7 +37,7 @@ class ReactToContact(commands.Cog):
     async def setreaction(self, ctx: commands.Context, link: str):
         """
         Set the message on which the bot will look reactions on.
-        Creates an interactive session to use emoji **(Supports Unicode Emoji Too)**
+        Creates an __interactive session__ to use emoji **(Supports Unicode Emoji Too)**
 
         **Usage:**
         {prefix}setreaction <message_url>
