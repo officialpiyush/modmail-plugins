@@ -48,7 +48,7 @@ class ReactToContact(commands.Cog):
 
         regex = r"discordapp\.com"
 
-        if re.match(regex, link):
+        if bool(re.search(regex, link)) is True:
             sl = link.split("/")
             msg = sl[-1]
             channel = sl[-2]
