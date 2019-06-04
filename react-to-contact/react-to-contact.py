@@ -19,17 +19,17 @@ class ReactToContact(commands.Cog):
         self.reaction = None
         self.channel = None
         self.message = None
-        asyncio.create_task(self._set_db())
+        # asyncio.create_task(self._set_db())
 
-    async def _set_db(self):
-        config = await self.db.find_one({"_id": "config"})
+    # async def _set_db(self):
+    #     config = await self.db.find_one({"_id": "config"})
 
-        if config is None:
-            return
-        else:
-            self.channel = config.get("channel", None)
-            self.reaction = config.get("emote", None)
-            self.message = config.get("message", None)
+    #     if config is None:
+    #         return
+    #     else:
+    #         self.channel = config.get("channel", None)
+    #         self.reaction = config.get("reaction", None)
+    #         self.message = config.get("message", None)
 
     @commands.command(aliases=["sr"])
     @commands.guild_only()
