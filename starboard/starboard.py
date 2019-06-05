@@ -188,12 +188,11 @@ class StarboardPlugin(commands.Cog):
                 ).flatten()
 
                 for mesg in messages:
-                    if len(mesg.embeds) <= 0:
+                    if len(mesg.embeds) == 0:
                         continue
 
-                    if (
-                        mesg.embeds[0].footer.text is None
-                        or "⭐" not in mesg.embeds[0].footer.text
+                    if not mesg.embeds[0].footer.text or (
+                        "⭐" not in mesg.embeds[0].footer.text
                     ):
                         continue
 
