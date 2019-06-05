@@ -147,12 +147,14 @@ class StarboardPlugin(commands.Cog):
         config = await self.db.find_one({"_id": "config"})
 
         if config is None or self.channel is None:
+            print(150)
             return
 
         if (
             str(payload.channel_id) in self.channel_blacklist
             or str(payload.user_id) in self.user_blacklist
         ):
+            print(156)
             return
 
         guild: discord.Guild = self.bot.get_guild(int(self.bot.config["guild_id"]))
@@ -160,7 +162,8 @@ class StarboardPlugin(commands.Cog):
         channel: discord.TextChannel = guild.get_channel(int(payload.channel_id))
         user: discord.User = await self.bot.fetch_user(payload.user_id)
 
-        if channel is None or starboard_channel is None:
+        if channel is None or starboard_channel is None:#
+            print(164)
             return
 
         message: discord.Message = await channel.fetch_message(payload.message_id)
@@ -169,6 +172,7 @@ class StarboardPlugin(commands.Cog):
             return
 
         if len(message.reactions) == 0:
+            print(172)
             return
 
         for em in message.reactions:
@@ -237,6 +241,7 @@ class StarboardPlugin(commands.Cog):
     async def present(self, should_delete, count, payload, msg: discord.Message):
         if should_delete:
             await msg.delete()
+            print(244)
             return
         else:
             e = msg.embeds[0]
