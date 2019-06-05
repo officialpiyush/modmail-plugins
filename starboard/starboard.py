@@ -168,7 +168,7 @@ class StarboardPlugin(commands.Cog):
         if message.author.id == payload.user_id:
             return
 
-        if message.reactions[0] is None:
+        if len(message.reactions) == 0:
             return
 
         for em in message.reactions:
