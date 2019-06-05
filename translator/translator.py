@@ -4,7 +4,7 @@ import datetime
 from discord.ext import commands
 from discord import NotFound, HTTPException, User
 
-from .utils import Translator
+from .officialpiyush-modmail-plugins-translator-rewrite.translator.utils import Translator
 from core import checks
 from core.models import PermissionLevel
 
