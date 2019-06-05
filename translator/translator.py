@@ -65,7 +65,7 @@ class TranslatePlugin(commands.Cog):
 
         msg = "```css\n"
 
-        for ll, fl in LANGUAGES:
+        for ll, fl in LANGUAGES.items():
             if msg != "```css\n":
                 if len(f"{ll} - {fl}") + len(msg) + 3 > 2000:
                     msg += "```"
