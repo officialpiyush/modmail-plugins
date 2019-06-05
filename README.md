@@ -7,14 +7,13 @@
   <a href="https://discord.gg/hzD72GE">
     <img src="https://img.shields.io/discord/543812119397924886.svg?style=for-the-badge&colorB=7289DA" alt="Support">
   </a> 
-  <br>
 </div>
-
-> Support is provided on Piyush's discord server or #plugin-support channel in Development server of Modmail.
 
 # Author
 
 * [Piyush](https://github.com/officialpiyush)
+
+> Support is provided on Piyush's discord server or #plugin-support channel in Development server of Modmail.
 
 # Avaialable Plugins
 
