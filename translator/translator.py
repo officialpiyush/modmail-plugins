@@ -2,19 +2,32 @@ import discord
 import asyncio
 import datetime
 from discord.ext import commands
-from discord import NotFound, HTTPException, User
+from discord import NotFound, HTTPException, User, Embed
 
 from core import checks
 from core.models import PermissionLevel
+from core.paginator import PaginatorSession, MessagePaginatorSession
 
 from googletrans import Translator as CoreTranslator
+from googletrans import LANGUAGES
+
+
+class Language:
+    def __init__(self, argument):
+        if argument not in LANGUAGES:
+            raise commands.BadArgument(
+                ":x: Invalid language, use `languages` to get a list of supported languages!"
+            )
+        else:
+            self.lang = argument
+
 
 class Translator:
     def __init__(self):
         self.t = CoreTranslator()
-    
+
     def translate(self, msg: str, dest: str = "en"):
-        return CoreTranslator.translate(msg,dest=dest)
+        return CoreTranslator.translate(msg, dest=dest)
 
 
 class TranslatePlugin(commands.Cog):
@@ -44,6 +57,37 @@ class TranslatePlugin(commands.Cog):
         self.enabled = config.get("enabled", True)
         self.gt = config.get("globalTranslate", False)
         self.tt = set(config.get("translateSet", []))
+
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.SUPPORTER)
+    async def languages(self, ctx: commands.Context):
+        messages = []
+
+        msg = "```css\n"
+
+        for ll, fl in LANGUAGES:
+            if msg != "```css\n":
+                if len(f"{ll} - {fl}") + len(msg) + 3 > 2000:
+                    msg += "```"
+                    messages.append(msg)
+                    msg = "```css\n"
+            msg += f"{ll} - {fl}"
+            if len(msg) + 3 > 2000:
+                msg = msg[:1993] + "[...]```"
+                messages.append(msg)
+                msg = "```css\n"
+        if msg != "```css\n":
+            msg += "```"
+            messages.append(msg)
+
+        embed = Embed(color=self.bot.main_color)
+        embed.set_footer(
+            text="Available languages - Navigate using the reactions below."
+        )
+
+        session = MessagePaginatorSession(ctx, *messages, embed=embed)
+        session.current = len(messages) - 1
+        return await session.run()
 
     @commands.command()
     async def translate(self, ctx, msgid: int):
