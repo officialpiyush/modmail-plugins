@@ -189,21 +189,25 @@ class StarboardPlugin(commands.Cog):
                 countr = 0
                 for mesg in messages:
                     if len(mesg.embeds) == 0:
+                        print(192)
                         continue
 
                     if not mesg.embeds[0].footer.text or (
                         "⭐" not in mesg.embeds[0].footer.text
-                    ):
+                    ):  
+                        print(198)
                         continue
 
                     if mesg.embeds[0].footer.text.endswith(str(payload.message_id)):
                         msg: discord.Message = mesg
                         await self.present(should_delete, count, payload, msg)
+                        print(204)
                         break
                     else:
                         countr += 1
                         if countr == len(messages):
                             if should_delete:
+                                print(210)
                                 return
                             embed = discord.Embed(
                                 color=discord.Colour.gold(),
