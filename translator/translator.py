@@ -90,7 +90,6 @@ class TranslatePlugin(commands.Cog):
         return await session.run()
         # else:
 
-
     @commands.command()
     async def translate(self, ctx, msgid: int):
         """Translate A Sent Message, or a modmail thread message into English."""
