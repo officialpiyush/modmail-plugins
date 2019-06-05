@@ -4,10 +4,11 @@ import datetime
 from discord.ext import commands
 from discord import NotFound, HTTPException, User
 
+from .utils import Translator
 from core import checks
 from core.models import PermissionLevel
 
-from googletrans import Translator
+# from googletrans import Translator
 
 
 class TranslatePlugin(commands.Cog):
@@ -35,7 +36,7 @@ class TranslatePlugin(commands.Cog):
         """Translate A Sent Message, or a modmail thread message into English."""
         try:
             msg = await ctx.channel.get_message(msgid)
-            if not msg.embeds:
+            if len(msg.embeds) <= 0:
                 ms = msg.content
             else:
                 ms = msg.embeds[0].description
