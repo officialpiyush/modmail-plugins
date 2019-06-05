@@ -220,7 +220,9 @@ class StarboardPlugin(commands.Cog):
                                     embed.set_image(url=msg.attachments[0].url)
                                 except:
                                     pass
-                            await starboard_channel.send(f"{channel.mention}", embed=embed)
+                            await starboard_channel.send(
+                                f"{channel.mention}", embed=embed
+                            )
                         continue
                         # re_res = re.search(r'^\⭐\s([0-9]{1,3})\s\|\s([0-9]{17,20})', message.embeds[0].footer.text)
                         # if (re_res):
@@ -228,14 +230,15 @@ class StarboardPlugin(commands.Cog):
                         #     stars = arr[0]
                         #     break
 
-                
-
-    async def present(self,should_delete,count, payload, msg: discord.Message):
+    async def present(self, should_delete, count, payload, msg: discord.Message):
         if should_delete:
             await msg.delete()
             return
         else:
-            msg.embeds[0].footer.text = f"⭐ {count} | {payload.message_id}"
+            e = msg.embeds[0]
+            e.footer.text = f"⭐ {count} | {payload.message_id}"
+            await msg.edit(f"<#{payload.channel_id}>", embed=e)
+
 
 def setup(bot):
     bot.add_cog(StarboardPlugin(bot))
