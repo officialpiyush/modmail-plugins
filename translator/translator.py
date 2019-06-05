@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import datetime
+import typing
 from discord.ext import commands
 from discord import NotFound, HTTPException, User, Embed
 
@@ -58,9 +59,10 @@ class TranslatePlugin(commands.Cog):
         self.gt = config.get("globalTranslate", False)
         self.tt = set(config.get("translateSet", []))
 
-    @commands.command()
+    @commands.command(aliases=["languages"])
     @checks.has_permissions(PermissionLevel.SUPPORTER)
-    async def languages(self, ctx: commands.Context):
+    async def language(self, ctx: commands.Context):
+        # if lang is None:
         messages = []
 
         msg = "```css\n"
@@ -86,6 +88,8 @@ class TranslatePlugin(commands.Cog):
         session = MessagePaginatorSession(ctx, *messages, embed=embed)
         session.current = len(messages) - 1
         return await session.run()
+        # else:
+
 
     @commands.command()
     async def translate(self, ctx, msgid: int):
