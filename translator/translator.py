@@ -67,11 +67,11 @@ class TranslatePlugin(commands.Cog):
 
         for ll, fl in LANGUAGES.items():
             if msg != "```css\n":
-                if len(f"{ll} - {fl}") + len(msg) + 3 > 2000:
+                if len(f"{ll} - {fl}\n") + len(msg) + 3 > 2000:
                     msg += "```"
                     messages.append(msg)
                     msg = "```css\n"
-            msg += f"{ll} - {fl}"
+            msg += f"{ll} - {fl}\n"
             if len(msg) + 3 > 2000:
                 msg = msg[:1993] + "[...]```"
                 messages.append(msg)
