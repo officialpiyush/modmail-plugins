@@ -17,6 +17,7 @@ class TranslatePlugin(commands.Cog):
         self.db = bot.plugin_db.get_partition(self)
         self.translator = Translator()
         self.tt = set()
+        self.gt = False
         self.enabled = True
         asyncio.create_task(self._set_config())
 
@@ -25,10 +26,17 @@ class TranslatePlugin(commands.Cog):
         if config is None:
             await self.db.find_one_and_update(
                 {"_id": "config"},
-                {"$set": {"enabled": True, "translateSet": list([])}},
+                {
+                    "$set": {
+                        "enabled": True,
+                        "globalTranslate": False,
+                        "translateSet": list([]),
+                    }
+                },
                 upsert=True,
             )
         self.enabled = config.get("enabled", True)
+        self.gt = config.get("globalTranslate", False)
         self.tt = set(config.get("translateSet", []))
 
     @commands.command()
@@ -51,6 +59,30 @@ class TranslatePlugin(commands.Cog):
             await ctx.send("The Given Message Was Not Found.")
         except HTTPException:
             await ctx.send("The Try To Retrieve The Message Failed.")
+
+    @commands.command(aliases=["egt","toggle_global_translations","tgt"])
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def enable_global_translate(self, ctx: commands.Context):
+        """
+            Toggle Global translations for all threads.
+
+            **Usage:**
+            {prefix}egt
+        """
+        if self.gt is True:
+            self.gt = False
+            enabled = False
+        else:
+            self.gt = True
+            enabled = True
+            enabled = True
+
+        await self.db.find_one_and_update(
+            {"_id": "config"}, {"$set": {"globalTranslate": self.gt}}, upsert=True
+        )
+
+        await ctx.send(f"{'Enabled' if self.gt else 'Disabled'} Global Translations")
+        return
 
     @commands.command(aliases=["tt"])
     async def translatetext(self, ctx, *, message):
@@ -100,8 +132,9 @@ class TranslatePlugin(commands.Cog):
 
         channel = message.channel
 
-        if channel.id not in self.tt:
-            return
+        if self.gt is False:
+            if channel.id not in self.tt:
+                return
 
         if isinstance(message.author, User):
             return
@@ -109,7 +142,7 @@ class TranslatePlugin(commands.Cog):
         if "User ID:" not in channel.topic:
             return
 
-        if not message.embeds:
+        if len(message.embeds) <= 0:
             return
 
         if (
