@@ -81,9 +81,7 @@ class TranslatePlugin(commands.Cog):
             messages.append(msg)
 
         embed = Embed(color=self.bot.main_color)
-        embed.set_footer(
-            text="Available languages"
-        )
+        embed.set_footer(text="Available languages")
 
         session = MessagePaginatorSession(ctx, *messages, embed=embed)
         session.current = len(messages) - 1
