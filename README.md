@@ -1,13 +1,13 @@
 <div align="center">
 <img alt="Logo" src="https://images.ionadev.ml/b/hK3j3at.png" />
-  <br>
-    <strong><i>A repository to store Modmail Plugins</i></strong>
-   <br>
-   <br>
+   <strong><i>A repository to store Modmail Plugins</i></strong>
+ <br>
+ <br>
 
   <a href="https://discord.gg/hzD72GE">
     <img src="https://img.shields.io/discord/543812119397924886.svg?style=for-the-badge&colorB=7289DA" alt="Support">
   </a> 
+  <br>
 </div>
 
 > Support is provided on Piyush's discord server or #plugin-support channel in Development server of Modmail.
