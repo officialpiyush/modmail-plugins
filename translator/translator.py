@@ -4,11 +4,17 @@ import datetime
 from discord.ext import commands
 from discord import NotFound, HTTPException, User
 
-from .officialpiyush-modmail-plugins-translator-rewrite.translator.utils import Translator
 from core import checks
 from core.models import PermissionLevel
 
-# from googletrans import Translator
+from googletrans import Translator as CoreTranslator
+
+class Translator:
+    def __init__(self):
+        self.t = CoreTranslator()
+    
+    def translate(self, msg: str, dest: str = "en"):
+        return CoreTranslator.translate(msg,dest=dest)
 
 
 class TranslatePlugin(commands.Cog):
