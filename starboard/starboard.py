@@ -186,7 +186,7 @@ class StarboardPlugin(commands.Cog):
                 messages = await starboard_channel.history(
                     limit=30, around=message.created_at
                 ).flatten()
-
+                countr = 0
                 for mesg in messages:
                     if len(mesg.embeds) == 0:
                         continue
@@ -198,8 +198,29 @@ class StarboardPlugin(commands.Cog):
 
                     if mesg.embeds[0].footer.text.endswith(str(payload.message_id)):
                         msg: discord.Message = mesg
+                        await self.present(should_delete, count, payload, msg)
                         break
                     else:
+                        countr += 1
+                        if countr == len(messages):
+                            if should_delete:
+                                return
+                            embed = discord.Embed(
+                                color=discord.Colour.gold(),
+                                description=msg.content,
+                                timestamp=datetime.utcnow(),
+                            )
+                            embed.set_author(
+                                name=f"{user.name}#{user.discriminator}",
+                                icon_url=user.avatar_url,
+                            )
+                            embed.set_footer(text=f"⭐ {count} | {payload.message_id}")
+                            if len(msg.attachments) > 1:
+                                try:
+                                    embed.set_image(url=msg.attachments[0].url)
+                                except:
+                                    pass
+                            await starboard_channel.send(f"{channel.mention}", embed=embed)
                         continue
                         # re_res = re.search(r'^\⭐\s([0-9]{1,3})\s\|\s([0-9]{17,20})', message.embeds[0].footer.text)
                         # if (re_res):
@@ -207,34 +228,14 @@ class StarboardPlugin(commands.Cog):
                         #     stars = arr[0]
                         #     break
 
-                if msg:
-                    if should_delete:
-                        await msg.delete()
-                        return
-                    else:
-                        msg.embeds[0].footer.text = f"⭐ {count} | {payload.message_id}"
+                
 
-                else:
-                    if should_delete:
-                        return
-                    embed = discord.Embed(
-                        color=discord.Colour.gold(),
-                        description=msg.content,
-                        timestamp=datetime.utcnow(),
-                    )
-                    embed.set_author(
-                        name=f"{user.name}#{user.discriminator}",
-                        icon_url=user.avatar_url,
-                    )
-                    embed.set_footer(text=f"⭐ {count} | {payload.message_id}")
-                    if len(msg.attachments) > 1:
-                        try:
-                            embed.set_image(url=msg.attachments[0].url)
-                        except:
-                            pass
-                    await starboard_channel.send(f"{channel.mention}", embed=embed)
-                    return
-
+    async def present(self,should_delete,count, payload, msg: discord.Message):
+        if should_delete:
+            await msg.delete()
+            return
+        else:
+            msg.embeds[0].footer.text = f"⭐ {count} | {payload.message_id}"
 
 def setup(bot):
     bot.add_cog(StarboardPlugin(bot))
