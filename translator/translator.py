@@ -60,7 +60,7 @@ class TranslatePlugin(commands.Cog):
         except HTTPException:
             await ctx.send("The Try To Retrieve The Message Failed.")
 
-    @commands.command(aliases=["egt","toggle_global_translations","tgt"])
+    @commands.command(aliases=["egt", "toggle_global_translations", "tgt"])
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def enable_global_translate(self, ctx: commands.Context):
         """
