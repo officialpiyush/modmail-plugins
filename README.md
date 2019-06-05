@@ -1,10 +1,20 @@
 <div align="center">
 <img alt="Logo" src="https://images.ionadev.ml/b/hK3j3at.png" />
+  <br>
+    <strong><i>A repository to store Modmail Plugins</i></strong>
+   <br>
+   <br>
+
+  <a href="https://discord.gg/hzD72GE">
+    <img src="https://img.shields.io/discord/543812119397924886.svg?style=for-the-badge&colorB=7289DA" alt="Support">
+  </a> 
 </div>
 
-# Whats This?
+> Support is provided on Piyush's discord server or #plugin-support channel in Development server of Modmail.
 
-* This Is a Repo Where Plugins of [Mod Mail](https://github.com/kyb3r/modmail) Discord Bot Made By [Piyush aka iona](https://github.com/officialpiyush)!
+# Author
+
+* [Piyush](https://github.com/officialpiyush)
 
 # Avaialable Plugins
 
