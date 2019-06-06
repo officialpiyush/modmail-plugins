@@ -1,10 +1,19 @@
 <div align="center">
-<img alt="Logo" src="https://vgy.me/WAiCEv.png" />
+<img alt="Logo" src="https://images.ionadev.ml/b/hK3j3at.png" />
+   <strong><i>A repository to store Modmail Plugins</i></strong>
+ <br>
+ <br>
+
+  <a href="https://discord.gg/hzD72GE">
+    <img src="https://img.shields.io/discord/543812119397924886.svg?style=for-the-badge&colorB=7289DA" alt="Support">
+  </a> 
 </div>
 
-# Whats This?
+# Author
 
-* This Is a Repo Where Plugins of [Mod Mail](https://github.com/kyb3r/modmail) Discord Bot Made By [Piyush aka iona](https://github.com/ionadev)!
+* [Piyush](https://github.com/officialpiyush)
+
+> Support is provided on Piyush's discord server or #plugin-support channel in Development server of Modmail.
 
 # Avaialable Plugins
 
@@ -16,3 +25,9 @@
 |   Hastebin   	|   Upload Text To Hastebin   	|   `plugins add officialpiyush/modmail-plugins/hastebin`   	|   [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/hastebin)   	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|   [![Downloads]( https://counter.modmail-plugins.ionadev.ml/badge/hastebin/)](#)   	|
 | Leave Server 	| Make The Bot Leave A Server 	| `plugins add officialpiyush/modmail-plugins/leave-server` 	| [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/leave-server) 	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|  [![Downloads]( https://counter.modmail-plugins.ionadev.ml/badge/leaveserver/)](#) 	|
 |  Translator  	|      Translate Messages     	|  `plugins add officialpiyush/modmail-plugins/translator`  	|  [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/translator)  	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|  [![Downloads]( https://counter.modmail-plugins.ionadev.ml/badge/translator/)](#)  	|
+
+
+# Contributors
+
+| [<img src="https://avatars1.githubusercontent.com/u/18086566?s=460&v=4" width="100px;"/><br /><sub><b>Piyush Bhangale</b></sub>](https://github.com/officialpiyush)<br /> 	| [<img src="https://avatars3.githubusercontent.com/u/42642013?s=400&v=4" width="100px;"/><br /><sub><b>Robin Mahieu</b></sub>](https://github.com/papiersnipper)<br /> 	| [<img src="https://avatars3.githubusercontent.com/u/44692189?s=400&v=4" width="100px;"/><br /><sub><b>Code Integer 6</b></sub>](https://github.com/codeinteger6)<br /> 	| [<img src="https://avatars3.githubusercontent.com/u/29310830?s=400&v=4" width="100px;"/><br /><sub><b>Kyber</b></sub>](https://github.com/kyb3r)<br /> 	| [<img src="https://avatars0.githubusercontent.com/u/48181821?s=400&v=4" width="100px;"/><br /><sub><b>MiTonder</b></sub>](https://github.com/MiTonder)<br /> 	|
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------	|------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------	|
