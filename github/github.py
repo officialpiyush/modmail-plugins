@@ -67,3 +67,7 @@ class GithubPlugin(commands.Cog):
         if len(data.labels) > 0:
             embed.add_field(name="__**Labels:**__", value=", ".join(str(label) for label in data.labels))
         return embed
+
+
+def setup(bot):
+    bot.add_cog(GithubPlugin(bot))
