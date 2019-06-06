@@ -21,7 +21,7 @@ class GithubPlugin(commands.Cog):
                 f"https://api.github.com/repos/kyb3r/modmail/pulls/{num}"
             ) as prr:
                 prj = await prr.json()
-                if prj["message"] != "Not Found":
+                if prj["message"] and prj["message"] != "Not Found":
                     e = await self.handlePR(prj)
                     await msg.channel.send(embed=e)
                     return
@@ -30,7 +30,7 @@ class GithubPlugin(commands.Cog):
                         f"https://api.github.com/repos/kyb3r/modmail/issues/{num}"
                     ) as err:
                         erj = await err.json()
-                        if erj["message"] == "Not Found":
+                        if erj["message"] and erj["message"] == "Not Found":
                             await msg.channel.send("PR/Issue Not Found")
                             return
                         else:
