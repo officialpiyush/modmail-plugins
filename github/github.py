@@ -67,6 +67,8 @@ class GithubPlugin(commands.Cog):
             if len(data["body"]) > 2048
             else data["body"]
         )
+
+        rtitle = f"[kyb3r/modmail] #{data['number']}: {data['title']}"
         embed = discord.Embed()
        # embed.set_thumbnail(url="https://images.ionadev.ml/b/8rs7vC7.png")
         embed.set_author(
@@ -74,7 +76,7 @@ class GithubPlugin(commands.Cog):
             icon_url=data["user"]["avatar_url"],
             url=data["user"]["html_url"],
         )
-        embed.title = data["title"]
+        embed.title = title
         embed.url = data["html_url"]
         embed.description = description
         embed.add_field(name="__**Status:**__", value=data["state"], inline=True)
