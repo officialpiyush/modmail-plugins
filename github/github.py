@@ -4,7 +4,7 @@ from discord.ext import commands
 
 
 class GithubPlugin(commands.Cog):
-    def init(self, bot):
+    def __init__(self, bot):
         self.bot = bot
         self.colors = {
             "pr": {"open": 0x2CBE4E, "closed": 0xCB2431, "merged": 0x6F42C1},
