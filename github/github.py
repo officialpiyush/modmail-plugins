@@ -49,9 +49,9 @@ class GithubPlugin(commands.Cog):
         )
         embed = self._base(data)
         embed.colour = self.colors["pr"][state]
-        embed.add_field(name="**Additions**", value=data["additions"])
-        embed.add_field(name="**Deletions**", value=data["deletions"])
-        embed.add_field(name="**Commits**", value=data["commits"])
+        embed.add_field(name="Additions", value=data["additions"])
+        embed.add_field(name="Deletions", value=data["deletions"])
+        embed.add_field(name="Commits", value=data["commits"])
         # embed.set_footer(text=f"Pull Request #{data['number']}")
         return embed
 
@@ -84,10 +84,10 @@ class GithubPlugin(commands.Cog):
         embed.title = title
         embed.url = data["html_url"]
         embed.description = description
-        embed.add_field(name="**Status**", value=data["state"], inline=True)
+        embed.add_field(name="Status", value=data["state"], inline=True)
         if len(data["labels"]) > 0:
             embed.add_field(
-                name="**Labels**",
+                name="Labels",
                 value=", ".join(str(label["name"]) for label in data["labels"]),
             )
         return embed
