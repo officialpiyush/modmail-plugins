@@ -64,7 +64,7 @@ class GithubPlugin(commands.Cog):
         embed.description = description
         embed.add_field(name="__**Status:**__", value=data["state"], inline=True)
         if len(data["labels"]) > 0:
-            embed.add_field(name="__**Labels:**__", value=", ".join(str(label) for label in data["labels"]))
+            embed.add_field(name="__**Labels:**__", value=", ".join(str(label["name"]) for label in data["labels"]))
         return embed
 
 
