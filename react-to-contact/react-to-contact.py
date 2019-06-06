@@ -38,6 +38,7 @@ class ReactToContact(commands.Cog):
         """
         Set the message on which the bot will look reactions on.
         Creates an __interactive session__ to use emoji **(Supports Unicode Emoji Too)**
+        Before using this command, make sure there is a reaction on the message you want the plugin to look at.
 
         **Usage:**
         {prefix}setreaction <message_url>
