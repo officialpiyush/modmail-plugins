@@ -68,7 +68,7 @@ class GithubPlugin(commands.Cog):
             else data["body"]
         )
         embed = discord.Embed()
-        embed.set_thumbnail(url="https://images.ionadev.ml/b/8rs7vC7.png")
+       # embed.set_thumbnail(url="https://images.ionadev.ml/b/8rs7vC7.png")
         embed.set_author(
             name=data["user"]["login"],
             icon_url=data["user"]["avatar_url"],
