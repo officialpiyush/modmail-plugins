@@ -4,7 +4,7 @@ from discord.ext import commands
 
 
 class GithubPlugin(commands.Cog):
-    def __init__(self, bot):
+    def init(self, bot):
         self.bot = bot
         self.colors = {
             "pr": {"open": 0x2CBE4E, "closed": 0xCB2431, "merged": 0x6F42C1},
@@ -49,9 +49,9 @@ class GithubPlugin(commands.Cog):
         )
         embed = self._base(data)
         embed.colour = self.colors["pr"][state]
-        embed.add_field(name="__**Additions:**__", value=data["additions"])
-        embed.add_field(name="__**Deletions:**__", value=data["deletions"])
-        embed.add_field(name="__**Commits:**__", value=data["commits"])
+        embed.add_field(name="**Additions**", value=data["additions"])
+        embed.add_field(name="**Deletions**", value=data["deletions"])
+        embed.add_field(name="**Commits**", value=data["commits"])
         embed.set_footer(text=f"Pull Request #{data['number']}")
         return embed
 
@@ -69,6 +69,11 @@ class GithubPlugin(commands.Cog):
         )
 
         rtitle = f"[kyb3r/modmail] #{data['number']}: {data['title']}"
+        title = (
+            f"{rtitle.slice(0, 253)}..."
+            if len(rtitle) > 256
+            else rtitle
+        )
         embed = discord.Embed()
        # embed.set_thumbnail(url="https://images.ionadev.ml/b/8rs7vC7.png")
         embed.set_author(
@@ -79,10 +84,10 @@ class GithubPlugin(commands.Cog):
         embed.title = title
         embed.url = data["html_url"]
         embed.description = description
-        embed.add_field(name="__**Status:**__", value=data["state"], inline=True)
+        embed.add_field(name="**Status**", value=data["state"], inline=True)
         if len(data["labels"]) > 0:
             embed.add_field(
-                name="__**Labels:**__",
+                name="**Labels**",
                 value=", ".join(str(label["name"]) for label in data["labels"]),
             )
         return embed
