@@ -47,7 +47,7 @@ class GithubPlugin(commands.Cog):
             if (data["state"] == "closed" and data["merged"])
             else data["state"]
         )
-        embed = self._base(data)
+        embed = self._base(data, issue=False)
         embed.colour = self.colors["pr"][state]
         embed.add_field(name="Additions", value=data["additions"])
         embed.add_field(name="Deletions", value=data["deletions"])
@@ -61,14 +61,16 @@ class GithubPlugin(commands.Cog):
         # embed.set_footer(text=f"Issue #{data['number']}")
         return embed
 
-    def _base(self, data):
+    def _base(self, data, issue=True):
         description = (
             f"{data['body'].slice(0, 2045)}..."
             if len(data["body"]) > 2048
             else data["body"]
         )
 
-        rtitle = f"[kyb3r/modmail] #{data['number']}: {data['title']}"
+        _type = "Issue" if issue else "Pull request"
+
+        rtitle = f"[kyb3r/modmail] {_type}: #{data['number']} {data['title']}"
         title = (
             f"{rtitle.slice(0, 253)}..."
             if len(rtitle) > 256
