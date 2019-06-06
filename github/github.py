@@ -31,7 +31,10 @@ class GithubPlugin(commands.Cog):
                     ) as err:
                         erj = await err.json()
                         if "message" in erj and erj["message"] == "Not Found":
-                            await msg.channel.send("PR/Issue Not Found")
+                            await msg.channel.send(embed=discord.Embed(
+                                colour=discord.Colour.red(),
+                                description="Issue/PR not found."
+                            ))
                             return
                         else:
                             e = await self.handleIssue(erj)
