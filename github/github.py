@@ -57,7 +57,7 @@ class GithubPlugin(commands.Cog):
     def _base(self, data):
         description = f"{data['body'].slice(0, 2045)}..." if len(data["body"]) > 2048 else data["body"]
         embed = discord.Embed()
-        embed.set_thumbnail("https://images.ionadev.ml/b/8rs7vC7.png")
+        embed.set_thumbnail(url="https://images.ionadev.ml/b/8rs7vC7.png")
         embed.set_author(name=data["user"]["login"], icon_url=data["user"]["avatar_url"], url=data["user"]["html_url"])
         embed.title = data["title"]
         embed.url = data["html_url"]
