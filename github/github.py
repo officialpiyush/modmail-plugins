@@ -52,13 +52,13 @@ class GithubPlugin(commands.Cog):
         embed.add_field(name="**Additions**", value=data["additions"])
         embed.add_field(name="**Deletions**", value=data["deletions"])
         embed.add_field(name="**Commits**", value=data["commits"])
-        embed.set_footer(text=f"Pull Request #{data['number']}")
+        # embed.set_footer(text=f"Pull Request #{data['number']}")
         return embed
 
     async def handleIssue(self, data):
         embed = self._base(data)
         embed.colour = self.colors["issues"][data["state"]]
-        embed.set_footer(text=f"Issue #{data['number']}")
+        # embed.set_footer(text=f"Issue #{data['number']}")
         return embed
 
     def _base(self, data):
