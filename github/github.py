@@ -39,33 +39,32 @@ class GithubPlugin(commands.Cog):
                             return
 
     async def handlePR(self, data):
-        state = "merged" if (data.state == 'closed' and data.merged ) else data.state
+        state = "merged" if (data["state"] == 'closed' and data["merged"] ) else data["state"]
         embed = self._base(data)
         embed.colour = self.colors["pr"][state]
-        embed.add_field(name="__**Additions:**__", value=data.additions)
-        embed.add_field(name="__**Deletions:**__", value=data.deletions)
-        embed.add_field(name="__**Commits:**__", value=data.commits)
-        embed.set_footer(text=f"Pull Request: {data.number}")
+        embed.add_field(name="__**Additions:**__", value=data["additions"])
+        embed.add_field(name="__**Deletions:**__", value=data["deletions"])
+        embed.add_field(name="__**Commits:**__", value=data["commits"])
+        embed.set_footer(text=f"Pull Request: {data['number']}")
         return embed
 
     async def handleIssue(self, data):
         embed = self._base(data)
-        embed.colour = self.colors["issues"][data.state]
-        embed.set_footer(text=f"Issue {data.number}")
+        embed.colour = self.colors["issues"][data["state"]]
+        embed.set_footer(text=f"Issue {data['number']}")
         return embed
     
     def _base(self, data):
-        description = f"{data.body.slice(0, 2045)}..." if len(data.body) > 2048 else data.body
-
+        description = f"{data['body'].slice(0, 2045)}..." if len(data["body"]) > 2048 else data["body"]
         embed = discord.Embed()
         embed.set_thumbnail("https://images.ionadev.ml/b/8rs7vC7.png")
-        embed.set_author(name=data.user.login, icon_url=data.user.avatar_url, url=data.user.html_url)
-        embed.title = data.title
-        embed.url = data.html_url
+        embed.set_author(name=data["user"]["login"], icon_url=data["user"]["avatar_url"], url=data["user"]["html_url"])
+        embed.title = data["title"]
+        embed.url = data["html_url"]
         embed.description = description
-        embed.add_field(name="__**Status:**__", value=data.state, inline=True)
-        if len(data.labels) > 0:
-            embed.add_field(name="__**Labels:**__", value=", ".join(str(label) for label in data.labels))
+        embed.add_field(name="__**Status:**__", value=data["state"], inline=True)
+        if len(data["labels"]) > 0:
+            embed.add_field(name="__**Labels:**__", value=", ".join(str(label) for label in data["labels"]))
         return embed
 
 
