@@ -21,7 +21,7 @@ class GithubPlugin(commands.Cog):
                 f"https://api.github.com/repos/kyb3r/modmail/pulls/{num}"
             ) as prr:
                 prj = await prr.json()
-                if "message" in prj and prj["message"] != "Not Found":
+                if "message" not in prj:
                     e = await self.handlePR(prj)
                     await msg.channel.send(embed=e)
                     return
