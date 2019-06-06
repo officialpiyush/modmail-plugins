@@ -20,7 +20,7 @@ class GithubPlugin(commands.Cog):
             async with self.bot.session.get(
                 f"https://api.github.com/repos/kyb3r/modmail/pulls/{num}"
             ) as prr:
-                prj = prr.json()
+                prj = await prr.json()
                 if prj["message"] != "Not Found":
                     e = await self.handlePR(prj)
                     await msg.channel.send(embed=e)
@@ -29,7 +29,7 @@ class GithubPlugin(commands.Cog):
                     async with self.bot.session.get(
                         f"https://api.github.com/repos/kyb3r/modmail/issues/{num}"
                     ) as err:
-                        erj = err.json()
+                        erj = await err.json()
                         if erj["message"] == "Not Found":
                             await msg.channel.send("PR/Issue Not Found")
                             return
