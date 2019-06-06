@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://i.vgy.me/GHCzHX.png" alt="Translator Image" align="center"></img>
+    <img src="https://images.ionadev.ml/b/Je5mX9h.png" alt="Translator Image" align="center"></img>
     <br>
     <strong><i>A Plugin For ModMail Bot To Translate Messages</i></strong>
    <br>
