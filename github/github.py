@@ -8,7 +8,7 @@ class GithubPlugin(commands.Cog):
         self.bot = bot
         self.colors = {
             "pr": {"open": 0x2CBE4E, "closed": 0xCB2431, "merged": 0x6F42C1},
-            "issues": {"open": 0xD1D134, "closed": 0x2D32BE},
+            "issues": {"open": 0x009800, "closed": 0x2D32BE},
         }
         self.regex = r"modmail#(\d+)"
 
