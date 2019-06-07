@@ -32,7 +32,7 @@ class TranslatePlugin(commands.Cog):
 
     @commands.command()
     async def translate(self, ctx, msgid: int):
-        """Translate A Sent Message, or a modmail thread message into English."""
+        """Translate a sent message or a modmail thread message into english."""
         try:
             msg = await ctx.channel.get_message(msgid)
             if not msg.embeds:
@@ -47,13 +47,13 @@ class TranslatePlugin(commands.Cog):
             embed.description = tmsg.text
             await ctx.channel.send(embed=embed)
         except NotFound:
-            await ctx.send("The Given Message Was Not Found.")
+            await ctx.send("The provided message Was not found.")
         except HTTPException:
-            await ctx.send("The Try To Retrieve The Message Failed.")
+            await ctx.send("Failed to retrieve the message.")
 
     @commands.command(aliases=["tt"])
     async def translatetext(self, ctx, *, message):
-        """Translates Given Message Into English"""
+        """Translates a provided message into english"""
         tmsg = self.translator.translate(message)
         embed = discord.Embed()
         embed.color = 4388013
@@ -63,9 +63,9 @@ class TranslatePlugin(commands.Cog):
     @commands.command(aliases=["att"])
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     async def auto_translate_thread(self, ctx):
-        """Turn On Autotranslate for the ongoing thread."""
+        """Turn on auto translations for the ongoing thread."""
         if "User ID:" not in ctx.channel.topic:
-            await ctx.send("The Channel Is Not A Modmail Thread")
+            await ctx.send("The channel is not a modmail thread")
             return
         if ctx.channel.id in self.tt:
             self.tt.remove(ctx.channel.id)
@@ -85,7 +85,7 @@ class TranslatePlugin(commands.Cog):
     @commands.command(aliases=["tat"])
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def toggle_auto_translations(self, ctx, enabled: bool):
-        """Enable/Disable Auto Translations"""
+        """Enable/Disable automatic translations"""
         self.enabled = enabled
         await self.db.update_one(
             {"_id": "config"}, {"$set": {"enabled": self.enabled}}, upsert=True
