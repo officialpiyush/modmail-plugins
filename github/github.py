@@ -7,8 +7,12 @@ class GithubPlugin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.colors = {
-            "pr": {"open": 0x2CBE4E, "closed": 0xCB2431, "merged": 0x6F42C1},
-            "issues": {"open": 0xD1D134, "closed": 0x2D32BE},
+            "pr": {
+                "open": 0x2CBE4E,
+                "closed": discord.Embed.Empty,
+                "merged": discord.Embed.Empty,
+            },
+            "issues": {"open": 0xE68D60, "closed": discord.Embed.Empty},
         }
         self.regex = r"modmail#(\d+)"
 
@@ -31,10 +35,12 @@ class GithubPlugin(commands.Cog):
                     ) as err:
                         erj = await err.json()
                         if "message" in erj and erj["message"] == "Not Found":
-                            await msg.channel.send(embed=discord.Embed(
-                                colour=discord.Colour.red(),
-                                description="Issue/PR not found."
-                            ))
+                            await msg.channel.send(
+                                embed=discord.Embed(
+                                    colour=discord.Colour.red(),
+                                    description="Issue/PR not found.",
+                                )
+                            )
                             return
                         else:
                             e = await self.handleIssue(erj)
@@ -71,13 +77,9 @@ class GithubPlugin(commands.Cog):
         _type = "Issue" if issue else "Pull request"
 
         rtitle = f"[kyb3r/modmail] {_type}: #{data['number']} {data['title']}"
-        title = (
-            f"{rtitle.slice(0, 253)}..."
-            if len(rtitle) > 256
-            else rtitle
-        )
+        title = f"{rtitle.slice(0, 253)}..." if len(rtitle) > 256 else rtitle
         embed = discord.Embed()
-       # embed.set_thumbnail(url="https://images.ionadev.ml/b/8rs7vC7.png")
+        # embed.set_thumbnail(url="https://images.ionadev.ml/b/8rs7vC7.png")
         embed.set_author(
             name=data["user"]["login"],
             icon_url=data["user"]["avatar_url"],
