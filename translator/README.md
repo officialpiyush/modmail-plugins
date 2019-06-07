@@ -1,7 +1,7 @@
 <div align="center">
     <img src="https://images.ionadev.ml/b/Je5mX9h.png" alt="Translator Image" align="center"></img>
     <br>
-    <strong><i>A Plugin For ModMail Bot To Translate Messages</i></strong>
+    <strong><i>A Modmail plugin that (auto) translates messages</i></strong>
    <br>
    <br>
 
@@ -14,11 +14,11 @@
 
 # How To Install?
 
-* To Install this plugin, just run the following command - `<your_prefix>plugins add officialpiyush/modmail-plugins/translator` and you are good to go!
+* To Install this plugin just run the following command - `<your_prefix>plugins add officialpiyush/modmail-plugins/translator` and you are good to go!
 
 # Support
 
-* All Support for this plugin is provided in my server - [Discord Invite Link](https://discord.gg/hzD72GE)
+* Support inquiries are handled in my server - [Discord Invite Link](https://discord.gg/hzD72GE)
 
 # Commands
 
