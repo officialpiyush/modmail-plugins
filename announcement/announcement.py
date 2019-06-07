@@ -202,7 +202,7 @@ class AnnoucementPlugin(commands.Cog):
                 embed.set_footer(text=foo.content)
 
             await ctx.send(
-                embed=await self.generate_embed("Do you want it to have a color?")
+                embed=await self.generate_embed("Do you want it to have a color?`[y/n]`")
             )
             c_res: discord.Message = await self.bot.wait_for("message", check=check)
             if cancel_check(c_res) is True:
