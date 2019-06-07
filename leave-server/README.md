@@ -1,7 +1,7 @@
 <div align="center">
     <img src="https://images.ionadev.ml/b/0XgiTdb.png" alt="LS Image" align="center"></img>
     <br>
-    <strong><i>A Plugin For ModMail Bot To make it leave a server.</i></strong>
+    <strong><i>A plugin For ModMail Bot to force it to leave a specified server.</i></strong>
    <br>
    <br>
 
