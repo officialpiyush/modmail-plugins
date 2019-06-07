@@ -13,7 +13,7 @@ class HastebinCog(commands.Cog):
 
     @commands.command()
     async def hastebin(self, ctx, *, message):
-        """Upload Text To hastebin"""
+        """Upload text to hastebin"""
         haste_url = os.environ.get("HASTE_URL", "https://hasteb.in")
 
         try:
@@ -22,14 +22,14 @@ class HastebinCog(commands.Cog):
             ) as resp:
                 key = (await resp.json())["key"]
                 embed = Embed(
-                    title="Your Uploaded File",
+                    title="Your uploaded file",
                     color=self.bot.main_color,
                     description=f"{haste_url}/" + key,
                 )
         except (JSONDecodeError, ClientResponseError, IndexError):
             embed = Embed(
                 color=self.bot.main_color,
-                description="Something's wrong. "
+                description="Something went wrong. "
                 "We're unable to upload your text to hastebin.",
             )
             embed.set_footer(text="Hastebin Plugin")
