@@ -9,7 +9,7 @@ from core.models import PermissionLevel
 
 class AnnoucementPlugin(commands.Cog):
     """
-    Easily Make plain text or Embedded Announcements
+    Easily create plain text or embedded announcements
     """
 
     def __init__(self, bot):
@@ -29,20 +29,20 @@ class AnnoucementPlugin(commands.Cog):
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def start(self, ctx: commands.Context,role: typing.Optional[discord.Role]):
         """
-        Start an interactive session to make announcement
-        Give the role in the command if you wanna mention any
+        Start an interactive session to create announcement
+        Add the role in the command if you want to enable mentions
 
         **Example:**
-        __Announcement With Role Mention:__
+        __Announcement with role mention:__
         {prefix}announcement start everyone
 
-        __Announcement Without Role Mention__
+        __Announcement without role mention__
         {prefix}announcement start
         """
 
         role_mention = f"<@&{role.id}>" if role else ""
 
-        # TODO: Make use of reactions
+        # TODO: Enable use of reactions
         def check(msg: discord.Message):
             return ctx.author == msg.author and ctx.channel == msg.channel
 
@@ -86,7 +86,7 @@ class AnnoucementPlugin(commands.Cog):
             grole: discord.Role = guild.get_role(role.id)
             await grole.edit(mentionable=True)
 
-        await ctx.send("Starting an interactive process to make an announcement")
+        await ctx.send("Starting an interactive process to create an announcement")
 
         await ctx.send(
             embed=await self.generate_embed("Do you want it to be an embed? `[y/n]`")
@@ -99,8 +99,8 @@ class AnnoucementPlugin(commands.Cog):
         elif cancel_check(embed_res) is False and embed_res.content.lower() == "n":
             await ctx.send(
                 embed=await self.generate_embed(
-                    "Okay, Lets do a no-embed announcement."
-                    "\nWhat's The Announcement?"
+                    "Okay, let's do a no-embed announcement."
+                    "\nWhat's the announcement?"
                 )
             )
             announcement = await self.bot.wait_for("message", check=check)
@@ -110,7 +110,7 @@ class AnnoucementPlugin(commands.Cog):
             else:
                 await ctx.send(
                     embed=await self.generate_embed(
-                        "In which channel should I send the announcement?"
+                        "To which channel should I send the announcement?"
                     )
                 )
                 channel: discord.Message = await self.bot.wait_for(
@@ -131,7 +131,7 @@ class AnnoucementPlugin(commands.Cog):
             embed = discord.Embed()
             await ctx.send(
                 embed=await self.generate_embed(
-                    "Should the embed have an title? `[y/n]`"
+                    "Should the embed have a title? `[y/n]`"
                 )
             )
             t_res = await self.bot.wait_for("message", check=check)
@@ -141,7 +141,7 @@ class AnnoucementPlugin(commands.Cog):
             elif cancel_check(t_res) is False and t_res.content.lower() == "y":
                 await ctx.send(
                     embed=await self.generate_embed(
-                        "What should be the title of the embed?"
+                        "What should the title of the embed be?"
                         "\n**Must not exceed 256 characters**"
                     )
                 )
@@ -149,7 +149,7 @@ class AnnoucementPlugin(commands.Cog):
                 embed.title = tit.content
             await ctx.send(
                 embed=await self.generate_embed(
-                    "Will the embed have an description?`[y/n]`"
+                    "Should the embed have a description?`[y/n]`"
                 )
             )
             d_res: discord.Message = await self.bot.wait_for("message", check=check)
@@ -159,7 +159,7 @@ class AnnoucementPlugin(commands.Cog):
             elif cancel_check(d_res) is False and d_res.content.lower() == "y":
                 await ctx.send(
                     embed=await self.generate_embed(
-                        "What should be the description of the embed?"
+                        "What do you want as the description for the embed?"
                         "\n**Must not exceed 2048 characters**"
                     )
                 )
@@ -168,7 +168,7 @@ class AnnoucementPlugin(commands.Cog):
 
             await ctx.send(
                 embed=await self.generate_embed(
-                    "Will the embed have a thumbnail?`[y/n]`"
+                    "Should the embed have a thumbnail?`[y/n]`"
                 )
             )
             th_res: discord.Message = await self.bot.wait_for("message", check=check)
@@ -178,7 +178,7 @@ class AnnoucementPlugin(commands.Cog):
             elif cancel_check(th_res) is False and th_res.content.lower() == "y":
                 await ctx.send(
                     embed=await self.generate_embed(
-                        "What should be the thumbnail of the embed?Give a " "valid URL"
+                        "What'sthe thumbnail of the embed? Enter a " "valid URL"
                     )
                 )
                 thu = await self.bot.wait_for("message", check=check)
@@ -194,7 +194,7 @@ class AnnoucementPlugin(commands.Cog):
             elif cancel_check(f_res) is False and f_res.content.lower() == "y":
                 await ctx.send(
                     embed=await self.generate_embed(
-                        "What should be the footer of the embed?"
+                        "What do you want the footer of the embed to be?"
                         "\n**Must not exceed 2048 characters**"
                     )
                 )
@@ -211,7 +211,7 @@ class AnnoucementPlugin(commands.Cog):
             elif cancel_check(c_res) is False and c_res.content.lower() == "y":
                 await ctx.send(
                     embed=await self.generate_embed(
-                        "What Colour should the embed have? "
+                        "What color should the embed have? "
                         "Please provide a valid hex color"
                     )
                 )
@@ -275,7 +275,7 @@ class AnnoucementPlugin(commands.Cog):
         msg: str,
     ):
         """
-        An Old way of making announcements
+        An old way of making announcements
 
         **Usage:**
         {prefix}announcement quick #channel <OPTIONAL role> message
