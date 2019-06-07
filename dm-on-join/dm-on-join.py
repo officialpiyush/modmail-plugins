@@ -10,7 +10,7 @@ class DmOnJoinPlugin(commands.Cog):
     @commands.command(aliases=["sdms"])
     @commands.has_permissions(manage_guild=True)
     async def setdmmessage(self, ctx, *, message):
-        """Set A Message To DM A user after they join."""
+        """Set a message to DM a user after they join."""
         if message.startswith("https://") or message.startswith("http://"):
             # message is a URL
             if message.startswith("https://hasteb.in/"):
@@ -24,7 +24,7 @@ class DmOnJoinPlugin(commands.Cog):
             upsert=True,
         )
 
-        await ctx.send("Successfully Set The Message.")
+        await ctx.send("Successfully set the message.")
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -43,7 +43,7 @@ class DmOnJoinPlugin(commands.Cog):
             "https://counter.modmail-plugins.ionadev.ml/api/instances/dmonjoin",
             json={"id": self.bot.user.id},
         ):
-            print("Posted to Plugin API")
+            print("Posted to plugin API")
 
 
 def setup(bot):
