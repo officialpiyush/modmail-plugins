@@ -1,3 +1,3 @@
 {
-  "allowed": []
+  "allowed": ["tags","announcement","dmonjoin","hastebin","leaveserver","translator","reacttocontact","moderation","backupdb"]
 }
