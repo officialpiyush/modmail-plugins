@@ -1,3 +1,13 @@
 {
-  "allowed": ["tags","announcement","dmonjoin","hastebin","leaveserver","translator","reacttocontact","moderation","backupdb"]
+   "allowed":[
+      "tags",
+      "announcement",
+      "dmonjoin",
+      "hastebin",
+      "leaveserver",
+      "translator",
+      "reacttocontact",
+      "moderation",
+      "backupdb"
+   ]
 }
