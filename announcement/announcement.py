@@ -27,7 +27,7 @@ class AnnoucementPlugin(commands.Cog):
 
     @announcement.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def start(self, ctx: commands.Context,role: typing.Optional[discord.Role]):
+    async def start(self, ctx: commands.Context, role: typing.Optional[discord.Role]):
         """
         Start an interactive session to create announcement
         Add the role in the command if you want to enable mentions
@@ -183,11 +183,9 @@ class AnnoucementPlugin(commands.Cog):
                 )
                 thu = await self.bot.wait_for("message", check=check)
                 embed.set_thumbnail(url=thu.content)
-            
+
             await ctx.send(
-                embed=await self.generate_embed(
-                    "Should the embed have a image?`[y/n]`"
-                )
+                embed=await self.generate_embed("Should the embed have a image?`[y/n]`")
             )
             i_res: discord.Message = await self.bot.wait_for("message", check=check)
             if cancel_check(i_res) is True:
@@ -220,7 +218,9 @@ class AnnoucementPlugin(commands.Cog):
                 embed.set_footer(text=foo.content)
 
             await ctx.send(
-                embed=await self.generate_embed("Do you want it to have a color?`[y/n]`")
+                embed=await self.generate_embed(
+                    "Do you want it to have a color?`[y/n]`"
+                )
             )
             c_res: discord.Message = await self.bot.wait_for("message", check=check)
             if cancel_check(c_res) is True:
