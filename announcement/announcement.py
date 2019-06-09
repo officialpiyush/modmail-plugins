@@ -198,7 +198,7 @@ class AnnoucementPlugin(commands.Cog):
                     )
                 )
                 i = await self.bot.wait_for("message", check=check)
-                embed.set_thumbnail(url=i.content)
+                embed.set_image(url=i.content)
 
             await ctx.send(
                 embed=await self.generate_embed("Will the embed have a footer?`[y/n]`")
