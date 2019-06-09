@@ -1,11 +1,16 @@
 import discord
 import re
+import asyncio
 from discord.ext import commands
+
+from core import checks
+from core.models import PermissionLevel
 
 
 class GithubPlugin(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
+        self.bot: discord.Client = bot
+        self.db = bot.plugin_db.get_partition(self)
         self.colors = {
             "pr": {
                 "open": 0x2CBE4E,
@@ -14,24 +19,74 @@ class GithubPlugin(commands.Cog):
             },
             "issues": {"open": 0xE68D60, "closed": discord.Embed.Empty},
         }
-        self.regex = r"modmail#(\d+)"
+        self.repo = "kyb3r/modmail"
+        asyncio.create_task(self._set_repo)
+        self.regex = r"(?:^|\s)#(\d+)\b"
+
+    async def _set_repo(self):
+        config = await self.db.find_one({"_id": "config"})
+        if config is None:
+            return
+        self.repo = config.get("repo", "kyb3r/modmail")
+
+    async def _update(self):
+        await self.db.find_one_and_update(
+            {"_id": "config"}, {"$set": {"repo": self.repo}}, upsert=True
+        )
+
+    @commands.group(invoke_without_command=True)
+    @checks.has_permission(PermissionLevel.OWNER)
+    async def github(self, ctx: commands.Context):
+        """
+		Get github project's issue / PR info from bot.
+		"""
+        await ctx.send_help(ctx.command)
+
+    @github.command(aliases=["repo"])
+    @checks.has_permission(PermissionLevel.OWNER)
+    async def repository(self, ctx: commands.Context, repo: str):
+        """
+		Set the repo on which the bot will look for issues/pr's.
+		"""
+        if "https://github.com" not in repo:
+            await ctx.send(":x: | Not a valid repo url")
+            return
+        else:
+            raw = repo.split("/")
+            self.repo = f"{raw[-2]}/{raw[-1]}"
+            await self._update()
 
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):
-        match = re.match(self.regex, msg.content)
+        def check(reaction: discord.Reaction, user: discord.User):
+            return (
+                msg.author.id == user.id
+                and reaction.message.id == rm.id
+                and reaction.emoji == "🔖"
+            )
+
+        match = re.search(self.regex, msg.content)
         if match:
             num = match.group(1)
             async with self.bot.session.get(
-                f"https://api.github.com/repos/kyb3r/modmail/pulls/{num}"
+                f"https://api.github.com/repos/{self.repo}/pulls/{num}"
             ) as prr:
                 prj = await prr.json()
                 if "message" not in prj:
+                    rm = await msg.add_reaction("🔖")
+                    try:
+                        has_reacted = await self.bot.wait_for(
+                            "reaction_add", timeout=30.0, check=check
+                        )
+                    except asyncio.TimeoutError:
+                        await msg.remove_reaction(emoji="🔖", member=self.bot.user)
+                        return
                     e = await self.handlePR(prj)
                     await msg.channel.send(embed=e)
                     return
                 else:
                     async with self.bot.session.get(
-                        f"https://api.github.com/repos/kyb3r/modmail/issues/{num}"
+                        f"https://api.github.com/repos/{self.repo}/issues/{num}"
                     ) as err:
                         erj = await err.json()
                         if "message" in erj and erj["message"] == "Not Found":
@@ -43,6 +98,16 @@ class GithubPlugin(commands.Cog):
                             )
                             return
                         else:
+                            rm = await msg.add_reaction("🔖")
+                            try:
+                                has_reacted = await self.bot.wait_for(
+                                    "reaction_add", timeout=30.0, check=check
+                                )
+                            except asyncio.TimeoutError:
+                                await msg.remove_reaction(
+                                    emoji="🔖", member=self.bot.user
+                                )
+                                return
                             e = await self.handleIssue(erj)
                             await msg.channel.send(embed=e)
                             return
