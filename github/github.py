@@ -18,7 +18,7 @@ class GithubPlugin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):
-        match = re.match(self.regex, msg.content)
+        match = re.search(self.regex, msg.content)
         if match:
             num = match.group(1)
             async with self.bot.session.get(
