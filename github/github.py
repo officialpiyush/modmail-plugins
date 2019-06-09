@@ -64,7 +64,7 @@ class GithubPlugin(commands.Cog):
                 and reaction.emoji == "🔖"
             )
 
-        match = re.search("(?:^|\\s)#(\\d{1,})\\b", msg.content)
+        match = re.search(r"(?:^|\s)#(\d+)\b", msg.content)
         if match:
             num = match.group(1)
             async with self.bot.session.get(
