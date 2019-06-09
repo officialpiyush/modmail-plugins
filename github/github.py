@@ -9,7 +9,7 @@ from core.models import PermissionLevel
 
 class GithubPlugin(commands.Cog):
     def __init__(self, bot):
-        self.bot: discord.Client = bot
+        self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
         self.colors = {
             "pr": {
