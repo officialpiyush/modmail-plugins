@@ -21,7 +21,6 @@ class GithubPlugin(commands.Cog):
         }
         self.repo = "kyb3r/modmail"
         asyncio.create_task(self._set_repo)
-        self.regex = r"(?:^|\s)#(\d+)\b"
 
     async def _set_repo(self):
         config = await self.db.find_one({"_id": "config"})
@@ -36,7 +35,7 @@ class GithubPlugin(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.OWNER)
-    async def github(self, ctx: commands.Context):
+    async def git(self, ctx: commands.Context):
         """
 		Get github project's issue / PR info from bot.
 		"""
@@ -65,7 +64,7 @@ class GithubPlugin(commands.Cog):
                 and reaction.emoji == "🔖"
             )
 
-        match = re.search(self.regex, msg.content)
+        match = re.search("(?:^|\\s)#(\\d{1,})\\b", msg.content)
         if match:
             num = match.group(1)
             async with self.bot.session.get(
