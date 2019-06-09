@@ -35,7 +35,7 @@ class GithubPlugin(commands.Cog):
         )
 
     @commands.group(invoke_without_command=True)
-    @checks.has_permission(PermissionLevel.OWNER)
+    @checks.has_permissions(PermissionLevel.OWNER)
     async def github(self, ctx: commands.Context):
         """
 		Get github project's issue / PR info from bot.
@@ -43,7 +43,7 @@ class GithubPlugin(commands.Cog):
         await ctx.send_help(ctx.command)
 
     @github.command(aliases=["repo"])
-    @checks.has_permission(PermissionLevel.OWNER)
+    @checks.has_permissions(PermissionLevel.OWNER)
     async def repository(self, ctx: commands.Context, repo: str):
         """
 		Set the repo on which the bot will look for issues/pr's.
