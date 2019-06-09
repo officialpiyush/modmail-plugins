@@ -41,7 +41,7 @@ class GithubPlugin(commands.Cog):
 		"""
         await ctx.send_help(ctx.command)
 
-    @github.command(aliases=["repo"])
+    @git.command(aliases=["repo"])
     @checks.has_permissions(PermissionLevel.OWNER)
     async def repository(self, ctx: commands.Context, repo: str):
         """
