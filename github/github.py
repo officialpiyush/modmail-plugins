@@ -20,6 +20,7 @@ class GithubPlugin(commands.Cog):
             "issues": {"open": 0xE68D60, "closed": discord.Embed.Empty},
         }
         self.repo = "kyb3r/modmail"
+        self.regex = r"(?:^|s)#(\d+)\b"
         asyncio.create_task(self._set_repo)
 
     async def _set_repo(self):
@@ -64,7 +65,7 @@ class GithubPlugin(commands.Cog):
                 and reaction.emoji == "🔖"
             )
 
-        match = re.search(r"(?:^|\s)#(\d+)\b", msg.content)
+        match = re.search(self.regex, msg.content)
         if match:
             num = match.group(1)
             async with self.bot.session.get(
