@@ -1,5 +1,6 @@
-import discord
 import re
+
+import discord
 from discord.ext import commands
 
 
@@ -14,46 +15,53 @@ class GithubPlugin(commands.Cog):
             },
             "issues": {"open": 0xE68D60, "closed": discord.Embed.Empty},
         }
-        self.regex = r"modmail#(\d+)"
+        self.regex = r"(\S+)#(\d+)"
 
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):
         match = re.search(self.regex, msg.content)
+
         if match:
-            num = match.group(1)
+            repo = match.group(1)
+            num = match.group(2)
+
+            if repo == "modmail":
+                repo = "kyb3r/modmail"
+            elif repo == "logviewer":
+                repo = "kyb3r/logviewer"
+
             async with self.bot.session.get(
-                f"https://api.github.com/repos/kyb3r/modmail/pulls/{num}"
+                f"https://api.github.com/repos/{repo}/pulls/{num}"
             ) as prr:
                 prj = await prr.json()
+
                 if "message" not in prj:
-                    e = await self.handlePR(prj)
-                    await msg.channel.send(embed=e)
-                    return
+                    em = await self.handlePR(prj, repo)
+                    return await msg.channel.send(embed=em)
                 else:
                     async with self.bot.session.get(
-                        f"https://api.github.com/repos/kyb3r/modmail/issues/{num}"
+                        f"https://api.github.com/repos/{repo}/issues/{num}"
                     ) as err:
                         erj = await err.json()
+
                         if "message" in erj and erj["message"] == "Not Found":
-                            await msg.channel.send(
+                            return await msg.channel.send(
                                 embed=discord.Embed(
                                     colour=discord.Colour.red(),
                                     description="Issue/PR not found.",
                                 )
                             )
-                            return
                         else:
-                            e = await self.handleIssue(erj)
-                            await msg.channel.send(embed=e)
-                            return
+                            em = await self.handleIssue(erj, repo)
+                            return await msg.channel.send(embed=em)
 
-    async def handlePR(self, data):
+    async def handlePR(self, data, repo):
         state = (
             "merged"
             if (data["state"] == "closed" and data["merged"])
             else data["state"]
         )
-        embed = self._base(data, issue=False)
+        embed = self._base(data, repo, issue=False)
         embed.colour = self.colors["pr"][state]
         embed.add_field(name="Additions", value=data["additions"])
         embed.add_field(name="Deletions", value=data["deletions"])
@@ -61,13 +69,13 @@ class GithubPlugin(commands.Cog):
         # embed.set_footer(text=f"Pull Request #{data['number']}")
         return embed
 
-    async def handleIssue(self, data):
-        embed = self._base(data)
+    async def handleIssue(self, data, repo):
+        embed = self._base(data, repo)
         embed.colour = self.colors["issues"][data["state"]]
         # embed.set_footer(text=f"Issue #{data['number']}")
         return embed
 
-    def _base(self, data, issue=True):
+    def _base(self, data, repo, issue=True):
         description = (
             f"{data['body'].slice(0, 2045)}..."
             if len(data["body"]) > 2048
@@ -76,7 +84,7 @@ class GithubPlugin(commands.Cog):
 
         _type = "Issue" if issue else "Pull request"
 
-        rtitle = f"[kyb3r/modmail] {_type}: #{data['number']} {data['title']}"
+        rtitle = f"[{repo}] {_type}: #{data['number']} {data['title']}"
         title = f"{rtitle.slice(0, 253)}..." if len(rtitle) > 256 else rtitle
         embed = discord.Embed()
         # embed.set_thumbnail(url="https://images.ionadev.ml/b/8rs7vC7.png")
