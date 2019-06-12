@@ -15,7 +15,7 @@ class GithubPlugin(commands.Cog):
             },
             "issues": {"open": 0xE68D60, "closed": discord.Embed.Empty},
         }
-        self.regex = r"(\S+)#(\d+)"
+        self.regex = r"(\D+)#(\d+)"
 
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):
@@ -25,10 +25,16 @@ class GithubPlugin(commands.Cog):
             repo = match.group(1)
             num = match.group(2)
 
+            if repo == "<":  # Channel mention
+                return
+
             if repo == "modmail":
                 repo = "kyb3r/modmail"
             elif repo == "logviewer":
                 repo = "kyb3r/logviewer"
+
+            if "/" not in repo:
+                return
 
             async with self.bot.session.get(
                 f"https://api.github.com/repos/{repo}/pulls/{num}"
