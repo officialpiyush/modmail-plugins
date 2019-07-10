@@ -1,5 +1,9 @@
+import logging
+
 import discord
 from discord.ext import commands
+
+logger = logging.getLogger("Modmail")
 
 
 class DmOnJoinPlugin(commands.Cog):
@@ -18,6 +22,7 @@ class DmOnJoinPlugin(commands.Cog):
 
             async with self.bot.session.get(message) as resp:
                 message = await resp.text()
+
         await self.db.find_one_and_update(
             {"_id": "dm-config"},
             {"$set": {"dm-message": {"message": message}}},
@@ -28,14 +33,17 @@ class DmOnJoinPlugin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        config = (await self.db.find_one({"_id": "dm-config"}))["dm-message"]
+        config = await self.db.find_one({"_id": "dm-config"})
+        
         if config is None:
+            logger.info("User joined, but no DM message was set.")
             return
-        else:
-            try:
-                await member.send(config["message"])
-            except:
-                return
+
+        try:
+            message = config["dm-message"]["message"]
+            await member.send(message)
+        except:
+            return
 
     @commands.Cog.listener()
     async def on_ready(self):
