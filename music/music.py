@@ -1,8 +1,9 @@
-import ayncio
+import asyncio
 import os
 import lavalink
 import discord
 import re
+import math
 from discord.ext import commands
 
 
@@ -17,22 +18,22 @@ class MusicPlugin(commands.Cog):
         asyncio.create_task(self.update())
 
     def update(self):
-        self.lavalink.host = os.getenv("ll_host")
-        self.lavalink.port = os.getenv("ll_port")
-        self.lavalink.password = os.getenv("ll_password")
+        self.lavalink["host"] = os.getenv("ll_host")
+        self.lavalink["port"] = os.getenv("ll_port")
+        self.lavalink["password"] = os.getenv("ll_password")
         if not hasattr(
             self.bot, "lavalink"
         ):  # This ensures the client isn't overwritten during cog reloads.
-            self.bot.lavalink = lavalink.Client(bot.user.id)
+            self.bot.lavalink = lavalink.Client(self.bot.user.id)
             self.bot.lavalink.add_node(
-                self.lavalink.host,
-                self.lavalink.port,
-                self.lavalink.password,
+                self.lavalink["host"],
+                self.lavalink["port"],
+                self.lavalink["password"],
                 os.getenv("ll_region", "eu"),
                 "default-node",
             )  # Host, Port, Password, Region, Name
             self.bot.add_listener(
-                bot.lavalink.voice_update_handler, "on_socket_response"
+                self.bot.lavalink.voice_update_handler, "on_socket_response"
             )
 
     @commands.command()
@@ -294,7 +295,7 @@ class MusicPlugin(commands.Cog):
                 )
 
             player.store("channel", ctx.channel.id)
-            await self.connect_to(ctx=ctx, channel=str(ctx.author.voice.channel.id))
+            await self.join(ctx=ctx, channel=str(ctx.author.voice.channel.id))
         else:
             if int(player.channel_id) != ctx.author.voice.channel.id:
                 raise commands.CommandInvokeError("You need to be in my voicechannel.")
