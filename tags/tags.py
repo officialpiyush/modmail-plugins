@@ -97,7 +97,7 @@ class TagsPlugin(commands.Cog):
     @tags.command()
     async def claim(self, ctx: commands.Context, name: str):
         """
-        Claim a tag is the user has left the server
+        Claim a tag if the user has left the server
         """
         tag = await self.find_db(name=name)
 
