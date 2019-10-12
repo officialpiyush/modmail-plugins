@@ -1,6 +1,8 @@
 # Copyright (c) 2015 Rapptz
 from discord.ext import commands
+import discord
 import asyncio
+import datetime
 
 from core import checks
 from core.models import PermissionLevel
@@ -19,12 +21,17 @@ class Polls(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @checks.has_permissions(PermissionLevel.ADMIN)
+    @checks.has_permissions(PermissionLevel.MODa)
     async def poll(self, ctx, *, question):
         """Interactively creates a poll with the following question.
 
         To vote, use reactions!
         """
+        perms = ctx.channel.permissions_for(ctx.me)
+        if not perms.add_reactions:
+            return await ctx.send(
+                "Need Add Reactions permissions."
+            )
 
         # a list of messages to delete when we're all done
         messages = [ctx.message]
@@ -40,7 +47,7 @@ class Polls(commands.Cog):
         for i in range(20):
             messages.append(
                 await ctx.send(
-                    f"Say poll option or {ctx.prefix}cancel to publish poll."
+                    f"Say poll option or {ctx.prefix}done to publish poll."
                 )
             )
 
@@ -51,7 +58,7 @@ class Polls(commands.Cog):
 
             messages.append(entry)
 
-            if entry.clean_content.startswith(f"{ctx.prefix}cancel"):
+            if entry.clean_content.startswith(f"{ctx.prefix}done"):
                 break
 
             answers.append((to_emoji(i), entry.clean_content))
@@ -60,11 +67,13 @@ class Polls(commands.Cog):
             await ctx.channel.delete_messages(messages)
         except:
             pass  # oh well
-
+        
         answer = "\n".join(f"{keycap}: {content}" for keycap, content in answers)
-        actual_poll = await ctx.send(f"{ctx.author} asks: {question}\n\n{answer}")
+        embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{question}**\n{answer}")
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        poll = await ctx.send(embed=embed)
         for emoji, _ in answers:
-            await actual_poll.add_reaction(emoji)
+            await poll.add_reaction(emoji)
 
     @poll.error
     async def poll_error(self, ctx, error):
@@ -78,17 +87,18 @@ class Polls(commands.Cog):
         """Makes a poll quickly.
 
         The first argument is the question and the rest are the choices.
+        for example: `?quickpoll "Orange or Orange Juice?" Orange "Orange Juice"`
         """
 
-        if len(questions_and_choices) < 3:
+        if len(questions_and_choices) 1 > and < 3:
             return await ctx.send("Need at least 1 question with 2 choices.")
         elif len(questions_and_choices) > 21:
             return await ctx.send("You can only have up to 20 choices.")
 
         perms = ctx.channel.permissions_for(ctx.me)
-        if not (perms.read_message_history or perms.add_reactions):
+        if not perms.add_reactions:
             return await ctx.send(
-                "Need Read Message History and Add Reactions permissions."
+                "Need Add Reactions permissions."
             )
 
         question = questions_and_choices[0]
@@ -100,7 +110,9 @@ class Polls(commands.Cog):
             pass
 
         body = "\n".join(f"{key}: {c}" for key, c in choices)
-        poll = await ctx.send(f"{ctx.author} asks: {question}\n\n{body}")
+        embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{question}**\n{body}")
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        poll = await ctx.send(embed=embed)
         for emoji, _ in choices:
             await poll.add_reaction(emoji)
 
