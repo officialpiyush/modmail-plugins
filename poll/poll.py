@@ -114,7 +114,7 @@ class Polls(commands.Cog):
             embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{question}**")
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             poll = await ctx.send(embed=embed)
-            reactions = [":thumbsup:", "thumbsdown"]
+            reactions = ["👍", "👎"]
             for emoji in reactions:
                 await poll.add_reaction(emoji)
                    
