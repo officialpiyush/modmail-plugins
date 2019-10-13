@@ -109,7 +109,7 @@ class Polls(commands.Cog):
         except:
             pass
         if len(questions_and_choices) == 1:
-            embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{questions_and_choices}**}")
+            embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{questions_and_choices}**")
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             poll = await ctx.send(embed=embed)
             reactions = [":thumbsup:", "thumbsdown"]
