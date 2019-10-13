@@ -85,13 +85,17 @@ class Polls(commands.Cog):
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def quickpoll(self, ctx, *questions_and_choices: str):
         """Makes a poll quickly.
-
         The first argument is the question and the rest are the choices.
-        for example: `?quickpoll "Orange or Orange Juice?" Orange "Orange Juice"`
+        for example: `?quickpoll "Green or Light Green?" Green "Light Green"`
+        
+        or it can be a simple yes or no poll, like:
+        `?quickpoll "Do you watch Anime?"`
         """
 
-        if len(questions_and_choices) 1 > and < 3:
-            return await ctx.send("Need at least 1 question with 2 choices.")
+        if len(questions_and_choices) == 0:
+            return await ctx.send("You need to specify a question.")
+        elif len(questions_and_choices) == 2:
+            return await ctx.send("You need at least 2 choices.")
         elif len(questions_and_choices) > 21:
             return await ctx.send("You can only have up to 20 choices.")
 
@@ -100,22 +104,29 @@ class Polls(commands.Cog):
             return await ctx.send(
                 "Need Add Reactions permissions."
             )
-
-        question = questions_and_choices[0]
-        choices = [(to_emoji(e), v) for e, v in enumerate(questions_and_choices[1:])]
-
         try:
             await ctx.message.delete()
         except:
             pass
+        if len(questions_and_choices) == 1:
+            embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{questions_and_choices}**}")
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            poll = await ctx.send(embed=embed)
+            reactions = [":thumbsup:", "thumbsdown"]
+            for emoji in reactions:
+                await poll.add_reaction(emoji)
+                   
+        else:
+            question = questions_and_choices[0]
+            choices = [(to_emoji(e), v) for e, v in enumerate(questions_and_choices[1:])]
 
-        body = "\n".join(f"{key}: {c}" for key, c in choices)
-        embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{question}**\n{body}")
-        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-        poll = await ctx.send(embed=embed)
-        for emoji, _ in choices:
-            await poll.add_reaction(emoji)
+            body = "\n".join(f"{key}: {c}" for key, c in choices)
+            embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{question}**\n{body}")
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            poll = await ctx.send(embed=embed)
+            for emoji, _ in choices:
+                await poll.add_reaction(emoji)
 
-
+        
 def setup(bot):
     bot.add_cog(Polls(bot))
