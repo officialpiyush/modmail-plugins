@@ -21,7 +21,7 @@ class Polls(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @checks.has_permissions(PermissionLevel.MODa)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def poll(self, ctx, *, question):
         """Interactively creates a poll with the following question.
 
@@ -82,7 +82,7 @@ class Polls(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @checks.has_permissions(PermissionLevel.ADMIN)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def quickpoll(self, ctx, *questions_and_choices: str):
         """Makes a poll quickly.
         The first argument is the question and the rest are the choices.
