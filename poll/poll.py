@@ -108,8 +108,10 @@ class Polls(commands.Cog):
             await ctx.message.delete()
         except:
             pass
+        question = questions_and_choices[0]
+        
         if len(questions_and_choices) == 1:
-            embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{questions_and_choices}**")
+            embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{question}**")
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             poll = await ctx.send(embed=embed)
             reactions = [":thumbsup:", "thumbsdown"]
@@ -117,7 +119,6 @@ class Polls(commands.Cog):
                 await poll.add_reaction(emoji)
                    
         else:
-            question = questions_and_choices[0]
             choices = [(to_emoji(e), v) for e, v in enumerate(questions_and_choices[1:])]
 
             body = "\n".join(f"{key}: {c}" for key, c in choices)
