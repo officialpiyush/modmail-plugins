@@ -92,7 +92,7 @@ class Polls(commands.Cog):
     @commands.guild_only()
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def quick(self, ctx, *questions_and_choices: str):
-        f"""Makes a poll quickly.
+        """Makes a poll quickly.
         The first argument is the question and the rest are the choices.
         for example: `{ctx.prefix}quickpoll "Green or Light Green?" Green "Light Green"`
         
