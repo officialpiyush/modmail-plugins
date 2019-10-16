@@ -18,11 +18,19 @@ class Polls(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command()
+    
+   
+    @commands.group(name="poll", invoke_without_command=True)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
+    async def poll(self, ctx: commands.Context):
+        """Easily create Polls.
+        """
+        await ctx.send_help(ctx.command)
+        
+    @poll.command()
     @commands.guild_only()
     @checks.has_permissions(PermissionLevel.MODERATOR)
-    async def poll(self, ctx, *, question):
+    async def start(self, ctx, *, question):
         """Interactively creates a poll with the following question.
 
         To vote, use reactions!
@@ -47,7 +55,7 @@ class Polls(commands.Cog):
         for i in range(20):
             messages.append(
                 await ctx.send(
-                    f"Say poll option or {ctx.prefix}done to publish poll."
+                    f"Say a Poll option or {ctx.prefix}done to publish the Poll."
                 )
             )
 
@@ -75,21 +83,21 @@ class Polls(commands.Cog):
         for emoji, _ in answers:
             await poll.add_reaction(emoji)
 
-    @poll.error
+    @start.error
     async def poll_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             return await ctx.send("Missing the question.")
 
-    @commands.command()
+    @poll.command()
     @commands.guild_only()
     @checks.has_permissions(PermissionLevel.MODERATOR)
-    async def quickpoll(self, ctx, *questions_and_choices: str):
-        """Makes a poll quickly.
+    async def quick(self, ctx, *questions_and_choices: str):
+        f"""Makes a poll quickly.
         The first argument is the question and the rest are the choices.
-        for example: `?quickpoll "Green or Light Green?" Green "Light Green"`
+        for example: `{ctx.prefix}quickpoll "Green or Light Green?" Green "Light Green"`
         
         or it can be a simple yes or no poll, like:
-        `?quickpoll "Do you watch Anime?"`
+        `{ctx.prefix}quickpoll "Do you watch Anime?"`
         """
 
         if len(questions_and_choices) == 0:
@@ -111,7 +119,7 @@ class Polls(commands.Cog):
         question = questions_and_choices[0]
         
         if len(questions_and_choices) == 1:
-            embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{question}**")
+            embed = discord.Embed(color=self.bot.main_color, description=f"**{question}**")
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             poll = await ctx.send(embed=embed)
             reactions = ["👍", "👎"]
