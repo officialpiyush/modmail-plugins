@@ -94,10 +94,10 @@ class Polls(commands.Cog):
     async def quick(self, ctx, *questions_and_choices: str):
         """Makes a poll quickly.
         The first argument is the question and the rest are the choices.
-        for example: `{self.bot.prefix}quickpoll "Green or Light Green?" Green "Light Green"`
+        for example: `?poll quick "Green or Light Green?" Green "Light Green"`
         
         or it can be a simple yes or no poll, like:
-        `{self.bot.prefix}quickpoll "Do you watch Anime?"`
+        `?poll quick "Do you watch Anime?"`
         """
 
         if len(questions_and_choices) == 0:
