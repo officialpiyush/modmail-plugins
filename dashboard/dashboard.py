@@ -3,7 +3,7 @@ import asyncio
 from discord.ext import commands
 
 
-class Dasboard(commands.cog):
+class Dasboard(commands.Cog):
     def __init__(self, bot):
         self.bot: discord.Client = bot
         self.db = bot.plugin_db.get_partition(self)
