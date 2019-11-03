@@ -13,6 +13,7 @@ class Dasboard(commands.Cog):
         await self.db.find_one_and_update(
             {"_id": "config"},
             {"$set": {"log_uri": self.bot.config["log_url"].strip("/")}},
+            upsert=True,
         )
 
 
