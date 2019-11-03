@@ -10,7 +10,7 @@ class Dasboard(commands.cog):
         asyncio.create_task(self.set_db())
 
     async def set_db():
-        self.db.find_one_and_update(
+        await self.db.find_one_and_update(
             {"_id": "config"},
             {"$set": {"log_uri": self.bot.config["log_url"].strip("/")}},
         )
