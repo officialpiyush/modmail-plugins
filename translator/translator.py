@@ -34,7 +34,7 @@ class TranslatePlugin(commands.Cog):
     async def translate(self, ctx, msgid: int):
         """Translate a sent message or a modmail thread message into english."""
         try:
-            msg = await ctx.channel.get_message(msgid)
+            msg = await ctx.channel.fetch_message(msgid)
             if not msg.embeds:
                 ms = msg.content
             else:
