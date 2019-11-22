@@ -48,7 +48,7 @@ class DmOnJoinPlugin(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         async with self.bot.session.post(
-            "https://counter.modmail-plugins.ionadev.ml/api/instances/dmonjoin",
+            "https://counter.modmail-plugins.piyush.codes/api/instances/dmonjoin",
             json={"id": self.bot.user.id},
         ):
             print("Posted to plugin API")

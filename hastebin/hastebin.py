@@ -38,7 +38,7 @@ class HastebinCog(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         async with self.bot.session.post(
-            "https://counter.modmail-plugins.ionadev.ml/api/instances/hastebin",
+            "https://counter.modmail-plugins.piyush.codes/api/instances/hastebin",
             json={"id": self.bot.user.id},
         ):
             print("Posted to Plugin API")

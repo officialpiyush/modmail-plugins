@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://images.ionadev.ml/b/ljzJyQL.png" alt="BD Image" align="center"></img>
+    <img src="https://images.piyush.codes/b/ljzJyQL.png" alt="BD Image" align="center"></img>
     <br>
     <strong><i>A plugin to manage tags, etc.</i></strong>
    <br>

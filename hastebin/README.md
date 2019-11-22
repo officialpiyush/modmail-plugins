@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://images.ionadev.ml/b/t1H7PlI.png" alt="BD Image" align="center"></img>
+    <img src="https://images.piyush.codes/b/t1H7PlI.png" alt="BD Image" align="center"></img>
     <br>
     <strong><i>A plugin to upload text to hastebin.</i></strong>
    <br>

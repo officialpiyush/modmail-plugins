@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://images.ionadev.ml/b/0XgiTdb.png" alt="LS Image" align="center"></img>
+    <img src="https://images.piyush.codes/b/0XgiTdb.png" alt="LS Image" align="center"></img>
     <br>
     <strong><i>A plugin For ModMail Bot to force it to leave a specified server.</i></strong>
    <br>

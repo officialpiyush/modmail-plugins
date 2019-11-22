@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://images.ionadev.ml/b/Je5mX9h.png" alt="Translator Image" align="center"></img>
+    <img src="https://images.piyush.codes/b/Je5mX9h.png" alt="Translator Image" align="center"></img>
     <br>
     <strong><i>A Modmail plugin that (auto) translates messages</i></strong>
    <br>

@@ -1,5 +1,5 @@
 <div align="center">
-<img alt="Logo" src="https://images.ionadev.ml/b/hK3j3at.png" />
+<img alt="Logo" src="https://images.piyush.codes/b/hK3j3at.png" />
    <strong><i>A repository to store Modmail Plugins</i></strong>
  <br>
  <br>
@@ -19,14 +19,14 @@
 
 |  **Plugin**  	|       **Description**       	|                    **How To Install?**                    	|                                   **Link To Code**                                   	|                                 **Status**                                 	|                                    **Downloads**                                   	|
 |:------------:	|:---------------------------:	|:---------------------------------------------------------:	|:------------------------------------------------------------------------------------:	|:--------------------------------------------------------------------------:	|:----------------------------------------------------------------------------------:	|
-|     Tags     	| Create,edit,delete,use tags 	|     `plugins add officialpiyush/modmail-plugins/Tags`     	|     [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/Tags)     	|     [![Status](https://img.shields.io/badge/Status-Broken-red.svg)](#)     	|      [![Downloads](https://counter.modmail-plugins.ionadev.ml/badge/tags/)](#)     	|
-| Announcement 	|  Easily Make Announcements  	| `plugins add officialpiyush/modmail-plugins/announcement` 	| [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/announcement) 	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	| [![Downloads]( https://counter.modmail-plugins.ionadev.ml/badge/announcement/)](#) 	|
-|  Dm On Join  	|    DM's New Users On Join   	|  `plugins add officialpiyush/modmail-plugins/dm-on-join`  	|  [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/dm-on-join)  	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|   [![Downloads]( https://counter.modmail-plugins.ionadev.ml/badge/dmonjoin/)](#)   	|
-|   Hastebin   	|   Upload Text To Hastebin   	|   `plugins add officialpiyush/modmail-plugins/hastebin`   	|   [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/hastebin)   	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|   [![Downloads]( https://counter.modmail-plugins.ionadev.ml/badge/hastebin/)](#)   	|
-| Leave Server 	| Make The Bot Leave A Server 	| `plugins add officialpiyush/modmail-plugins/leave-server` 	| [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/leave-server) 	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|  [![Downloads]( https://counter.modmail-plugins.ionadev.ml/badge/leaveserver/)](#) 	|
-|  Translator  	|      Translate Messages     	|  `plugins add officialpiyush/modmail-plugins/translator`  	|  [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/translator)  	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|  [![Downloads]( https://counter.modmail-plugins.ionadev.ml/badge/translator/)](#)  	|
+|     Tags     	| Create,edit,delete,use tags 	|     `plugins add officialpiyush/modmail-plugins/Tags`     	|     [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/Tags)     	|     [![Status](https://img.shields.io/badge/Status-Broken-red.svg)](#)     	|      [![Downloads](https://counter.modmail-plugins.piyush.codes/badge/tags/)](#)     	|
+| Announcement 	|  Easily Make Announcements  	| `plugins add officialpiyush/modmail-plugins/announcement` 	| [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/announcement) 	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	| [![Downloads]( https://counter.modmail-plugins.piyush.codes/badge/announcement/)](#) 	|
+|  Dm On Join  	|    DM's New Users On Join   	|  `plugins add officialpiyush/modmail-plugins/dm-on-join`  	|  [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/dm-on-join)  	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|   [![Downloads]( https://counter.modmail-plugins.piyush.codes/badge/dmonjoin/)](#)   	|
+|   Hastebin   	|   Upload Text To Hastebin   	|   `plugins add officialpiyush/modmail-plugins/hastebin`   	|   [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/hastebin)   	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|   [![Downloads]( https://counter.modmail-plugins.piyush.codes/badge/hastebin/)](#)   	|
+| Leave Server 	| Make The Bot Leave A Server 	| `plugins add officialpiyush/modmail-plugins/leave-server` 	| [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/leave-server) 	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|  [![Downloads]( https://counter.modmail-plugins.piyush.codes/badge/leaveserver/)](#) 	|
+|  Translator  	|      Translate Messages     	|  `plugins add officialpiyush/modmail-plugins/translator`  	|  [Source](https://github.com/officialpiyush/modmail-plugins/tree/master/translator)  	| [![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)](#) 	|  [![Downloads]( https://counter.modmail-plugins.piyush.codes/badge/translator/)](#)  	|
 
 
 # Contributors
 
-[![Contributors](https://counter.modmail-plugins.ionadev.ml/contributors)](https://github.com/officialpiyush/modmail-plugins/graphs/contributors)
+[![Contributors](https://counter.modmail-plugins.piyush.codes/contributors)](https://github.com/officialpiyush/modmail-plugins/graphs/contributors)
