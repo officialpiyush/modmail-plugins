@@ -56,6 +56,11 @@ class AntiStealClosePlugin(commands.Cog):
         if after and after.dt > now:
             await self.send_scheduled_close_message(ctx, after, silent)
 
+        dupe_message = ctx.message
+        dupe_message.content = f"[Anti Close Steal] The thread close command was invoked by {ctx.author.name}#{ctx.author.discriminator}"
+
+        await thread.note(dupe_message)
+
         await thread.close(
             closer=user, after=close_after, message=message, silent=silent
         )
