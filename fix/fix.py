@@ -9,6 +9,7 @@ class TopicFixPlugin(commands.Cog):
     """
     Fix all threads with broken channel topic
     """
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -23,15 +24,18 @@ class TopicFixPlugin(commands.Cog):
         {prefix}fix
         """
 
-        await ctx.channel.edit(topic=f"User ID: {ctx.thread._id}", reason=f"Fix the thread. Command used by {ctx.author.name}#{ctx.author.discriminator}")
+        await ctx.channel.edit(
+            topic=f"User ID: {ctx.thread._id}",
+            reason=f"Fix the thread. Command used by {ctx.author.name}#{ctx.author.discriminator}",
+        )
         await ctx.send("Done!")
         return
 
     @commands.Cog.listener()
     async def on_ready(self):
         async with self.bot.session.post(
-                "https://counter.modmail-plugins.piyush.codes/api/instances/fix",
-                json={"id": self.bot.user.id},
+            "https://counter.modmail-plugins.piyush.codes/api/instances/fix",
+            json={"id": self.bot.user.id},
         ):
             print("Posted to Plugin API")
 
