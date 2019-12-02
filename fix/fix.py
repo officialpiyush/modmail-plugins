@@ -15,7 +15,7 @@ class TopicFixPlugin(commands.Cog):
     @commands.command(aliases=["f"])
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
-    async def fix(self, ctx):
+    async def fix(self, ctx: commands.Context):
         """
         Fix a broken thread. (Works only in thread channels.)
 
@@ -23,7 +23,7 @@ class TopicFixPlugin(commands.Cog):
         {prefix}fix
         """
 
-        await ctx.channel.edit(topic=f"User ID: {ctx.thread._id}")
+        await ctx.channel.edit(topic=f"User ID: {ctx.thread._id}", reason=f"Fix the thread. Command used by {ctx.author.name}#{ctx.author.discriminator}")
         await ctx.send("Done!")
         return
 
