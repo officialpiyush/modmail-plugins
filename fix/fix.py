@@ -28,7 +28,9 @@ class TopicFixPlugin(commands.Cog):
                 topic=f"User ID: {genesis_message[0].embeds[0].footer.text}",
                 reason=f"Fix the thread. Command used by {ctx.author.name}#{ctx.author.discriminator}",
             )
-            await ctx.send("Done!")
+            await ctx.send("Fixed the thread.")
+        else:
+            await ctx.send("This channel doesn't seem like a modmail thread.")
         return
 
     @commands.Cog.listener()
