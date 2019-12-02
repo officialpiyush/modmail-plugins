@@ -6,6 +6,9 @@ from core import checks
 
 
 class TopicFixPlugin(commands.Cog):
+    """
+    Fix all threads with broken channel topic
+    """
     def __init__(self, bot):
         self.bot = bot
 
