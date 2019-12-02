@@ -16,7 +16,7 @@ class TopicFixPlugin(commands.Cog):
     @commands.command(aliases=["f"])
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
-    async def fix(self, ctx: commands.Context):
+    async def fix(self, ctx):
         """
         Fix a broken thread. (Works only in thread channels.)
 
