@@ -208,3 +208,7 @@ class GiveawayPlugin(commands.Cog):
         embed.description = description
 
         return embed
+
+
+def setup(bot):
+    bot.add_cog(GiveawayPlugin(bot))
