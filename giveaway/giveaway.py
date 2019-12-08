@@ -1,6 +1,7 @@
 import asyncio
 import dateparser
 import discord
+import math
 import random
 import time
 from datetime import datetime
@@ -141,7 +142,7 @@ class GiveawayPlugin(commands.Cog):
                     break
             else:
 
-                time_remaining = f"{g_time // 86400} Days, {g_time // 3600 % 24} Hours, {g_time // 60 % 60} Minutes, {g_time % 60} Seconds "
+                time_remaining = f"{math.floor(g_time // 86400)} Days, {math.floor(g_time // 3600 % 24)} Hours, {math.floor(g_time // 60 % 60)} Minutes, {math.floor(g_time % 60)} Seconds "
 
                 embed = message.embeds[0]
                 embed.description = f"React with 🎉 to enter the giveaway!\n\n" \
