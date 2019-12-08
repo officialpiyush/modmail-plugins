@@ -85,7 +85,10 @@ class GiveawayPlugin(commands.Cog):
                         text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | Ended at")
                     await message.edit(embed=embed)
                     break
-                reactions: discord.Message.reactions = list(filter(lambda reaction: reaction.emoji == "🎉", message.reactions))
+                try:
+                    reactions: discord.Reaction = message.reactions["🎉"]
+                except:
+                    break
                 reacted_users = await reactions.users().flatten()
                 if len(reacted_users) <= 1:
                     embed = message.embeds[0]
