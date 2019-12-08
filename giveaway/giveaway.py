@@ -226,8 +226,8 @@ class GiveawayPlugin(commands.Cog):
         giveaway_obj = {"item": giveaway_item.content, "winners": giveaway_winners, "time": giveaway_time, "guild": ctx.guild.id, "channel": channel.id, "message": msg.id}
         self.active_giveaways[str(msg.id)] = giveaway_obj
         await ctx.send("Done!")
-        await self._start_new_giveaway_thread(giveaway_obj)
         await self._update_db()
+        await self._start_new_giveaway_thread(giveaway_obj)
 
     async def _start_new_giveaway_thread(self, obj):
         await self.bot.loop.create_task(self._handle_giveaway(obj))
