@@ -78,6 +78,7 @@ class GiveawayPlugin(commands.Cog):
             print(g_time)
 
             if g_time <= 0:
+                print("in if")
                 if len(message.reactions) <= 0:
                     embed = message.embeds[0]
                     embed.description = f"Giveaway has ended!\n\nSadly no one participated :("
@@ -88,8 +89,10 @@ class GiveawayPlugin(commands.Cog):
                 try:
                     reactions: discord.Reaction = message.reactions["🎉"]
                 except:
+                    print("reaction not found")
                     break
                 reacted_users = await reactions.users().flatten()
+                print(reacted_users)
                 if len(reacted_users) <= 1:
                     embed = message.embeds[0]
                     embed.description = f"Giveaway has ended!\n\nSadly no one participated :("
@@ -105,6 +108,8 @@ class GiveawayPlugin(commands.Cog):
                 winners = []
                 for _ in giveaway["winners"]:
                     winners = await get_random_user(reacted_users, guild, winners)
+
+                print(winners)
 
                 embed = message.embeds[0]
                 winners_text = ""
@@ -123,6 +128,7 @@ class GiveawayPlugin(commands.Cog):
                     pass
                 break
             else:
+                print("in else")
                 time_remaining = f"{g_time // 86400} Days, {g_time // 3600 % 24} Hours, {g_time // 60 % 60} Minutes, {g_time % 60} Seconds "
 
                 embed = message.embeds[0]
