@@ -185,7 +185,7 @@ class GiveawayPlugin(commands.Cog):
         return
 
     @checks.has_permissions(PermissionLevel.ADMIN)
-    @giveaway.command(name="start")
+    @giveaway.command(name="start", aliases=["create", "c", "s"])
     async def start(self, ctx: commands.Context, channel: discord.TextChannel):
         """
         Start an giveaway in interactive mode
@@ -368,7 +368,7 @@ class GiveawayPlugin(commands.Cog):
                 del winners_text, winners, winners_count, reacted_users, embed
                 break
 
-    @giveaway.command(name="cancel", aliases=["stop", "c", "s"])
+    @giveaway.command(name="cancel", aliases=["stop", "s"])
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def cancel(self, ctx: commands.Context, _id: str):
         """
