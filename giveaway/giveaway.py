@@ -276,7 +276,7 @@ class GiveawayPlugin(commands.Cog):
 
     @checks.has_permissions(PermissionLevel.ADMIN)
     @giveaway.command(name="reroll", aliases=["rroll"])
-    async def reroll(self, ctx: commands.Context, _id: str, winners: int):
+    async def reroll(self, ctx: commands.Context, _id: str, winners_count: int):
         """
         Reroll the giveaway
 
@@ -312,7 +312,7 @@ class GiveawayPlugin(commands.Cog):
                 f"Giveaway has ended!\n\nSadly no one participated :("
             )
             embed.set_footer(
-                text=f"{winners} {'winners' if winners > 1 else 'winner'} | Ended at"
+                text=f"{winners_count} {'winners' if winners_count > 1 else 'winner'} | Ended at"
             )
             await message.edit(embed=embed)
             return
@@ -331,15 +331,15 @@ class GiveawayPlugin(commands.Cog):
                     break
 
                 # -1 cuz 1 for self
-                if winners > (len(reacted_users) - 1):
-                    winners = len(reacted_users) - 1
+                if winners_count > (len(reacted_users) - 1):
+                    winners_count = len(reacted_users) - 1
 
                 winners = []
 
                 for index in range(len(reacted_users)):
                     reacted_users[index] = reacted_users[index].id
 
-                for _ in range():
+                for _ in range(winners_count):
                     winners = await get_random_user(
                         reacted_users, ctx.guild, winners
                     )
@@ -353,13 +353,13 @@ class GiveawayPlugin(commands.Cog):
                     f"Giveaway has ended!\n\n**Winners:** {winners_text}"
                 )
                 embed.set_footer(
-                    text=f"{winners} {'winners' if winners > 1 else 'winner'} | Ended at"
+                    text=f"{winners_count} {'winners' if winners_count > 1 else 'winner'} | Ended at"
                 )
                 await message.edit(embed=embed)
                 await ctx.channel.send(
                     f"🎉 Congratulations {winners_text} you won **{embed.topic}**"
                 )
-                del winners_text, winners,reacted_users, embed
+                del winners_text, winners, winners_count, reacted_users, embed
                 break
 
     async def _start_new_giveaway_thread(self, obj):
