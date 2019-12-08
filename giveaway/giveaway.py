@@ -97,6 +97,7 @@ class GiveawayPlugin(commands.Cog):
                                 text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | "
                                      f"Ended at")
                             await message.edit(embed=embed)
+                            del guild, channel, reacted_users, embed
                             break
 
                         # -1 cuz 1 for self
@@ -107,7 +108,7 @@ class GiveawayPlugin(commands.Cog):
                         for _ in range(giveaway["winners"] + 1):
                             winners = await get_random_user(reacted_users, guild, winners)
 
-                        print(winners)
+                        # print(winners)
 
                         embed = message.embeds[0]
                         winners_text = ""
