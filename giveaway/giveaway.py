@@ -122,7 +122,7 @@ class GiveawayPlugin(commands.Cog):
                         embed = message.embeds[0]
                         winners_text = ""
                         for winner in winners:
-                            winners_text += f"<@{winner.id}>"
+                            winners_text += f"<@{winner}> "
 
                         embed.description = f"Giveaway has ended!\n\n**Winners:** {winners_text}"
                         embed.set_footer(text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | " 
