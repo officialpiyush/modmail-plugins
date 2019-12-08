@@ -238,7 +238,7 @@ class GiveawayPlugin(commands.Cog):
                 time_cancel = True
                 await ctx.send("Cancelled")
                 break
-            giveaway_time = dateparser.parse(giveaway_time.content)
+            giveaway_time = dateparser.parse(f"in {giveaway_time.content}")
             if giveaway_time is None:
                 await ctx.send(
                     "I was not able to parse the time properly, please try again."
