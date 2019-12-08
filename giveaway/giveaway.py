@@ -47,7 +47,7 @@ class GiveawayPlugin(commands.Cog):
         async def get_random_user(users, _guild, _winners):
             rnd = random.choice(users)
             in_guild = _guild.get_member(rnd)
-            if rnd in _winners or not in_guild or in_guild.id != self.bot.user.id:
+            if rnd in _winners or in_guild is None or in_guild.id == self.bot.user.id:
                 idk = await get_random_user(users, _guild, _winners)
                 return idk
             win = [] + _winners
