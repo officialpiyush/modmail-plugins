@@ -89,6 +89,9 @@ class GiveawayPlugin(commands.Cog):
                     await message.edit(embed=embed)
                     break
                 for r in message.reactions:
+                    if str(giveaway["message"]) not in self.active_giveaways:
+                        break
+
                     if r.emoji == "🎉":
                         reactions = r
                         reacted_users = await reactions.users().flatten()
@@ -129,11 +132,11 @@ class GiveawayPlugin(commands.Cog):
                                               f"Ended at")
                         await message.edit(embed=embed)
                         await channel.send(f"🎉 Congratulations {winners_text} you won **{giveaway['item']}**")
-                        del winners_text, winners, guild, channel, reacted_users, embed
                         try:
                             self.active_giveaways.pop(giveaway[str(giveaway["message"])])
                         except:
                             pass
+                        del winners_text, winners, guild, channel, reacted_users, embed
                         break
             else:
                 print("in else")
