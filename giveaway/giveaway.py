@@ -34,7 +34,7 @@ class GiveawayPlugin(commands.Cog):
 
         for giveaway in config.get("giveaways", {}).values():
             print(giveaway["message"])
-            await self._start_new_giveaway_thread(giveaway)
+            self.bot.loop.create_task(self._handle_giveaway(giveaway))
 
     async def _update_db(self):
         await self.db.find_one_and_update(
