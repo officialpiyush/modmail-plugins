@@ -51,7 +51,8 @@ class GiveawayPlugin(commands.Cog):
                 _winners.append(rnd)
                 return _winners
             else:
-                return await get_random_user(users, _guild, _winners)
+                idk = await get_random_user(users, _guild, _winners)
+                return idk
 
         while True:
             if str(giveaway["message"]) not in self.active_giveaways:
