@@ -204,8 +204,14 @@ class GiveawayPlugin(commands.Cog):
         giveaway_obj = {"item": giveaway_item.content, "winners": giveaway_winners, "time": giveaway_time, "guild": ctx.guild.id, "channel": channel.id, "message": msg.id}
         self.active_giveaways[str(msg.id)] = giveaway_obj
         await ctx.send("Done!")
-        threading.Thread(target=self._handle_giveaway, args=(giveaway_obj,)).start()
+        threading.Thread(target=self._start_new_giveaway_thread, args=(giveaway_obj,)).start()
 
+    def _start_new_giveaway_thread(self, obj):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+        loop.run_until_complete(self._handle_giveaway(obj))
+        loop.close()
 
     def generate_embed(self, description: str):
         embed = discord.Embed()
