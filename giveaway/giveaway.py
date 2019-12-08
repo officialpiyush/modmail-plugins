@@ -162,6 +162,7 @@ class GiveawayPlugin(commands.Cog):
         await ctx.send_help(ctx.command)
         return
 
+    @checks.has_permissions(PermissionLevel.ADMIN)
     @giveaway.command(name="start")
     async def start(self, ctx: commands.Context, channel: discord.TextChannel):
         """
