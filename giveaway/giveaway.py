@@ -283,6 +283,12 @@ class GiveawayPlugin(commands.Cog):
         **Usage:**
         {prefix}giveaway reroll <message_id> <winners_count>
         """
+
+        # Don't roll if giveaway is active
+        if _id in self.active_giveaways:
+            await ctx.send("Sorry but you can't reroll an active giveaway.")
+            return
+
         async def get_random_user(users, _guild, _winners):
             rnd = random.choice(users)
             in_guild = _guild.get_member(rnd)
