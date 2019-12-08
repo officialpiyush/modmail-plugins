@@ -134,7 +134,7 @@ class GiveawayPlugin(commands.Cog):
                             winners_text += f"<@{winner}> "
 
                         embed.description = (
-                            f"Giveaway has ended!\n\n**Winners:** {winners_text}"
+                            f"Giveaway has ended!\n\n**{'Winners' if giveaway['winners'] > 1 else 'Winner'}:** {winners_text} "
                         )
                         embed.set_footer(
                             text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | "
@@ -356,7 +356,7 @@ class GiveawayPlugin(commands.Cog):
                     winners_text += f"<@{winner}> "
 
                 embed.description = (
-                    f"Giveaway has ended!\n\n**Winners:** {winners_text}"
+                    f"Giveaway has ended!\n\n**{'Winners' if winners_count > 1 else 'Winner'}:** {winners_text}"
                 )
                 embed.set_footer(
                     text=f"{winners_count} {'winners' if winners_count > 1 else 'winner'} | Ended at"
