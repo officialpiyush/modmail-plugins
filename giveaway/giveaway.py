@@ -273,6 +273,94 @@ class GiveawayPlugin(commands.Cog):
         await self._update_db()
         await self._start_new_giveaway_thread(giveaway_obj)
 
+    @giveaway.command(name="reroll", aliases=["reroll", "rroll"])
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def reroll(self, ctx: commands.Context, _id: str, winners: int):
+        """
+        Reroll the giveaway
+
+        **Usage:**
+        {prefix}giveaway reroll <message_id> <winners>
+        """
+        async def get_random_user(users, _guild, _winners):
+            rnd = random.choice(users)
+            in_guild = _guild.get_member(rnd)
+            if rnd in _winners or in_guild is None or in_guild.id == self.bot.user.id:
+                idk = await get_random_user(users, _guild, _winners)
+                return idk
+            win = [] + _winners
+            win.append(rnd)
+            return win
+
+        try:
+            message = await ctx.channel.fetch_message(int(_id))
+        except discord.Forbidden:
+            await ctx.send("No Permission to read the history")
+            return
+        except discord.NotFound:
+            await ctx.send("Message not found")
+            return
+
+        if not message.embeds or message.embeds[0] is None:
+            await ctx.send("The given message doesn't have an embed, so it ain't related to giveaway.")
+            return
+
+        if len(message.reactions) <= 0:
+            embed = message.embeds[0]
+            embed.description = (
+                f"Giveaway has ended!\n\nSadly no one participated :("
+            )
+            embed.set_footer(
+                text=f"{winners} {'winners' if winners > 1 else 'winner'} | Ended at"
+            )
+            await message.edit(embed=embed)
+            return
+
+        for r in message.reactions:
+            if r.emoji == "🎉":
+                reactions = r
+                reacted_users = await reactions.users().flatten()
+                if len(reacted_users) <= 1:
+                    embed = message.embeds[0]
+                    embed.description = (
+                        f"Giveaway has ended!\n\nSadly no one participated :("
+                    )
+                    await message.edit(embed=embed)
+                    del reacted_users, embed
+                    break
+
+                # -1 cuz 1 for self
+                if winners > (len(reacted_users) - 1):
+                    winners = len(reacted_users) - 1
+
+                winners = []
+
+                for index in range(len(reacted_users)):
+                    reacted_users[index] = reacted_users[index].id
+
+                for _ in range():
+                    winners = await get_random_user(
+                        reacted_users, ctx.guild, winners
+                    )
+
+                embed = message.embeds[0]
+                winners_text = ""
+                for winner in winners:
+                    winners_text += f"<@{winner}> "
+
+                embed.description = (
+                    f"Giveaway has ended!\n\n**Winners:** {winners_text}"
+                )
+                embed.set_footer(
+                    text=f"{winners} {'winners' if winners > 1 else 'winner'} | Ended at"
+                )
+                await message.edit(embed=embed)
+                await ctx.channel.send(
+                    f"🎉 Congratulations {winners_text} you won **{embed.topic}**"
+                )
+                del winners_text, winners,reacted_users, embed
+                break
+
     async def _start_new_giveaway_thread(self, obj):
         await self.bot.loop.create_task(self._handle_giveaway(obj))
 
