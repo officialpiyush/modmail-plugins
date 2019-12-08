@@ -39,14 +39,11 @@ class GiveawayPlugin(commands.Cog):
         )
 
     async def _handle_giveaway(self, giveaway):
-        print("In Handle Giveaway")
         if str(giveaway["message"]) not in self.active_giveaways:
-            print("Not in giveaway dict")
             return
 
         async def get_random_user(users, _guild, _winners):
             rnd = random.choice(users)
-            print(_winners)
             in_guild = _guild.get_member(rnd)
             if rnd in _winners or in_guild is None or in_guild.id == self.bot.user.id:
                 idk = await get_random_user(users, _guild, _winners)
@@ -64,6 +61,7 @@ class GiveawayPlugin(commands.Cog):
                 print("Channel")
                 try:
                     self.active_giveaways.pop(giveaway[str(giveaway["message"])])
+                    await self._update_db()
                 except:
                     pass
                 return
@@ -72,6 +70,7 @@ class GiveawayPlugin(commands.Cog):
                 print("message")
                 try:
                     self.active_giveaways.pop(giveaway[str(giveaway["message"])])
+                    await self._update_db()
                 except:
                     pass
                 return
@@ -137,6 +136,7 @@ class GiveawayPlugin(commands.Cog):
                         await channel.send(f"🎉 Congratulations {winners_text} you won **{giveaway['item']}**")
                         try:
                             self.active_giveaways.pop(giveaway[str(giveaway["message"])])
+                            await self._update_db()
                         except:
                             pass
                         del winners_text, winners, guild, channel, reacted_users, embed
@@ -146,7 +146,7 @@ class GiveawayPlugin(commands.Cog):
                 if to_break:
                     break
             else:
-                print("in else")
+
                 time_remaining = f"{g_time // 86400} Days, {g_time // 3600 % 24} Hours, {g_time // 60 % 60} Minutes, {g_time % 60} Seconds "
 
                 embed = message.embeds[0]
