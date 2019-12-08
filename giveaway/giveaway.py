@@ -362,7 +362,7 @@ class GiveawayPlugin(commands.Cog):
                 del winners_text, winners, winners_count, reacted_users, embed
                 break
 
-    @giveaway.command(name="cancel", aliases=["stop", "s"])
+    @giveaway.command(name="cancel", aliases=["stop"])
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def cancel(self, ctx: commands.Context, _id: str):
         """
