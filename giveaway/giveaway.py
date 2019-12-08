@@ -133,9 +133,7 @@ class GiveawayPlugin(commands.Cog):
                         for winner in winners:
                             winners_text += f"<@{winner}> "
 
-                        embed.description = (
-                            f"Giveaway has ended!\n\n**{'Winners' if giveaway['winners'] > 1 else 'Winner'}:** {winners_text} "
-                        )
+                        embed.description = f"Giveaway has ended!\n\n**{'Winners' if giveaway['winners'] > 1 else 'Winner'}:** {winners_text} "
                         embed.set_footer(
                             text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | "
                             f"Ended at"
@@ -309,14 +307,14 @@ class GiveawayPlugin(commands.Cog):
             return
 
         if not message.embeds or message.embeds[0] is None:
-            await ctx.send("The given message doesn't have an embed, so it ain't related to giveaway.")
+            await ctx.send(
+                "The given message doesn't have an embed, so it ain't related to giveaway."
+            )
             return
 
         if len(message.reactions) <= 0:
             embed = message.embeds[0]
-            embed.description = (
-                f"Giveaway has ended!\n\nSadly no one participated :("
-            )
+            embed.description = f"Giveaway has ended!\n\nSadly no one participated :("
             embed.set_footer(
                 text=f"{winners_count} {'winners' if winners_count > 1 else 'winner'} | Ended at"
             )
@@ -346,18 +344,14 @@ class GiveawayPlugin(commands.Cog):
                     reacted_users[index] = reacted_users[index].id
 
                 for _ in range(winners_count):
-                    winners = await get_random_user(
-                        reacted_users, ctx.guild, winners
-                    )
+                    winners = await get_random_user(reacted_users, ctx.guild, winners)
 
                 embed = message.embeds[0]
                 winners_text = ""
                 for winner in winners:
                     winners_text += f"<@{winner}> "
 
-                embed.description = (
-                    f"Giveaway has ended!\n\n**{'Winners' if winners_count > 1 else 'Winner'}:** {winners_text}"
-                )
+                embed.description = f"Giveaway has ended!\n\n**{'Winners' if winners_count > 1 else 'Winner'}:** {winners_text}"
                 embed.set_footer(
                     text=f"{winners_count} {'winners' if winners_count > 1 else 'winner'} | Ended at"
                 )
@@ -394,7 +388,9 @@ class GiveawayPlugin(commands.Cog):
             return
 
         if not message.embeds or message.embeds[0] is None:
-            await ctx.send("The given message doesn't have an embed, so it ain't related to giveaway.")
+            await ctx.send(
+                "The given message doesn't have an embed, so it ain't related to giveaway."
+            )
             return
 
         embed = message.embeds[0]
