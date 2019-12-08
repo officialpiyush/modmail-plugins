@@ -368,6 +368,43 @@ class GiveawayPlugin(commands.Cog):
                 del winners_text, winners, winners_count, reacted_users, embed
                 break
 
+    @giveaway.command(name="cancel", aliases=["stop", "c", "s"])
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def cancel(self, ctx: commands.Context, _id: str):
+        """
+        Stop an active giveaway
+
+        **Usage:**
+        {prefix}giveaway stop <message_id>
+        """
+
+        if _id not in self.active_giveaways:
+            await ctx.send("Couldn't find an active giveaway with that ID")
+            return
+
+        giveaway = self.active_giveaways[_id]
+        channel: discord.TextChannel = self.bot.get_channel(int(giveaway["channel"]))
+        try:
+            message = await channel.fetch_message(int(_id))
+        except discord.Forbidden:
+            await ctx.send("No Permission to read the history")
+            return
+        except discord.NotFound:
+            await ctx.send("Message not found")
+            return
+
+        if not message.embeds or message.embeds[0] is None:
+            await ctx.send("The given message doesn't have an embed, so it ain't related to giveaway.")
+            return
+
+        embed = message.embeds[0]
+        embed.description = "The giveaway has been cancelled"
+        await message.edit(embed=embed)
+        await self.active_giveaways.pop(_id)
+        await self._update_db()
+        await ctx.send("Cancelled!")
+        return
+
     async def _start_new_giveaway_thread(self, obj):
         await self.bot.loop.create_task(self._handle_giveaway(obj))
 
