@@ -88,6 +88,9 @@ class GiveawayPlugin(commands.Cog):
                         text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | Ended at")
                     await message.edit(embed=embed)
                     break
+
+                to_break = False
+
                 for r in message.reactions:
                     if str(giveaway["message"]) not in self.active_giveaways:
                         break
@@ -137,7 +140,11 @@ class GiveawayPlugin(commands.Cog):
                         except:
                             pass
                         del winners_text, winners, guild, channel, reacted_users, embed
+                        to_break = True
                         break
+
+                if to_break:
+                    break
             else:
                 print("in else")
                 time_remaining = f"{g_time // 86400} Days, {g_time // 3600 % 24} Hours, {g_time // 60 % 60} Minutes, {g_time % 60} Seconds "
