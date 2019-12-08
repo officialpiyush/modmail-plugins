@@ -45,14 +45,14 @@ class GiveawayPlugin(commands.Cog):
             print("Not in giveaway dict")
             return
 
-        async def get_random_user(users, guild, winners):
+        async def get_random_user(users, _guild, _winners):
             rnd = random.choice(users)
-            in_guild = await guild.get_member(rnd.id)
-            if rnd not in winners and in_guild is not None and in_guild != guild.me:
-                winners.append(rnd)
-                return winners
+            in_guild = await _guild.get_member(rnd.id)
+            if rnd not in _winners and in_guild is not None and in_guild != guild.me:
+                _winners.append(rnd)
+                return _winners
             else:
-                return get_random_user(users)
+                return get_random_user(users, _guild, _winners)
 
         while True:
             if str(giveaway["message"]) not in self.active_giveaways:
