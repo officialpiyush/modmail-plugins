@@ -40,7 +40,9 @@ class GiveawayPlugin(commands.Cog):
         )
 
     async def _handle_giveaway(self, giveaway):
+        print("In Handle Giveaway")
         if str(giveaway["message"]) not in self.active_giveaways:
+            print("Not in giveaway dict")
             return
 
         async def get_random_user(users, guild, winners):
@@ -57,6 +59,7 @@ class GiveawayPlugin(commands.Cog):
                 break
             channel: discord.TextChannel = await self.bot.get_channel(int(giveaway["channel"]))
             if channel is None:
+                print("Channel")
                 try:
                     self.active_giveaways.pop(giveaway[str(giveaway["message"])])
                 except:
@@ -64,6 +67,7 @@ class GiveawayPlugin(commands.Cog):
                 return
             message = await channel.fetch_message(giveaway["message"])
             if message is None or not message.embeds or message.embeds[0] is None:
+                print("message")
                 try:
                     self.active_giveaways.pop(giveaway[str(giveaway["message"])])
                 except:
@@ -71,6 +75,7 @@ class GiveawayPlugin(commands.Cog):
                 return
             guild: discord.Guild = self.bot.get_guild(giveaway["guild"])
             g_time = giveaway["time"] - time.time()
+            print(g_time)
 
             if g_time <= 0:
                 if len(message.reactions) <= 0:
