@@ -114,7 +114,7 @@ class GiveawayPlugin(commands.Cog):
                         for index in range(len(reacted_users)):
                             reacted_users[index] = reacted_users[index].id
 
-                        for _ in range(giveaway["winners"] + 1):
+                        for _ in range(giveaway["winners"]):
                             winners = await get_random_user(reacted_users, guild, winners)
 
                         # print(winners)
