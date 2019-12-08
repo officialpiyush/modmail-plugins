@@ -108,6 +108,8 @@ class GiveawayPlugin(commands.Cog):
 
                         winners = []
 
+                        print(reacted_users)
+
                         for index in range(len(reacted_users)):
                             reacted_users[index] = reacted_users[index].id
 
