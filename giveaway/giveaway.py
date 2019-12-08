@@ -56,34 +56,29 @@ class GiveawayPlugin(commands.Cog):
             win.append(rnd)
             return win
 
-
         while True:
             if str(giveaway["message"]) not in self.active_giveaways:
                 break
             channel: discord.TextChannel = self.bot.get_channel(int(giveaway["channel"]))
             if channel is None:
-                print("Channel")
                 try:
-                    self.active_giveaways.pop(giveaway[str(giveaway["message"])])
+                    self.active_giveaways.pop(str(giveaway["message"]))
                     await self._update_db()
                 except:
                     pass
                 return
             message = await channel.fetch_message(giveaway["message"])
             if message is None or not message.embeds or message.embeds[0] is None:
-                print("message")
                 try:
-                    self.active_giveaways.pop(giveaway[str(giveaway["message"])])
+                    self.active_giveaways.pop(str(giveaway["message"]))
                     await self._update_db()
                 except:
                     pass
                 return
             guild: discord.Guild = self.bot.get_guild(giveaway["guild"])
             g_time = giveaway["time"] - time.time()
-            print(g_time)
 
             if g_time <= 0:
-                print("in if")
                 if len(message.reactions) <= 0:
                     embed = message.embeds[0]
                     embed.description = f"Giveaway has ended!\n\nSadly no one participated :("
@@ -101,7 +96,6 @@ class GiveawayPlugin(commands.Cog):
                     if r.emoji == "🎉":
                         reactions = r
                         reacted_users = await reactions.users().flatten()
-                        print(reacted_users)
                         if len(reacted_users) <= 1:
                             embed = message.embeds[0]
                             embed.description = f"Giveaway has ended!\n\nSadly no one participated :("
@@ -118,15 +112,11 @@ class GiveawayPlugin(commands.Cog):
 
                         winners = []
 
-                        print(reacted_users)
-
                         for index in range(len(reacted_users)):
                             reacted_users[index] = reacted_users[index].id
 
                         for _ in range(giveaway["winners"]):
                             winners = await get_random_user(reacted_users, guild, winners)
-
-                        # print(winners)
 
                         embed = message.embeds[0]
                         winners_text = ""
@@ -139,7 +129,7 @@ class GiveawayPlugin(commands.Cog):
                         await message.edit(embed=embed)
                         await channel.send(f"🎉 Congratulations {winners_text} you won **{giveaway['item']}**")
                         try:
-                            self.active_giveaways.pop(giveaway[str(giveaway["message"])])
+                            self.active_giveaways.pop(str(giveaway["message"]))
                             await self._update_db()
                         except:
                             pass
