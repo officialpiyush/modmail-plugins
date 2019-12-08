@@ -152,7 +152,7 @@ class GiveawayPlugin(commands.Cog):
 
         return
 
-    @commands.group(name="giveaway", aliases=["g", "giveaways", "gaway", "givea"])
+    @commands.group(name="giveaway", aliases=["g", "giveaways", "gaway", "givea"], invoke_without_command=True)
     @commands.guild_only()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def giveaway(self, ctx: commands.Context):
