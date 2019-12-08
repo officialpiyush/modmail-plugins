@@ -273,14 +273,14 @@ class GiveawayPlugin(commands.Cog):
         await self._update_db()
         await self._start_new_giveaway_thread(giveaway_obj)
 
-    @giveaway.command(name="reroll", aliases=["reroll", "rroll"])
+    @giveaway.command(name="reroll", aliases=["rroll"])
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def reroll(self, ctx: commands.Context, _id: str, winners: int):
         """
         Reroll the giveaway
 
         **Usage:**
-        {prefix}giveaway reroll <message_id> <winners>
+        {prefix}giveaway reroll <message_id> <winners_count>
         """
         async def get_random_user(users, _guild, _winners):
             rnd = random.choice(users)
