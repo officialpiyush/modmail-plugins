@@ -196,7 +196,7 @@ class GiveawayPlugin(commands.Cog):
         embed.timestamp = datetime.fromtimestamp(giveaway_time)
         msg: discord.Message = await channel.send(embed=embed)
         await msg.add_reaction("🎉")
-        giveaway_obj = {"item": giveaway_item, "winners": giveaway_winners, "time": giveaway_time, "guild": ctx.guild, "channel": channel.id, "message": msg.id}
+        giveaway_obj = {"item": giveaway_item.content, "winners": giveaway_winners, "time": giveaway_time, "guild": ctx.guild.id, "channel": channel.id, "message": msg.id}
         self.active_giveaways[str(msg.id)] = giveaway_obj
         await ctx.send("Done!")
         threading.Thread(target=self._handle_giveaway, args=(giveaway_obj,)).start()
