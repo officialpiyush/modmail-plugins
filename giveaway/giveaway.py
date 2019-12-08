@@ -57,7 +57,7 @@ class GiveawayPlugin(commands.Cog):
         while True:
             if str(giveaway["message"]) not in self.active_giveaways:
                 break
-            channel: discord.TextChannel = await self.bot.get_channel(int(giveaway["channel"]))
+            channel: discord.TextChannel = self.bot.get_channel(int(giveaway["channel"]))
             if channel is None:
                 print("Channel")
                 try:
