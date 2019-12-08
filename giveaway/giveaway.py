@@ -30,7 +30,7 @@ class GiveawayPlugin(commands.Cog):
                 {"$set": {"giveaways": dict()}},
                 upsert=True,
             )
-        self.active_giveaways = set(config.get("giveaways", {}))
+        self.active_giveaways = dict(config.get("giveaways", {}))
 
     async def _update_db(self):
         await self.db.find_one_and_update(
