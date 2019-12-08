@@ -122,7 +122,7 @@ class GiveawayPlugin(commands.Cog):
                                     f"Time Remaining **{time_remaining}**"
                 await message.edit(embed=embed)
                 del channel, guild
-                await time.sleep(1000 if g_time > 60 else 5)
+                await time.sleep(60 if g_time > 60 else 5)
 
         return
 
