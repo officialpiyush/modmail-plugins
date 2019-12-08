@@ -207,11 +207,7 @@ class GiveawayPlugin(commands.Cog):
         threading.Thread(target=self._start_new_giveaway_thread, args=(giveaway_obj,)).start()
 
     def _start_new_giveaway_thread(self, obj):
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-
-        loop.run_until_complete(self._handle_giveaway(obj))
-        loop.close()
+        self.bot.loop.run_until_complete(self._handle_giveaway(obj))
 
     def generate_embed(self, description: str):
         embed = discord.Embed()
