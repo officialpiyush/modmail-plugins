@@ -30,8 +30,9 @@ class GiveawayPlugin(commands.Cog):
             )
         self.active_giveaways = dict(config.get("giveaways", {}))
 
-        for giveaway in config.get("giveaways", {}).values():
-            print(giveaway["message"])
+        for key, giveaway in config.get("giveaways", {}).items():
+            if key in self.active_giveaways:
+                continue
             self.bot.loop.create_task(self._handle_giveaway(giveaway))
 
     async def _update_db(self):
@@ -273,8 +274,8 @@ class GiveawayPlugin(commands.Cog):
         await self._update_db()
         await self._start_new_giveaway_thread(giveaway_obj)
 
-    @giveaway.command(name="reroll", aliases=["rroll"])
     @checks.has_permissions(PermissionLevel.ADMIN)
+    @giveaway.command(name="reroll", aliases=["rroll"])
     async def reroll(self, ctx: commands.Context, _id: str, winners: int):
         """
         Reroll the giveaway
