@@ -400,7 +400,7 @@ class GiveawayPlugin(commands.Cog):
         embed = message.embeds[0]
         embed.description = "The giveaway has been cancelled"
         await message.edit(embed=embed)
-        await self.active_giveaways.pop(_id)
+        self.active_giveaways.pop(_id)
         await self._update_db()
         await ctx.send("Cancelled!")
         return
