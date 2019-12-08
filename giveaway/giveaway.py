@@ -2,7 +2,6 @@ import asyncio
 import dateparser
 import discord
 import random
-import threading
 import time
 from datetime import datetime
 from discord.ext import commands
@@ -86,47 +85,46 @@ class GiveawayPlugin(commands.Cog):
                         text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | Ended at")
                     await message.edit(embed=embed)
                     break
-                try:
-                    reactions: discord.Reaction = message.reactions["🎉"]
-                except:
-                    print("reaction not found")
-                    break
-                reacted_users = await reactions.users().flatten()
-                print(reacted_users)
-                if len(reacted_users) <= 1:
-                    embed = message.embeds[0]
-                    embed.description = f"Giveaway has ended!\n\nSadly no one participated :("
-                    embed.set_footer(
-                        text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | Ended at")
-                    await message.edit(embed=embed)
-                    break
+                for r in message.reactions:
+                    if r.emoji == "🎉":
+                        reactions = r
+                        reacted_users = await reactions.users().flatten()
+                        print(reacted_users)
+                        if len(reacted_users) <= 1:
+                            embed = message.embeds[0]
+                            embed.description = f"Giveaway has ended!\n\nSadly no one participated :("
+                            embed.set_footer(
+                                text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | "
+                                     f"Ended at")
+                            await message.edit(embed=embed)
+                            break
 
-                # -1 cuz 1 for self
-                if giveaway["winners"] > (len(reacted_users) - 1):
-                    giveaway["winners"] = (len(reacted_users) - 1)
+                        # -1 cuz 1 for self
+                        if giveaway["winners"] > (len(reacted_users) - 1):
+                            giveaway["winners"] = (len(reacted_users) - 1)
 
-                winners = []
-                for _ in giveaway["winners"]:
-                    winners = await get_random_user(reacted_users, guild, winners)
+                        winners = []
+                        for _ in giveaway["winners"]:
+                            winners = await get_random_user(reacted_users, guild, winners)
 
-                print(winners)
+                        print(winners)
 
-                embed = message.embeds[0]
-                winners_text = ""
-                for winner in winners:
-                    winners_text += f"<@{winner.id}>"
+                        embed = message.embeds[0]
+                        winners_text = ""
+                        for winner in winners:
+                            winners_text += f"<@{winner.id}>"
 
-                embed.description = f"Giveaway has ended!\n\n**Winners:** {winners_text}"
-                embed.set_footer(text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | "
-                                      f"Ended at")
-                await message.edit(embed=embed)
-                await channel.send(f"🎉 Congratulations {winners_text} you won **{giveaway['item']}**")
-                del winners_text, winners, guild, channel, reacted_users, embed
-                try:
-                    self.active_giveaways.pop(giveaway[str(giveaway["message"])])
-                except:
-                    pass
-                break
+                        embed.description = f"Giveaway has ended!\n\n**Winners:** {winners_text}"
+                        embed.set_footer(text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | " 
+                                              f"Ended at")
+                        await message.edit(embed=embed)
+                        await channel.send(f"🎉 Congratulations {winners_text} you won **{giveaway['item']}**")
+                        del winners_text, winners, guild, channel, reacted_users, embed
+                        try:
+                            self.active_giveaways.pop(giveaway[str(giveaway["message"])])
+                        except:
+                            pass
+                        break
             else:
                 print("in else")
                 time_remaining = f"{g_time // 86400} Days, {g_time // 3600 % 24} Hours, {g_time // 60 % 60} Minutes, {g_time % 60} Seconds "
@@ -213,10 +211,11 @@ class GiveawayPlugin(commands.Cog):
         giveaway_obj = {"item": giveaway_item.content, "winners": giveaway_winners, "time": giveaway_time, "guild": ctx.guild.id, "channel": channel.id, "message": msg.id}
         self.active_giveaways[str(msg.id)] = giveaway_obj
         await ctx.send("Done!")
-        threading.Thread(target=self._start_new_giveaway_thread, args=(giveaway_obj,)).start()
+        await self._start_new_giveaway_thread(giveaway_obj)
+        await self._update_db()
 
-    def _start_new_giveaway_thread(self, obj):
-        self.bot.loop.run_until_complete(self._handle_giveaway(obj))
+    async def _start_new_giveaway_thread(self, obj):
+        await self.bot.loop.create_task(self._handle_giveaway(obj))
 
     def generate_embed(self, description: str):
         embed = discord.Embed()
