@@ -2,12 +2,15 @@ import asyncio
 import dateparser
 import discord
 import random
+import sys
 import time
 from datetime import datetime
 from discord.ext import commands
 
 from core import checks
 from core.models import PermissionLevel
+
+sys.setrecursionlimit(10**6)
 
 
 class GiveawayPlugin(commands.Cog):
