@@ -40,18 +40,18 @@ class ReminderPlugin(commands.Cog):
             self.bot.loop.create_task(self._handle_giveaway(reminder))
 
     async def _handle_reminder(self, reminder_obj):
-    	logger.info("In Handle Reminder")
+        logger.info("In Handle Reminder")
         _time = reminder_obj["time"] - time.time()
         await asycio.sleep(_time if _time > 0 else 0)
         logger.info("Timeout finished")
 
         if str(reminder_obj["message"]) not in self.active_reminders:
-        	logger.info("No Giveaway in cache")
+            logger.info("No Giveaway in cache")
             return
 
         channel = self.bot.get_channel(reminder_obj["channel"])
         if channel is None:
-        	logger.info("Channel Not Found")
+            logger.info("Channel Not Found")
             try:
                 self.active_reminders.pop(str(reminder_obj["message"]))
             except KeyError:
@@ -68,7 +68,7 @@ class ReminderPlugin(commands.Cog):
             await channel.send(to_send)
             self.active_reminders.pop(str(reminder_obj["message"]))
         except:
-        	logger.info("Cant POP")
+            logger.info("Cant POP")
             pass
         await self._update_db()
 
