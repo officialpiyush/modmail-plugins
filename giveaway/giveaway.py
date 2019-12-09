@@ -28,11 +28,11 @@ class GiveawayPlugin(commands.Cog):
             await self.db.find_one_and_update(
                 {"_id": "config"}, {"$set": {"giveaways": dict()}}, upsert=True,
             )
-        self.active_giveaways = dict(config.get("giveaways", {}))
 
         for key, giveaway in config.get("giveaways", {}).items():
             if key in self.active_giveaways:
                 continue
+            self.active_giveaways[str(key)] = giveaway
             self.bot.loop.create_task(self._handle_giveaway(giveaway))
 
     async def _update_db(self):
