@@ -42,7 +42,8 @@ class ReminderPlugin(commands.Cog):
     async def _handle_reminder(self, reminder_obj):
         logger.info("In Handle Reminder")
         _time = reminder_obj["time"] - time.time()
-        await asycio.sleep(_time if _time > 0 else 0)
+        logger.info(time)
+        await asycio.sleep(_time if _time >= 0 else 0)
         logger.info("Timeout finished")
 
         if str(reminder_obj["message"]) not in self.active_reminders:
