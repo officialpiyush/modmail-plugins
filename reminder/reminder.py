@@ -42,7 +42,7 @@ class ReminderPlugin(commands.Cog):
     async def _handle_reminder(self, reminder_obj):
         logger.info("In Handle Reminder")
         _time = reminder_obj["time"] - time.time()
-        logger.info(time)
+        logger.info(_time)
         await asycio.sleep(_time if _time >= 0 else 0)
         logger.info("Timeout finished")
 
