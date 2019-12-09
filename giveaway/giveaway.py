@@ -1,6 +1,5 @@
 import asyncio
 import aiohttp
-import dateparser
 import discord
 import math
 import random
