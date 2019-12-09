@@ -1,6 +1,5 @@
 import asyncio
 import math
-import string
 import time
 from discord.ext import commands
 
@@ -96,7 +95,7 @@ class ReminderPlugin(commands.Cog):
             return
         else:
             time = json["message"]
-            message = string.replace(message, json["readable_time"])
+            message = message.replace(json["readable_time"], "")
 
             await ctx.send(
                 f"Alright <@{ctx.author.id}>, {json['readable_time']}: {message}"
