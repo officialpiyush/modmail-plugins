@@ -1,5 +1,5 @@
 import asyncio
-import dateparser
+import aiohttp
 import discord
 import math
 import random
@@ -237,15 +237,23 @@ class GiveawayPlugin(commands.Cog):
                 time_cancel = True
                 await ctx.send("Cancelled")
                 break
-            giveaway_time = dateparser.parse(f"in {giveaway_time.content}")
-            if giveaway_time is None:
+            resp = await self.bot.session.get("https://dateparser.piyush.codes", params={"date": f"in {giveaway_time.content}"})
+            if resp.status == 400:
                 await ctx.send(
                     "I was not able to parse the time properly, please try again."
                 )
                 continue
-            else:
-                giveaway_time = giveaway_time.timestamp()
+            elif resp.status == 500:
+                await ctx.send(
+                    "The dateparser API seems to have some problems."
+                )
+                time_cancel = True
                 break
+            else:
+                json = await resp.json()
+                giveaway_time = json["message"]
+                break
+
         if time_cancel is True:
             return
 
