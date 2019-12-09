@@ -77,7 +77,7 @@ class ReminderPlugin(commands.Cog):
 		{prefix}remind in 2 hours Test This
 		"""
         resp = await self.bot.session.get(
-            "https://dateparser.piyush.codes/fromstr/",
+            "https://dateparser.piyush.codes/fromstr",
             params={
                 "message": message[: len(message) // 2]
                 if len(message) > 20
