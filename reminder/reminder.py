@@ -37,7 +37,7 @@ class ReminderPlugin(commands.Cog):
             if key in self.active_reminders:
                 continue
             self.active_reminders[str(key)] = reminder
-            self.bot.loop.create_task(self._handle_giveaway(reminder))
+            self.bot.loop.create_task(self._handle_reminder(reminder))
 
     async def _handle_reminder(self, reminder_obj):
         logger.info("In Handle Reminder")
@@ -47,7 +47,7 @@ class ReminderPlugin(commands.Cog):
         logger.info("Timeout finished")
 
         if str(reminder_obj["message"]) not in self.active_reminders:
-            logger.info("No Giveaway in cache")
+            logger.info("No Reminder in cache")
             return
 
         channel = self.bot.get_channel(reminder_obj["channel"])
