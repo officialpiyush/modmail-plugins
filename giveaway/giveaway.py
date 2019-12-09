@@ -237,7 +237,6 @@ class GiveawayPlugin(commands.Cog):
                 time_cancel = True
                 await ctx.send("Cancelled")
                 break
-            giveaway_time = dateparser.parse(f"in {giveaway_time.content}")
             resp = await aiohttp.ClientSession().get("https://dateparser.piyush.codes", params={"date": f"in {giveaway_time.content}"})
             if resp.status == 400:
                 await ctx.send(
