@@ -317,7 +317,7 @@ class GiveawayPlugin(commands.Cog):
         try:
             message = await ctx.channel.fetch_message(int(_id))
         except discord.Forbidden:
-            await ctx.send("No Permission to read the history.")
+            await ctx.send("No permission to read the history.")
             return
         except discord.NotFound:
             await ctx.send("Message not found.")
