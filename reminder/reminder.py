@@ -4,7 +4,9 @@ import time
 from discord.ext import commands
 
 from core import checks
-from core.models import PermissionLevel
+from core.models import PermissionLevel, getLogger
+
+logger = getLogger(__name__)
 
 
 class ReminderPlugin(commands.Cog):
@@ -38,14 +40,18 @@ class ReminderPlugin(commands.Cog):
             self.bot.loop.create_task(self._handle_giveaway(reminder))
 
     async def _handle_reminder(self, reminder_obj):
+    	logger.info("In Handle Reminder")
         _time = reminder_obj["time"] - time.time()
         await asycio.sleep(_time if _time > 0 else 0)
+        logger.info("Timeout finished")
 
         if str(reminder_obj["message"]) not in self.active_reminders:
+        	logger.info("No Giveaway in cache")
             return
 
         channel = self.bot.get_channel(reminder_obj["channel"])
         if channel is None:
+        	logger.info("Channel Not Found")
             try:
                 self.active_reminders.pop(str(reminder_obj["message"]))
             except KeyError:
@@ -60,10 +66,10 @@ class ReminderPlugin(commands.Cog):
         to_send = f"{f'{days} Days ' if days > 0 else ''}{f'{hours} Hours ' if hours > 0 else ''}{f'{minutes} Minutes ' if minutes > 0 else ''}{f'{seconds} Seconds ' if seconds > 0 else ''} ago: {reminder_obj['reminder']}\n\n{reminder_obj['jump_url']}"
         try:
             await channel.send(to_send)
+            self.active_reminders.pop(str(reminder_obj["message"]))
         except:
+        	logger.info("Cant POP")
             pass
-
-        self.active_reminders.pop(str(reminder_obj["message"]))
         await self._update_db()
 
     @commands.command(name="reminder", aliases=["remindme", "remind", "rme"])
@@ -109,8 +115,8 @@ class ReminderPlugin(commands.Cog):
                 "url": ctx.message.jump_url,
             }
             self.active_reminders[str(ctx.message.id)] = reminder_obj
-            await self._update_db()
             self.bot.loop.create_task(self._handle_reminder(reminder_obj))
+            await self._update_db()
 
 
 def setup(bot):
