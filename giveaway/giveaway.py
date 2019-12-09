@@ -223,6 +223,10 @@ class GiveawayPlugin(commands.Cog):
             )
             return
 
+        if giveaway_winners <= 0:
+            await ctx.send("Giveaway can only be held with 1 or more winners. Cancelling command.")
+            return
+
         await ctx.send(
             embed=self.generate_embed(
                 "How long the giveaway last?\n\n2d / 2days / 2day -> 2 days\n"
