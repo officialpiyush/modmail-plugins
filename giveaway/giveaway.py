@@ -164,7 +164,9 @@ class GiveawayPlugin(commands.Cog):
                 )
                 await message.edit(embed=embed)
                 del channel, guild
-                await asyncio.sleep(60 if g_time > 60 else (5 if g_time > 5 else g_time))
+                await asyncio.sleep(
+                    60 if g_time > 60 else (5 if g_time > 5 else g_time)
+                )
 
         return
 
@@ -224,7 +226,9 @@ class GiveawayPlugin(commands.Cog):
             return
 
         if giveaway_winners <= 0:
-            await ctx.send("Giveaway can only be held with 1 or more winners. Cancelling command.")
+            await ctx.send(
+                "Giveaway can only be held with 1 or more winners. Cancelling command."
+            )
             return
 
         await ctx.send(
@@ -241,16 +245,17 @@ class GiveawayPlugin(commands.Cog):
                 time_cancel = True
                 await ctx.send("Cancelled")
                 break
-            resp = await self.bot.session.get("https://dateparser.piyush.codes", params={"date": f"in {giveaway_time.content}"})
+            resp = await self.bot.session.get(
+                "https://dateparser.piyush.codes",
+                params={"date": f"in {giveaway_time.content}"},
+            )
             if resp.status == 400:
                 await ctx.send(
                     "I was not able to parse the time properly, please try again."
                 )
                 continue
             elif resp.status == 500:
-                await ctx.send(
-                    "The dateparser API seems to have some problems."
-                )
+                await ctx.send("The dateparser API seems to have some problems.")
                 time_cancel = True
                 break
             else:
