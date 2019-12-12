@@ -306,7 +306,7 @@ class AnnoucementPlugin(commands.Cog):
         role_mention = f"<@&{role.id}>" if role else ""
 
         await channel.send(f"{role_mention}\n{msg}")
-        awaitctx.send("Sent!")
+        await ctx.send("Sent!")
 
         if role:
             guild: discord.Guild = ctx.guild
