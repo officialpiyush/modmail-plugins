@@ -37,8 +37,11 @@ class TranslatePlugin(commands.Cog):
             msg = await ctx.channel.fetch_message(msgid)
             if not msg.embeds:
                 ms = msg.content
-            else:
+            elif msg.embeds and msg.embeds[0] is not None:
                 ms = msg.embeds[0].description
+            else:
+                await ctx.send("Something wrong!")
+                return
 
             embed = msg.embeds[0]
             tmsg = self.translator.translate(ms)
