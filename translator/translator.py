@@ -42,8 +42,6 @@ class TranslatePlugin(commands.Cog):
             else:
                 await ctx.send("Something wrong!")
                 return
-
-            embed = msg.embeds[0]
             tmsg = self.translator.translate(ms)
             embed = discord.Embed()
             embed.color = 4388013
