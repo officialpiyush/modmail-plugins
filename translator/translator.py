@@ -116,7 +116,7 @@ class TranslatePlugin(commands.Cog):
 
         if (
             message.embeds[0].footer.text
-            and "Recipient" not in message.embeds[0].footer.text
+            and "Message ID" not in message.embeds[0].footer.text
         ):
             return
 
