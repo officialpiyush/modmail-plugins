@@ -29,10 +29,11 @@ class TagsPlugin(commands.Cog):
             await ctx.send(f":x: | Tag with name `{name}` already exists!")
             return
         else:
+            ctx.message.content = content
             await self.db.insert_one(
                 {
                     "name": name,
-                    "content": content,
+                    "content": ctx.message.clean_content,
                     "createdAt": datetime.utcnow(),
                     "updatedAt": datetime.utcnow(),
                     "author": ctx.author.id,
