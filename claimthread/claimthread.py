@@ -87,7 +87,7 @@ class ClaimThreadPlugin(commands.Cog):
         """
         Claim this thread
         """
-        if str(ctx.author.id) in self.staff_cat:
+        if str(ctx.author.id) not in self.staff_cat:
             await ctx.send("Set up yourself first")
             return
 
@@ -108,7 +108,7 @@ class ClaimThreadPlugin(commands.Cog):
         """
         Allow an user to join the thread
         """
-        if str(ctx.author.id) in self.staff_cat:
+        if str(ctx.author.id) not in self.staff_cat:
             await ctx.send("Set up yourself first")
             return
 
