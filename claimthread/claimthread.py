@@ -126,7 +126,7 @@ class ClaimThreadPlugin(commands.Cog):
 
     @commands.command(name="remove")
     @checks.has_permissions(PermissionLevel.SUPPORTER)
-    async def allow(self, ctx: commands.Context, member: discord.Member):
+    async def remove(self, ctx: commands.Context, member: discord.Member):
         """
         Remove an user from the thread
         """
