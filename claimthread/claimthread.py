@@ -117,7 +117,13 @@ class ClaimThreadPlugin(commands.Cog):
             await ctx.send("No u")
             return
 
+        dupe_message = ctx.message
+        dupe_message.content = f"{str(ctx.author)} added {str(member)}"
+
+        await ctx.thread.note(dupe_message)
+
         await ctx.channel.edit(
+            sync_permissions=False,
             overwrites={
                 ctx.guild.default_role: discord.PermissionOverwrite(
                     read_messages=False
@@ -144,7 +150,13 @@ class ClaimThreadPlugin(commands.Cog):
             await ctx.send("No u")
             return
 
+        dupe_message = ctx.message
+        dupe_message.content = f"{str(ctx.author)} removed {str(member)}"
+
+        await ctx.thread.note(dupe_message)
+
         await ctx.channel.edit(
+            sync_permissions=False,
             overwrites={
                 ctx.guild.default_role: discord.PermissionOverwrite(
                     read_messages=False
