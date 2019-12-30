@@ -98,7 +98,7 @@ class ClaimThreadPlugin(commands.Cog):
                 return
 
         dupe_message = ctx.message
-        dupe_message.content = f"{str(ctx.author)} claimed thi thread."
+        dupe_message.content = f"{str(ctx.author)} claimed this thread."
 
         await ctx.thread.note(dupe_message)
         await ctx.channel.edit(
