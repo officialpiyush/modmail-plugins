@@ -103,6 +103,7 @@ class ClaimThreadPlugin(commands.Cog):
         return
 
     @commands.command(name="allow")
+    @checks.thread_only()
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     async def allow(self, ctx: commands.Context, member: discord.Member):
         """
@@ -110,6 +111,10 @@ class ClaimThreadPlugin(commands.Cog):
         """
         if str(ctx.author.id) not in self.staff_cat:
             await ctx.send("Set up yourself first")
+            return
+
+        if member.id == ctx.author.id:
+            await ctx.send("No u")
             return
 
         await ctx.channel.edit(
@@ -126,12 +131,17 @@ class ClaimThreadPlugin(commands.Cog):
 
     @commands.command(name="remove")
     @checks.has_permissions(PermissionLevel.SUPPORTER)
+    @checks.thread_only()
     async def remove(self, ctx: commands.Context, member: discord.Member):
         """
         Remove an user from the thread
         """
         if str(ctx.author.id) in self.staff_cat:
             await ctx.send("Set up yourself first")
+            return
+
+        if member.id == ctx.author.id:
+            await ctx.send("No u")
             return
 
         await ctx.channel.edit(
