@@ -34,7 +34,7 @@ class ClaimThreadPlugin(commands.Cog):
     @commands.command(name="create_categories")
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def create_categories(
-        self, ctx: commands.Context, someone: typing.Union[discord.Member, discord.Role]
+        self, ctx: commands.Context, someone: typing.Union[discord.Role, discord.User]
     ):
         """
         Create categories for support members
