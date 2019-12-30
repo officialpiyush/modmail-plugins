@@ -91,6 +91,12 @@ class ClaimThreadPlugin(commands.Cog):
             await ctx.send("Set up yourself first")
             return
 
+        for user, category in self.staff_cat.items():
+            if category == ctx.channel.category_id:
+                await ctx.send(":x: | You can't claim an claimed thread. Please ask the claimer to transfer it to yo "
+                               "with the `transfer` command")
+                return
+
         dupe_message = ctx.message
         dupe_message.content = f"{str(ctx.author)} claimed thi thread."
 
@@ -151,6 +157,25 @@ class ClaimThreadPlugin(commands.Cog):
 
         await ctx.send("Done")
         return
+
+    @commands.command(name="transfer")
+    @checks.thread_only()
+    @checks.has_permissions(PermissionLevel.SUPPORTER)
+    async def transfer(self, ctx: commands.Context, member: discord.Member):
+        """
+        Transfer a thread
+        """
+        if str(ctx.author.id) not in self.staff_cat:
+            await ctx.send("Set up yourself first")
+            return
+        if str(member.id) not in self.staff_cat:
+            await ctx.send("Set up the member first first")
+            return
+
+        await ctx.channel.edit(
+            sync_permissions=True,
+            category=ctx.guild.get_channel(self.staff_cat[str(member.id)])
+        )
 
     @commands.Cog.listener()
     async def on_user_update(self, before: discord.User, after: discord.User):
