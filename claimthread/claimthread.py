@@ -172,6 +172,11 @@ class ClaimThreadPlugin(commands.Cog):
             await ctx.send("Set up the member first first")
             return
 
+        dupe_message = ctx.message
+        dupe_message.content = f"{str(ctx.author)} transferred it to {str(member)}"
+
+        await ctx.thread.note(dupe_message)
+
         await ctx.channel.edit(
             sync_permissions=True,
             category=ctx.guild.get_channel(self.staff_cat[str(member.id)])
