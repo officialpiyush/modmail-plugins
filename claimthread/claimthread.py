@@ -136,7 +136,7 @@ class ClaimThreadPlugin(commands.Cog):
         """
         Remove an user from the thread
         """
-        if str(ctx.author.id) in self.staff_cat:
+        if str(ctx.author.id) not in self.staff_cat:
             await ctx.send("Set up yourself first")
             return
 
