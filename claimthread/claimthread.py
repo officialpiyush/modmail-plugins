@@ -122,15 +122,7 @@ class ClaimThreadPlugin(commands.Cog):
 
         await ctx.thread.note(dupe_message)
 
-        await ctx.channel.edit(
-            sync_permissions=False,
-            overwrites={
-                ctx.guild.default_role: discord.PermissionOverwrite(
-                    read_messages=False
-                ),
-                member: discord.PermissionOverwrite(read_messages=True),
-            }
-        )
+        await ctx.channel.set_permissions(member, read_messages=True)
 
         await ctx.send("Done")
         return
@@ -155,15 +147,7 @@ class ClaimThreadPlugin(commands.Cog):
 
         await ctx.thread.note(dupe_message)
 
-        await ctx.channel.edit(
-            sync_permissions=False,
-            overwrites={
-                ctx.guild.default_role: discord.PermissionOverwrite(
-                    read_messages=False
-                ),
-                member: discord.PermissionOverwrite(read_messages=False),
-            }
-        )
+        await ctx.channel.set_permissions(member, read_messages=False)
 
         await ctx.send("Done")
         return
