@@ -5,6 +5,8 @@ from discord.ext import commands
 
 logger = logging.getLogger("Modmail")
 
+from core import checks
+from core.models import PermissionLevel
 
 class DmOnJoinPlugin(commands.Cog):
     def __init__(self, bot):
@@ -12,7 +14,7 @@ class DmOnJoinPlugin(commands.Cog):
         self.db = bot.plugin_db.get_partition(self)
 
     @commands.command(aliases=["sdms"])
-    @commands.has_permissions(manage_guild=True)
+    @checks.has_permissions(PermissionLevel.ADMIN)
     async def setdmmessage(self, ctx, *, message):
         """Set a message to DM a user after they join."""
         if message.startswith("https://") or message.startswith("http://"):
