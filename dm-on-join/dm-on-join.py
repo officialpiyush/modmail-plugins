@@ -43,7 +43,7 @@ class DmOnJoinPlugin(commands.Cog):
 
         try:
             message = config["dm-message"]["message"]
-            await member.send(message)
+            await member.send(message.replace("{user}", str(member)))
         except:
             return
 
