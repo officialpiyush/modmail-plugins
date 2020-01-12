@@ -135,6 +135,8 @@ class PrivatePlugins(commands.Cog):
             try:
                 await self.download_plugin(plugin)
                 await self.load_plugin(plugin)
+            except commands.errors.ExtensionAlreadyLoaded:
+                pass
             except Exception:
                 logger.error("Error when loading plugin %s.", plugin, exc_info=True)
                 continue
