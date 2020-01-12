@@ -658,6 +658,6 @@ class Plugins(commands.Cog):
 
 
 def setup(bot):
-	if "Plugin" in bot.cogs:
-		bot.remove_cog("Plugin")
+    if "Plugin" in bot.cogs:
+        bot.remove_cog("Plugin")
     bot.add_cog(Plugins(bot))
