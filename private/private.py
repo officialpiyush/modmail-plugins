@@ -126,7 +126,8 @@ class PrivatePlugins(commands.Cog):
                     # For backwards compat
                     plugin = Plugin.from_string(plugin_name)
                 except InvalidPluginError:
-                    logger.error("Failed to parse plugin name: %s.", plugin_name, exc_info=True)
+                    print(e.__class__.__name__)
+                    # logger.error("Failed to parse plugin name: %s.", plugin_name, exc_info=True)
                     continue
 
                 logger.info("Migrated legacy plugin name: %s, now %s.", plugin_name, str(plugin))
@@ -135,9 +136,9 @@ class PrivatePlugins(commands.Cog):
             try:
                 await self.download_plugin(plugin)
                 await self.load_plugin(plugin)
-            except commands.errors.ExtensionAlreadyLoaded:
-                pass
-            except Exception:
+            except Exception as e:
+                if isinstance(e, commands.errors.ExtensionAlreadyLoaded):
+                    continue
                 logger.error("Error when loading plugin %s.", plugin, exc_info=True)
                 continue
 
@@ -238,6 +239,8 @@ class PrivatePlugins(commands.Cog):
             logger.info("Loaded plugin: %s", plugin.ext_string.split(".")[-1])
             self.loaded_plugins.add(plugin)
 
+        except commands.errors.ExtensionAlreadyLoaded:
+            pass
         except commands.ExtensionError as exc:
             logger.error("Plugin load failure: %s", plugin.ext_string, exc_info=True)
             raise InvalidPluginError("Cannot load extension, plugin invalid.") from exc
