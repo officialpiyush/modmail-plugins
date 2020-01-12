@@ -45,6 +45,7 @@ class Plugin:
 
     @property
     def abs_path(self):
+        print(Path(__file__).absolute().parent.parent / self.path)
         return Path(__file__).absolute().parent.parent / self.path
 
     @property
@@ -199,6 +200,7 @@ class PrivatePlugins(commands.Cog):
         plugin_io.close()
 
     async def load_plugin(self, plugin):
+        print(plugin)
         if not (plugin.abs_path / f"{plugin.name}.py").exists():
             raise InvalidPluginError(f"{plugin.name}.py not found.")
 
