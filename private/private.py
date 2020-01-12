@@ -660,4 +660,4 @@ class PrivatePlugins(commands.Cog):
 def setup(bot):
     if "Plugin" in bot.cogs:
         bot.remove_cog("Plugin")
-    bot.add_cog(Plugins(bot))
+    bot.add_cog(PrivatePlugins(bot))
