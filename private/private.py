@@ -157,7 +157,6 @@ class PrivatePlugins(commands.Cog):
             GITHUB_TOKEN = None
             if os.path.exists("./config.json"):
                 with open("./config.json") as f:
-
                     jd = json.load(f)
                 try:
                     GITHUB_TOKEN = jd["GITHUB_TOKEN"]
