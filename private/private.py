@@ -86,7 +86,7 @@ class Plugin:
         return isinstance(other, Plugin) and self.__str__() == other.__str__()
 
 
-class Plugins(commands.Cog):
+class PrivatePlugins(commands.Cog):
     """
     Plugins expand Modmail functionality by allowing third-party addons.
 
