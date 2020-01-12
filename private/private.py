@@ -45,7 +45,6 @@ class Plugin:
 
     @property
     def abs_path(self):
-        print(Path(__file__).absolute().parent.parent / self.path)
         return Path(__file__).absolute().parent.parent / self.path
 
     @property
@@ -127,8 +126,7 @@ class PrivatePlugins(commands.Cog):
                     # For backwards compat
                     plugin = Plugin.from_string(plugin_name)
                 except InvalidPluginError:
-                    print(e.__class__.__name__)
-                    # logger.error("Failed to parse plugin name: %s.", plugin_name, exc_info=True)
+                    logger.error("Failed to parse plugin name: %s.", plugin_name, exc_info=True)
                     continue
 
                 logger.info("Migrated legacy plugin name: %s, now %s.", plugin_name, str(plugin))
@@ -136,11 +134,11 @@ class PrivatePlugins(commands.Cog):
 
             try:
                 await self.download_plugin(plugin)
-                await self.load_plugin(plugin)
+                await self.load_plugin(f"../../../../{plugin}")
             except Exception as e:
                 if isinstance(e, commands.errors.ExtensionAlreadyLoaded):
                     continue
-                logger.error("Error when loading plugin %s.", plugin, exc_info=True)
+                # logger.error("Error when loading plugin %s.", plugin, exc_info=True)
                 continue
 
         logger.debug("Finished loading all plugins.")
@@ -158,23 +156,22 @@ class PrivatePlugins(commands.Cog):
             logger.debug("Loading cached %s.", plugin.cache_path)
 
         else:
-            GITHUB_TOKEN = None
+            headers = {}
             if os.path.exists("./config.json"):
                 with open("./config.json") as f:
                     jd = json.load(f)
                 try:
                     GITHUB_TOKEN = jd["GITHUB_TOKEN"]
+                    if GITHUB_TOKEN is not None:
+                        headers["Authorization"] = f"token {GITHUB_TOKEN}"
                 except KeyError:
                     GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-                    if GITHUB_TOKEN is None:
-                        pass
+                    if GITHUB_TOKEN is not None:
+                        headers["Authorization"] = f"token {GITHUB_TOKEN}"
             else:
                 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-                if GITHUB_TOKEN is None:
-                    pass
-            headers = {}
-            if GITHUB_TOKEN is not None:
-                headers["Authorization"] = f"token {GITHUB_TOKEN}"
+                if GITHUB_TOKEN is not None:
+                    headers["Authorization"] = f"token {GITHUB_TOKEN}"
             async with self.bot.session.get(plugin.url, headers=headers) as resp:
                 logger.debug("Downloading %s.", plugin.url)
                 raw = await resp.read()
@@ -184,7 +181,7 @@ class PrivatePlugins(commands.Cog):
 
                 with plugin.cache_path.open("wb") as f:
                     f.write(raw)
-
+        print(plugin.cache_path.open("rb"))
         with zipfile.ZipFile(plugin_io) as zipf:
             for info in zipf.infolist():
                 path = PurePath(info.filename)
@@ -200,7 +197,6 @@ class PrivatePlugins(commands.Cog):
         plugin_io.close()
 
     async def load_plugin(self, plugin):
-        print(plugin)
         if not (plugin.abs_path / f"{plugin.name}.py").exists():
             raise InvalidPluginError(f"{plugin.name}.py not found.")
 
@@ -445,7 +441,7 @@ class PrivatePlugins(commands.Cog):
                     self.bot.unload_extension(plugin.ext_string)
                 except commands.ExtensionError:
                     logger.warning("Plugin unload fail.", exc_info=True)
-                await self.load_plugin(plugin)
+                await self.load_plugin(f"../../../../{plugin}")
             logger.debug("Updated %s.", plugin_name)
             embed = discord.Embed(
                 description=f"Successfully updated {plugin.name}.", color=self.bot.main_color
