@@ -181,10 +181,11 @@ class PrivatePlugins(commands.Cog):
 
                 with plugin.cache_path.open("wb") as f:
                     f.write(raw)
-        print(plugin.cache_path.open("rb"))
+
         with zipfile.ZipFile(plugin_io) as zipf:
             for info in zipf.infolist():
                 path = PurePath(info.filename)
+                print(path)
                 if len(path.parts) >= 3 and path.parts[1] == plugin.name:
                     plugin_path = plugin.abs_path / Path(*path.parts[2:])
                     if info.is_dir():
@@ -197,6 +198,7 @@ class PrivatePlugins(commands.Cog):
         plugin_io.close()
 
     async def load_plugin(self, plugin):
+        print(plugin.abs_path)
         if not (plugin.abs_path / f"{plugin.name}.py").exists():
             raise InvalidPluginError(f"{plugin.name}.py not found.")
 
@@ -233,6 +235,7 @@ class PrivatePlugins(commands.Cog):
                 sys.path.insert(0, USER_SITE)
 
         try:
+            print(plugin.ext_string)
             self.bot.load_extension(plugin.ext_string)
             logger.info("Loaded plugin: %s", plugin.ext_string.split(".")[-1])
             self.loaded_plugins.add(plugin)
@@ -441,7 +444,7 @@ class PrivatePlugins(commands.Cog):
                     self.bot.unload_extension(plugin.ext_string)
                 except commands.ExtensionError:
                     logger.warning("Plugin unload fail.", exc_info=True)
-                await self.load_plugin(f"../../../../{plugin}")
+                await self.load_plugin(plugin)
             logger.debug("Updated %s.", plugin_name)
             embed = discord.Embed(
                 description=f"Successfully updated {plugin.name}.", color=self.bot.main_color
