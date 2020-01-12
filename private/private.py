@@ -657,6 +657,6 @@ class PrivatePlugins(commands.Cog):
 
 
 def setup(bot):
-    if "Plugin" in bot.cogs:
-        bot.remove_cog("Plugin")
+    if "Plugins" in bot.cogs:
+        bot.remove_cog("Plugins")
     bot.add_cog(PrivatePlugins(bot))
