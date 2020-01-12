@@ -154,8 +154,8 @@ class Plugins(commands.Cog):
             logger.debug("Loading cached %s.", plugin.cache_path)
 
         else:
-        	GITHUB_TOKEN = None
-        	if os.path.exists("./config.json"):
+            GITHUB_TOKEN = None
+            if os.path.exists("./config.json"):
                 with open("./config.json") as f:
 
                     jd = json.load(f)
@@ -164,7 +164,7 @@ class Plugins(commands.Cog):
                 except KeyError:
                     GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
                     if GITHUB_TOKEN is None:
-                    	pass
+                        pass
             else:
                 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
                 if GITHUB_TOKEN is None:
