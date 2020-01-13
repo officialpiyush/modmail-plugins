@@ -38,7 +38,7 @@ class ModerationPlugin(commands.Cog):
         """
 
         await self.db.find_one_and_update(
-            {"_id": "config"}, {"$set": {"channel": channel.id}}
+            {"_id": "config"}, {"$set": {"channel": channel.id}}, upsert=True
         )
 
         await ctx.send("Done!")
