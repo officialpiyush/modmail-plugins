@@ -20,6 +20,30 @@ class ModerationPlugin(commands.Cog):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
 
+    @commands.group(invoke_without_command=True)
+    @commands.guild_only()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def moderation(self, ctx: commands.Context):
+        """
+        Settings and stuff
+        """
+        await ctx.send_help(ctx.command)
+        return
+
+    @moderation.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def channel(self, ctx: commands.Context, channel: discord.TextChannel):
+        """
+        Set the log channel for moderation actions.
+        """
+
+        await self.db.find_one_and_update(
+            {"_id": "config"}, {"$set": {"channel": channel.id}}
+        )
+
+        await ctx.send("Done!")
+        return
+
     @commands.command(aliases=["banhammer"])
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def ban(
