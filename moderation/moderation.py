@@ -199,7 +199,7 @@ class ModerationPlugin(commands.Cog):
         await ctx.send(f"Successfully warned **{member}**\n`{reason}`")
 
         await channel.send(
-            embed=self.generateWarnEmbed(
+            embed=await self.generateWarnEmbed(
                 str(member.id), str(ctx.author.id), len(userw), reason
             )
         )
