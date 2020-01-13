@@ -20,7 +20,7 @@ class ModerationPlugin(commands.Cog):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
 
-    @commands.command(aliases="banhammer")
+    @commands.command(aliases=["banhammer"])
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def ban(
         self,
