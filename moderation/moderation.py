@@ -65,7 +65,7 @@ class ModerationPlugin(commands.Cog):
         if config is None:
             return await ctx.send("There's no configured log channel.")
         else:
-            channel = ctx.guild.get_channel(int(config["logs"]["channel"]))
+            channel = ctx.guild.get_channel(int(config["channel"]))
 
         if channel is None:
             await ctx.send("There is no configured log channel.")
@@ -119,7 +119,7 @@ class ModerationPlugin(commands.Cog):
         if config is None:
             return await ctx.send("There's no configured log channel.")
         else:
-            channel = ctx.guild.get_channel(int(config["logs"]["channel"]))
+            channel = ctx.guild.get_channel(int(config["channel"]))
 
         if channel is None:
             await ctx.send("There is no configured log channel.")
