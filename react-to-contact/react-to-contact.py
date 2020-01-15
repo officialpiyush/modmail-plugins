@@ -112,7 +112,7 @@ class ReactToContact(commands.Cog):
             if exists:
                 return
 
-            thread = await self.bot.threads.create(user, creator=user)
+            thread = await self.bot.threads.create(user)
 
             if self.bot.config["dm_disabled"] >= 1:
                 logger.info("Contacting user %s when Modmail DM is disabled.", user)
