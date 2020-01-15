@@ -117,7 +117,7 @@ class ReactToContact(commands.Cog):
             if self.bot.config["dm_disabled"] >= 1:
                 logger.info("Contacting user %s when Modmail DM is disabled.", user)
 
-                 embed = discord.Embed(
+                embed = discord.Embed(
                 title="Created Thread",
                 description=f"Thread started by {user.mention}.",
                 color=self.bot.main_color,
