@@ -27,7 +27,7 @@ class AnnoucementPlugin(commands.Cog):
 
     @announcement.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def start(self, ctx: commands.Context, role: typing.Optional[discord.Role]):
+    async def start(self, ctx: commands.Context, role: typing.Optional[typing.Union[discord.Role, str]] = None):
         """
         Start an interactive session to create announcement
         Add the role in the command if you want to enable mentions
@@ -39,8 +39,6 @@ class AnnoucementPlugin(commands.Cog):
         __Announcement without role mention__
         {prefix}announcement start
         """
-
-        role_mention = f"<@&{role.id}>" if role else ""
 
         # TODO: Enable use of reactions
         def check(msg: discord.Message):
@@ -81,10 +79,18 @@ class AnnoucementPlugin(commands.Cog):
             else:
                 return False
 
-        if role:
+        if isinstance(role, discord.Role):
+            role_mention = f"<@&{role.id}>"
             guild: discord.Guild = ctx.guild
             grole: discord.Role = guild.get_role(role.id)
             await grole.edit(mentionable=True)
+        elif isinstance(role, str):
+            if role == "here" or role == "@here":
+                role_mention = "@here"
+            elif role == "everyone" or role == "@everyone":
+                role_mention = "@everyone"
+        else:
+            role_mention = ""
 
         await ctx.send("Starting an interactive process to create an announcement")
 
@@ -276,7 +282,7 @@ class AnnoucementPlugin(commands.Cog):
                 return
             else:
                 await schan.send(f"{role_mention}", embed=embed)
-        if role:
+        if isinstance(role, discord.Role):
             guild: discord.Guild = ctx.guild
             grole: discord.Role = guild.get_role(role.id)
             if grole.mentionable is True:
@@ -306,7 +312,6 @@ class AnnoucementPlugin(commands.Cog):
         role_mention = f"<@&{role.id}>" if role else ""
 
         await channel.send(f"{role_mention}\n{msg}")
-        await ctx.send("Sent!")
 
         if role:
             guild: discord.Guild = ctx.guild
