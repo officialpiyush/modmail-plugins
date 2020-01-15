@@ -19,17 +19,6 @@ class ReactToContact(commands.Cog):
         self.reaction = None
         self.channel = None
         self.message = None
-        # asyncio.create_task(self._set_db())
-
-    # async def _set_db(self):
-    #     config = await self.db.find_one({"_id": "config"})
-
-    #     if config is None:
-    #         return
-    #     else:
-    #         self.channel = config.get("channel", None)
-    #         self.reaction = config.get("reaction", None)
-    #         self.message = config.get("message", None)
 
     @commands.command(aliases=["sr"])
     @commands.guild_only()
@@ -83,22 +72,27 @@ class ReactToContact(commands.Cog):
         if payload.user_id == self.bot.user.id:
             return
 
+        user = self.bot.get_user(payload.user_id)
+
+        if user is None or user.bot:
+            return
+
         config = await self.db.find_one({"_id": "config"})
 
         if config is None:
-            #  print("No Config")
+          #  print("No Config")
             return
 
         if config["reaction"] is None or (payload.emoji.name != config["reaction"]):
-            #  print("No Reaction")
+          #  print("No Reaction")
             return
 
         if config["channel"] is None or (payload.channel_id != int(config["channel"])):
-            #  print("No Channel")
+          #  print("No Channel")
             return
 
         if config["message"] is None or (payload.message_id != int(config["message"])):
-            #  print("No Message")
+          #  print("No Message")
             return
 
         guild: discord.Guild = discord.utils.find(
@@ -114,11 +108,25 @@ class ReactToContact(commands.Cog):
         await msg.remove_reaction(payload.emoji, member)
 
         try:
-            await member.send(
-                embed=discord.Embed(
-                    description="Hello, how may we help you?", color=self.bot.main_color
+            exists = await self.bot.threads.find(recipient=user)
+            if exists:
+                return
+
+            thread = await self.bot.threads.create(user, creator=user)
+
+            if self.bot.config["dm_disabled"] >= 1:
+                logger.info("Contacting user %s when Modmail DM is disabled.", user)
+
+                 embed = discord.Embed(
+                title="Created Thread",
+                description=f"Thread started by {user.mention}.",
+                color=self.bot.main_color,
                 )
-            )
+                await thread.wait_until_ready()
+                await thread.channel.send(embed=embed)
+                sent_emoji, _ = await self.bot.retrieve_emoji()
+                await asyncio.sleep(3)
+
         except (discord.HTTPException, discord.Forbidden):
             ch = self.bot.get_channel(int(self.bot.config.get("log_channel_id")))
 
