@@ -315,7 +315,7 @@ class AnnoucementPlugin(commands.Cog):
             elif role == "everyone" or role == "@everyone":
                 role_mention = "@everyone"
             else:
-                msg = role + msg
+                msg = f"{role} {msg}"
                 role_mention = ""
 
         await channel.send(f"{role_mention}\n{msg}")
