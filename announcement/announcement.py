@@ -294,7 +294,7 @@ class AnnoucementPlugin(commands.Cog):
         self,
         ctx: commands.Context,
         channel: discord.TextChannel,
-        role: typing.Optional[discord.Role],
+        role: typing.Optional[typing.Union[discord.Role, str]],
         *,
         msg: str,
     ):
@@ -304,16 +304,24 @@ class AnnoucementPlugin(commands.Cog):
         **Usage:**
         {prefix}announcement quick #channel <OPTIONAL role> message
         """
-        if role:
+        if isinstance(role, discord.Role):
             guild: discord.Guild = ctx.guild
             grole: discord.Role = guild.get_role(role.id)
             await grole.edit(mentionable=True)
-
-        role_mention = f"<@&{role.id}>" if role else ""
+            role_mention = f"<@&{role.id}>"
+        elif isinstance(role, str):
+            if role == "here" or role == "@here":
+                role_mention = "@here"
+            elif role == "everyone" or role == "@everyone":
+                role_mention = "@everyone"
+            else:
+                msg = f"{role} {msg}"
+                role_mention = ""
 
         await channel.send(f"{role_mention}\n{msg}")
+        await ctx.send("Done")
 
-        if role:
+        if isinstance(role, discord.Role):
             guild: discord.Guild = ctx.guild
             grole: discord.Role = guild.get_role(role.id)
             if grole.mentionable is True:
