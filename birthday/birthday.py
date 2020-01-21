@@ -39,6 +39,13 @@ class BirthdayPlugin(commands.Cog):
         self.channel = config.get("channel", None)
         self.timezone = config.get("timezone", "America/Chicago")
 
+    async def _update_birthdays(self):
+        await self.db.find_one_and_update(
+                {"_id": "birthdays"},
+                {"$set": {"birthdays": self.birthdays}},
+                upsert=True
+            )
+
 
     @commands.group(invoke_without_command=True)
     async def birthday(self, ctx: commands.Context):
