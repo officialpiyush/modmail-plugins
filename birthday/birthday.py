@@ -94,14 +94,14 @@ class BirthdayPlugin(commands.Cog):
             if self.booted:
                 custom_timezone = timezone(self.timezone)
                 now = datetime.datetime.now(custom_timezone)
-                sleep_time = (now.replace(hour=0, minute=0, second=0, microsecond=0) - now).seconds
+                sleep_time = (now.replace(hour=0, minute=10, second=0, microsecond=0) - now).seconds
                 self.booted = False
                 await asyncio.sleep(sleep_time)
                 continue
 
             today = now.strftime("%d/%m/%Y").split("/")
 
-            for user, obj in self.birthdays.keys():
+            for user, obj in self.birthdays.items():
                 if obj["month"] != today[1] or obj["day"] != today[0]:
                     continue
                 guild = self.bot.get_guild(int(obj["guild"]))
