@@ -153,7 +153,7 @@ class BirthdayPlugin(commands.Cog):
             birthday_obj["day"] = int(birthday[0])
             birthday_obj["month"] = int(birthday[1])
             birthday_obj["year"] = int(birthday[2])
-            birthday_obj["guild"] = str(ctx.guild._id)
+            birthday_obj["guild"] = str(ctx.guild.id)
 
             self.birthdays.pop[str(ctx.author.id)]
             self.birthdays[str(ctx.author.id)] = birthday_obj
