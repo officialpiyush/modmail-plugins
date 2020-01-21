@@ -254,7 +254,7 @@ class BirthdayPlugin(commands.Cog):
             if len(matches) > 0:
                 embed = discord.Embed()
                 embed.color = 0xeb3446
-                embed.description = f"Did you mean: \n{'\n'.join(matches)}"
+                embed.description = f"Did you mean: \n`{'`, `'.join(matches)}`"
                 await ctx.send(embed=embed)
                 return
             else:
