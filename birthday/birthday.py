@@ -64,6 +64,7 @@ class BirthdayPlugin(commands.Cog):
         self.enabled = config.get("enabled", True)
         self.timezone = config.get("timezone", "America/Chicago")
         self.messages = config.get("messages", None)
+        self.bot.loop.create_task(self._handle_birthdays())
 
     async def _update_birthdays(self):
         await self.db.find_one_and_update(
