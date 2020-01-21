@@ -120,7 +120,7 @@ class BirthdayPlugin(commands.Cog):
                     channel = guild.get_channel(int(self.channels[obj["guild"]]))
                     if channel is None:
                         continue
-                    age = today[2] - year[2]
+                    age = today[2] - obj["year"]
                     await channel.send(self.messages[obj["guild"]].replace("{user.mention}", member.mention).replace("{user}", str(member)).replcae("{age}", age))
                     continue
 
