@@ -1,6 +1,9 @@
+import asyncio
+import datetime
 import discord
 
 from discord.ext import commands
+from pytz import timezone
 
 from core import checks
 from core.models import PermissionLevel
@@ -15,11 +18,12 @@ class BirthdayPlugin(commands.Cog):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
         self.birthdays = dict()
-        self.role = None
-        self.channel = None
+        self.roles = dict()
+        self.channels = dict()
         self.timezone = "America/Chicago"
-        self.message = None
+        self.messagess = None
         self.enabled = True
+        self.booted = True
         self.bot.create_task(self._set_db())
 
     async def _set_db(self):
@@ -36,22 +40,22 @@ class BirthdayPlugin(commands.Cog):
                 {"_id": "config"},
                 {
                     "$set": {
-                        "role": None,
-                        "channel": None,
+                        "roles": dict(),
+                        "channels": dict(),
                         "enabled": True,
                         "timezone": "America/Chicago",
-                        "message": None,
+                        "messages": None,
                     }
                 },
                 upsert=True,
             )
 
         self.birthdays = birthdays.get("birthdays", dict())
-        self.role = config.get("role", None)
-        self.channel = config.get("channel", None)
+        self.roles = config.get("roles", dict())
+        self.channels = config.get("channels", dict())
         self.enabled = config.get("enabled", True)
         self.timezone = config.get("timezone", "America/Chicago")
-        self.message = config.get("message", None)
+        self.messages = config.get("messages", None)
 
     async def _update_birthdays(self):
         await self.db.find_one_and_update(
@@ -63,15 +67,61 @@ class BirthdayPlugin(commands.Cog):
             {"_id": "config"},
             {
                 "$set": {
-                    "role": self.role,
-                    "channel": self.channel,
+                    "roles": self.roles,
+                    "channels": self.channels,
                     "enabled": self.enabled,
                     "timezone": self.timezone,
-                    "message": self.message,
+                    "messages": self.messages,
                 }
             },
             upsert=True,
         )
+
+    async def _handle_birthdays(self):
+        while True:
+            if not self.enabled:
+                return
+
+            if self.booted:
+                custom_timezone = timezone(self.timezone)
+                now = datetime.datetime.now(custom_timezone)
+                sleep_time = 86400 - (now - (datetime.datetime.combine(now.date(), datetime.time()))).seconds
+                self.booted = False
+                await asyncio.sleep(sleep_time)
+                continue
+
+            today = now.strftime("%d/%m/%Y").split("/")
+
+            for user, obj in self.birthdays.keys():
+                if obj["month"] != today[1] or obj["day"] != today[0]:
+                    continue
+                guild = self.bot.get_guild(int(obj["guild"]))
+                if guild is None:
+                    continue
+                member = guild.get_member(int(user))
+                if member is None:
+                    continue
+
+                if self.roles[obj["guild"]]:
+                    role = guild.get_role(int(self.roles[obj["guild"]]))
+                    if role:
+                        await member.add_roles(role, reason="Birthday Boi")
+
+                if self.messages[obj["guild"]] and self.channels[obj["guild"]]:
+                    channel = guild.get_channel(int(self.channels[obj["guild"]]))
+                    if channel is None:
+                        continue
+                    age = today[2] - year[2]
+                    await channel.send(self.messages[obj["guild"]].replace("{user.mention}", member.mention).replace("{user}", str(member)).replcae("{age}", age))
+                    continue
+
+            custom_timezone = timezone(self.timezone)
+            now = datetime.datetime.now(custom_timezone)
+            sleep_time = 86400 - (now - (datetime.datetime.combine(now.date(), datetime.time()))).seconds
+            await asyncio.sleep(sleep_time)
+
+
+
 
     @commands.group(invoke_without_command=True)
     async def birthday(self, ctx: commands.Context):
@@ -100,7 +150,7 @@ class BirthdayPlugin(commands.Cog):
                 await ctx.send(":x: | Invalid month provided.")
                 return
             birthday_obj = {}
-            birthday_obj["date"] = int(birthday[0])
+            birthday_obj["day"] = int(birthday[0])
             birthday_obj["month"] = int(birthday[1])
             birthday_obj["year"] = int(birthday[2])
             birthday_obj["guild"] = str(ctx.guild._id)
@@ -135,7 +185,8 @@ class BirthdayPlugin(commands.Cog):
         Configure a channel for sending birthday announcements
         """
 
-        self.channel = str(channel.id)
+        self.channels
+        self.channels[str(ctx.guild.id)] = str(channel.id)
         await self._update_config()
         await ctx.send("Done!")
         return
@@ -147,7 +198,7 @@ class BirthdayPlugin(commands.Cog):
         Configure a role which will be added to the birthay boizzzz
         """
 
-        self.role = str(role.id)
+        self.roles[str(ctx.guild.id)] = str(role.id)
         await self._update_config()
         await ctx.send("Done!")
         return
@@ -164,7 +215,7 @@ class BirthdayPlugin(commands.Cog):
         • {age} - Age of the birthday boiiii
         """
 
-        self.message = msg
+        self.messages[str(ctx.guild.id)] = msg
         await self._update_config()
         await ctx.send("Done!")
         return
