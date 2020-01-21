@@ -179,7 +179,7 @@ class BirthdayPlugin(commands.Cog):
         return
 
     @birthday.command()
-    @checks.has_permission(PermissionLevel.ADMIN)
+    @checks.has_permissions(PermissionLevel.ADMIN)
     async def channel(self, ctx: command.Context, channel: discord.TextChannel):
         """
         Configure a channel for sending birthday announcements
@@ -192,7 +192,7 @@ class BirthdayPlugin(commands.Cog):
         return
 
     @birthday.command()
-    @checks.has_permission(PermissionLevel.ADMIN)
+    @checks.has_permissions(PermissionLevel.ADMIN)
     async def role(self, ctx: command.Context, role: discord.Role):
         """
         Configure a role which will be added to the birthay boizzzz
@@ -204,7 +204,7 @@ class BirthdayPlugin(commands.Cog):
         return
 
     @birthday.command()
-    @checks.has_permission(PermissionLevel.ADMIN)
+    @checks.has_permissions(PermissionLevel.ADMIN)
     async def message(self, ctx: command.Context, *, msg: str):
         """
         Set a message to announce when wishing someone's birthday
@@ -221,7 +221,7 @@ class BirthdayPlugin(commands.Cog):
         return
 
     @birthday.command()
-    @checks.has_permission(PermissionLevel.ADMIN)
+    @checks.has_permissions(PermissionLevel.ADMIN)
     async def toggle(self, ctx: commands.Context):
         """
         Enable / Disable this plugin
