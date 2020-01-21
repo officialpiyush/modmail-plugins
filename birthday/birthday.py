@@ -14,6 +14,7 @@ class BirthdayPlugin(commands.Cog):
         self.role = None
         self.channel = None
         self.timezone = "America/Chicago"
+        self.message = None
         self.bot.create_task(self._set_db())
 
     async def _set_db(self):
@@ -30,7 +31,7 @@ class BirthdayPlugin(commands.Cog):
         if config is None:
             await self.db.find_one_and_update(
                 {"_id": "config"}, 
-                {"$set": {"role": None, "channel": None, "timezone": "America/Chicago"}},
+                {"$set": {"role": None, "channel": None, "timezone": "America/Chicago", "message": None}},
                 upsert=True
             )
 
@@ -38,6 +39,7 @@ class BirthdayPlugin(commands.Cog):
         self.role = config.get("role", None)
         self.channel = config.get("channel", None)
         self.timezone = config.get("timezone", "America/Chicago")
+        self.message = config.get("message", None)
 
     async def _update_birthdays(self):
         await self.db.find_one_and_update(
@@ -49,9 +51,10 @@ class BirthdayPlugin(commands.Cog):
     async def _update_config(self):
         await self.db.find_one_and_update(
             {"_id": "config"}, 
-            {"$set": {"role": self.role, "channel": self.channel, "timezone": self.timezone}},
+            {"$set": {"role": self.role, "channel": self.channel, "timezone": self.timezone, "message": self.message}},
             upsert=True
         )
+
 
     @commands.group(invoke_without_command=True)
     async def birthday(self, ctx: commands.Context):
