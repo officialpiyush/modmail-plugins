@@ -24,7 +24,7 @@ class BirthdayPlugin(commands.Cog):
         self.messagess = None
         self.enabled = True
         self.booted = True
-        self.bot.create_task(self._set_db())
+        self.bot.loop.create_task(self._set_db())
 
     async def _set_db(self):
         birthdays = await self.db.find_one({"_id": "birthdays"})
