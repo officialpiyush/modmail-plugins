@@ -94,7 +94,7 @@ class BirthdayPlugin(commands.Cog):
             if self.booted:
                 custom_timezone = timezone(self.timezone)
                 now = datetime.datetime.now(custom_timezone)
-                sleep_time = 86400 - (now - (datetime.datetime.combine(now.date(), datetime.time()))).seconds
+                sleep_time = (now.replace(hour=0, minute=0, second=0, microsecond=0) - now).seconds
                 self.booted = False
                 await asyncio.sleep(sleep_time)
                 continue
@@ -126,7 +126,7 @@ class BirthdayPlugin(commands.Cog):
 
             custom_timezone = timezone(self.timezone)
             now = datetime.datetime.now(custom_timezone)
-            sleep_time = 86400 - (now - (datetime.datetime.combine(now.date(), datetime.time()))).seconds
+            sleep_time = (now.replace(hour=0, minute=0, second=0, microsecond=0) - now).seconds
             await asyncio.sleep(sleep_time)
 
 
