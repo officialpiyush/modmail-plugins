@@ -9,7 +9,7 @@ from pytz import timezone
 from core import checks
 from core.models import PermissionLevel
 
-logger = logging.get_logger("Modmail")
+logger = logging.getLogger("Modmail")
 
 class BirthdayPlugin(commands.Cog):
     """
