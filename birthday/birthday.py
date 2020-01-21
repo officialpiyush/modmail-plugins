@@ -19,6 +19,7 @@ class BirthdayPlugin(commands.Cog):
         self.channel = None
         self.timezone = "America/Chicago"
         self.message = None
+        self.enabled = True
         self.bot.create_task(self._set_db())
 
     async def _set_db(self):
@@ -37,6 +38,7 @@ class BirthdayPlugin(commands.Cog):
                     "$set": {
                         "role": None,
                         "channel": None,
+                        "enabled": True,
                         "timezone": "America/Chicago",
                         "message": None,
                     }
@@ -47,6 +49,7 @@ class BirthdayPlugin(commands.Cog):
         self.birthdays = birthdays.get("birthdays", dict())
         self.role = config.get("role", None)
         self.channel = config.get("channel", None)
+        self.enabled = config.get("enabled", True)
         self.timezone = config.get("timezone", "America/Chicago")
         self.message = config.get("message", None)
 
@@ -62,6 +65,7 @@ class BirthdayPlugin(commands.Cog):
                 "$set": {
                     "role": self.role,
                     "channel": self.channel,
+                    "enabled": self.enabled,
                     "timezone": self.timezone,
                     "message": self.message,
                 }
@@ -163,4 +167,16 @@ class BirthdayPlugin(commands.Cog):
         self.message = msg
         await self._update_config()
         await ctx.send("Done!")
+        return
+
+    @birthday.command()
+    @checks.has_permission(PermissionLevel.ADMIN)
+    async def toggle(self, ctx: commands.Context):
+        """
+        Enable / Disable this plugin
+        """
+
+        self.enabled = not self.enabled
+        await self._update_config()
+        await ctx.send(f"{'Enabled' if self.enabled else 'Disabled'} the plugin :p")
         return
