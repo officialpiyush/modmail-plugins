@@ -32,7 +32,7 @@ class BirthdayPlugin(commands.Cog):
         birthdays = await self.db.find_one({"_id": "birthdays"})
         config = await self.db.find_one({"_id": "config"})
 
-        if birthday is None:
+        if birthdays is None:
             await self.db.find_one_and_update(
                 {"_id": "birthdays"}, {"$set": {"birthdays": dict()}}, upsert=True
             )
