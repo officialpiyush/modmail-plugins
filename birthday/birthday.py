@@ -41,11 +41,17 @@ class BirthdayPlugin(commands.Cog):
 
     async def _update_birthdays(self):
         await self.db.find_one_and_update(
-                {"_id": "birthdays"},
-                {"$set": {"birthdays": self.birthdays}},
-                upsert=True
-            )
+            {"_id": "birthdays"},
+            {"$set": {"birthdays": self.birthdays}},
+            upsert=True
+        )
 
+    async def _update_config(self):
+        await self.db.find_one_and_update(
+            {"_id": "config"}, 
+            {"$set": {"role": self.role, "channel": self.channel, "timezone": self.timezone}},
+            upsert=True
+        )
 
     @commands.group(invoke_without_command=True)
     async def birthday(self, ctx: commands.Context):
