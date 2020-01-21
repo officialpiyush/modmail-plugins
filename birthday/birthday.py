@@ -153,6 +153,11 @@ class BirthdayPlugin(commands.Cog):
     async def message(self, ctx: command.Context, *, msg: str):
         """
         Set a message to announce when wishing someone's birthday
+
+        **Formatting:**
+        • {user} - Name of he birthday boi
+        • {user.mention} - Mention the birthday boi
+        • {age} - Age of the birthday boiiii
         """
 
         self.message = msg
