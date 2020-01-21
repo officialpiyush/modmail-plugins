@@ -161,7 +161,6 @@ class BirthdayPlugin(commands.Cog):
             birthday_obj["year"] = int(birthday[2])
             birthday_obj["guild"] = str(ctx.guild.id)
 
-            self.birthdays.pop(str(ctx.author.id))
             self.birthdays[str(ctx.author.id)] = birthday_obj
             await self._update_birthdays()
             await ctx.send(f"Done! You'r birthday was set to {date}")
@@ -195,7 +194,6 @@ class BirthdayPlugin(commands.Cog):
         Configure a channel for sending birthday announcements
         """
 
-        self.channels
         self.channels[str(ctx.guild.id)] = str(channel.id)
         await self._update_config()
         await ctx.send("Done!")
