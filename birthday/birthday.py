@@ -25,7 +25,7 @@ class BirthdayPlugin(commands.Cog):
         self.roles = dict()
         self.channels = dict()
         self.timezone = "America/Chicago"
-        self.messagess = None
+        self.messages = dict()
         self.enabled = True
         self.booted = True
         self.bot.loop.create_task(self._set_db())
@@ -63,7 +63,7 @@ class BirthdayPlugin(commands.Cog):
         self.channels = config.get("channels", dict())
         self.enabled = config.get("enabled", True)
         self.timezone = config.get("timezone", "America/Chicago")
-        self.messages = config.get("messages", None)
+        self.messages = config.get("messages", dict())
         self.bot.loop.create_task(self._handle_birthdays())
 
     async def _update_birthdays(self):
