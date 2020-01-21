@@ -37,6 +37,8 @@ class BirthdayPlugin(commands.Cog):
                 {"_id": "birthdays"}, {"$set": {"birthdays": dict()}}, upsert=True
             )
 
+            birthdays = await self.db.find_one({"_id": "birthdays"})
+
         if config is None:
             await self.db.find_one_and_update(
                 {"_id": "config"},
@@ -51,6 +53,8 @@ class BirthdayPlugin(commands.Cog):
                 },
                 upsert=True,
             )
+
+            config = await self.db.find_one({"_id": "config"})
 
         self.birthdays = birthdays.get("birthdays", dict())
         self.roles = config.get("roles", dict())
