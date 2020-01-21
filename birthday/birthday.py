@@ -2,7 +2,9 @@ import asyncio
 import datetime
 import discord
 import logging
+import pytz
 
+from difflib import get_close_matches 
 from discord.ext import commands
 from pytz import timezone
 
@@ -238,6 +240,30 @@ class BirthdayPlugin(commands.Cog):
         self.enabled = not self.enabled
         await self._update_config()
         await ctx.send(f"{'Enabled' if self.enabled else 'Disabled'} the plugin :p")
+        return
+
+    @birthday.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def timezone(self, ctx: commands.Context, timezone: str):
+        """
+        Set a timezone
+        """
+
+        if timezone not in pytz.all_timezones:
+            matches = get_close_matches(timezone, pytz.all_timezones)
+            if len(matches) > 0:
+                embed = discord.Embed()
+                embed.color = 0xeb3446
+                embed.description = f"Did you mean: \n{matches.join(", ")}"
+                await ctx.send(embed=embed)
+                return
+            else:
+                await ctx.send("Couldn't find the timezone.")
+                return
+
+        self.timezone = timezone
+        await self._update_config()
+        await ctx.send("Done")
         return
 
 
