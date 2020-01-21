@@ -231,3 +231,7 @@ class BirthdayPlugin(commands.Cog):
         await self._update_config()
         await ctx.send(f"{'Enabled' if self.enabled else 'Disabled'} the plugin :p")
         return
+
+
+def setup(bot):
+    bot.add_cog(BirthdayPlugin(bot))
