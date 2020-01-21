@@ -14,6 +14,7 @@ class BirthdayPlugin(commands.Cog):
         self.role = None
         self.channel = None
         self.timezone = "America/Chicago"
+        self.bot.create_task(self._set_db())
 
     async def _set_db(self):
         birthdays = await self.db.find_one({"_id": "birthdays"})
