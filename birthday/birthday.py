@@ -50,7 +50,7 @@ class BirthdayPlugin(commands.Cog):
                         "channels": dict(),
                         "enabled": True,
                         "timezone": "America/Chicago",
-                        "messages": None,
+                        "messages": dict(),
                     }
                 },
                 upsert=True,
