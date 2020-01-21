@@ -2,6 +2,8 @@ import discord
 
 from discord.ext import commands
 
+from core import checks
+from core.models import PermissionLevel
 
 class BirthdayPlugin(commands.Cog):
     """
@@ -109,4 +111,40 @@ class BirthdayPlugin(commands.Cog):
         self.birthdays.pop[str(ctx.author.id)]
         await self._update_birthdays()
         await ctx.send(f"Done!")
+        return
+
+    @birthday.command()
+    @checks.has_permission(PermissionLevel.ADMIN)
+    async def channel(self, ctx: command.Context, channel: discord.TextChannel):
+        """
+        Configure a channel for sending birthday announcements
+        """
+
+        self.channel = str(channel.id)
+        await self._update_config()
+        await ctx.send("Done!")
+        return
+
+    @birthday.command()
+    @checks.has_permission(PermissionLevel.ADMIN)
+    async def role(self, ctx: command.Context, role: discord.Role):
+        """
+        Configure a role which will be added to the birthay boizzzz
+        """
+
+        self.role = str(role.id)
+        await self._update_config()
+        await ctx.send("Done!")
+        return
+
+    @birthday.command()
+    @checks.has_permission(PermissionLevel.ADMIN)
+    async def message(self, ctx: command.Context, *, msg: str):
+        """
+        Set a message to announce when wishing someone's birthday
+        """
+
+        self.message = msg
+        await self._update_config()
+        await ctx.send("Done!")
         return
