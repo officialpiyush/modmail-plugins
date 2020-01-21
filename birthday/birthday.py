@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 import discord
+import logging
 
 from discord.ext import commands
 from pytz import timezone
@@ -8,6 +9,7 @@ from pytz import timezone
 from core import checks
 from core.models import PermissionLevel
 
+logger = logging.get_logger("Modmail")
 
 class BirthdayPlugin(commands.Cog):
     """
@@ -161,6 +163,10 @@ class BirthdayPlugin(commands.Cog):
             await ctx.send(f"Done! You'r birthday was set to {date}")
             return
         except KeyError:
+            logger.info(birthday[0])
+            logger.info(birthday[1])
+            logger.info(birthday[2])
+
             await ctx.send("Please check the format of the date")
             return
         except Exception as e:
