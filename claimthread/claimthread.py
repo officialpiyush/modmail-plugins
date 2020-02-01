@@ -182,6 +182,14 @@ class ClaimThreadPlugin(commands.Cog):
             category=ctx.guild.get_channel(self.staff_cat[str(member.id)])
         )
 
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def hr(ctx, role: discord.Role):
+      for member in role.members:
+        entries = await bot.api.get_responded_logs(member.id)
+        closed = await bot.db.logs.find({"guild_id": str(bot.guild_id), "open": False, "closer.id": str(member.id)}, {"messages": {"$slice": 5}}).to_list(None)
+        await ctx.send(f"**{member}** -> Responded ${len(tuple(entries))}  () Closed ${len(tuple(closed))}")
+
     @commands.Cog.listener()
     async def on_user_update(self, before: discord.User, after: discord.User):
         if str(before.id) in self.staff_cat:
