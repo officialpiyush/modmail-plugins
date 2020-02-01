@@ -188,7 +188,7 @@ class ClaimThreadPlugin(commands.Cog):
       for member in role.members:
         entries = await self.bot.api.get_responded_logs(member.id)
         closed = await self.bot.db.logs.find({"guild_id": str(self.bot.guild_id), "open": False, "closer.id": str(member.id)}, {"messages": {"$slice": 5}}).to_list(None)
-        await ctx.send(f"**{member}** -> Responded ${len(tuple(entries))}  () Closed ${len(tuple(closed))}")
+        await ctx.send(f"**{member}** -> Responded {len(tuple(entries))}  && Closed {len(tuple(closed))}")
 
     @commands.Cog.listener()
     async def on_user_update(self, before: discord.User, after: discord.User):
