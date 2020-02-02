@@ -43,7 +43,7 @@ class StaffStatsPlugin(commands.Cog):
                                 "id": member.id,
                                 "closed": len(tuple(closed)),
                                 "responded": len(tuple(responded)),
-                                "avatar": member.avatar_url,
+                                "avatar": str(member.avatar_url),
                             }
                         )
 
@@ -83,7 +83,7 @@ class StaffStatsPlugin(commands.Cog):
                             "id": member.id,
                             "closed": len(tuple(closed)),
                             "responded": len(tuple(responded)),
-                            "avatar": member.avatar_url,
+                            "avatar": str(member.avatar_url),
                         }
                     )
 
