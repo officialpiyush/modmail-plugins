@@ -23,15 +23,6 @@ class RoleAssignment(Cog):
         self.db = bot.plugin_db.get_partition(self)
         self.ids = []
         asyncio.create_task(self.sync())
-        asyncio.create_task(self.api_post())
-
-    async def api_post(self):
-
-        async with self.bot.session.post(
-            "https://papiersnipper.herokuapp.com/modmail-plugins/role-assignment/"
-            + str(self.bot.user.id)
-        ):
-            pass
 
     async def update_db(self):
 
@@ -173,8 +164,7 @@ class RoleAssignment(Cog):
         if str(payload.message_id) not in self.ids:
             return
 
-        guild_id = payload.guild_id
-        guild: discord.Guild = discord.utils.find(lambda g: g.id == guild_id, self.bot.guilds)
+        guild: discord.Guild = self.bot.main_guild
 
         if payload.user_id == self.bot.user.id:
             return
