@@ -41,8 +41,8 @@ class StaffStatsPlugin(commands.Cog):
                             {
                                 "username": str(member),
                                 "id": member.id,
-                                "closed": closed,
-                                "responded": responded,
+                                "closed": len(tuple(closed)),
+                                "responded": len(tuple(responded)),
                             }
                         )
 
@@ -80,8 +80,8 @@ class StaffStatsPlugin(commands.Cog):
                         {
                             "username": str(member),
                             "id": member.id,
-                            "closed": closed,
-                            "responded": responded,
+                            "closed": len(tuple(closed)),
+                            "responded": len(tuple(responded)),
                         }
                     )
 
