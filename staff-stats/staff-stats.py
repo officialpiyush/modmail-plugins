@@ -43,6 +43,7 @@ class StaffStatsPlugin(commands.Cog):
                                 "id": member.id,
                                 "closed": len(tuple(closed)),
                                 "responded": len(tuple(responded)),
+                                "avatar": member.avatar_url,
                             }
                         )
 
@@ -56,14 +57,14 @@ class StaffStatsPlugin(commands.Cog):
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def syncstaff(self, ctx):
         """
-    Sync Staff
-    """
+         Sync Staff
+        """
 
         staff_list = list()
 
         category = self.bot.get_channel(int(self.bot.config.get("main_category_id")))
 
-        # L67 - L69 taken from https://github.com/papiersnipper/modmail-plugins/blob/daa6e31356030cb35ef12e4cf0e1df7015065798/supporters/supporters.py#L47-L49
+        # L68 - L70 taken from https://github.com/papiersnipper/modmail-plugins/blob/daa6e31356030cb35ef12e4cf0e1df7015065798/supporters/supporters.py#L47-L49
         for member in self.bot.modmail_guild.members:
             if member.permissions_in(category).read_messages:
                 if not member.bot:
@@ -82,6 +83,7 @@ class StaffStatsPlugin(commands.Cog):
                             "id": member.id,
                             "closed": len(tuple(closed)),
                             "responded": len(tuple(responded)),
+                            "avatar": member.avatar_url,
                         }
                     )
 
