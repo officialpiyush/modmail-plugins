@@ -14,7 +14,7 @@ class StaffStatsPlugin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
-        bot.create_task(self._update_stats())
+        bot.loop.create_task(self._update_stats())
 
     async def _update_stats(self):
         while True:
