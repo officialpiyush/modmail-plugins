@@ -1,0 +1,16 @@
+version: "3.2"
+
+networks:
+  internet:
+    external: true
+
+services:
+  db:
+    container_name: "RethinkDB"
+    image: "rethinkdb:latest"
+    networks:
+    - internet
+    ports:
+    - "28014:8080"
+    - "28015:28015"
+    - "29015:29015"
