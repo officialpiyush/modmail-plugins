@@ -1,5 +1,5 @@
 <div align="center">
-<img alt="Logo" src="https://images.piyush.codes/b/hK3j3at.png" />
+<img alt="Logo" src="https://i.imgur.com/znrMxnD.png" />
    <strong><i>A repository to store Modmail Plugins</i></strong>
  <br>
  <br>
