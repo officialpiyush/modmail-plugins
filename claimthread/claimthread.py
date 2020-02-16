@@ -215,7 +215,7 @@ class ClaimThreadPlugin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, channel):
-        for key, value in self.cat_ids.items():
+        for key, value in self.staff_cat.items():
             if value == channel.id:
                 self.cat_ids.pop(key)
 
