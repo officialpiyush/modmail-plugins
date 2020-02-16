@@ -217,7 +217,7 @@ class ClaimThreadPlugin(commands.Cog):
     async def on_guild_channel_delete(self, channel):
         for key, value in self.staff_cat.items():
             if value == channel.id:
-                self.cat_ids.pop(key)
+                self.staff_cat.pop(key)
 
 def setup(bot):
     bot.add_cog(ClaimThreadPlugin(bot))
