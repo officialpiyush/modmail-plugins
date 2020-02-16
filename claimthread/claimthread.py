@@ -15,16 +15,18 @@ class ClaimThreadPlugin(commands.Cog):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
         self.staff_cat = {}
+        self.admin_role = None
         bot.loop.create_task(self._set_db())
 
     async def _set_db(self):
         config = await self.db.find_one({"_id": "config"})
         if config is None:
             await self.db.find_one_and_update(
-                {"_id": "config"}, {"$set": {"cat_ids": dict()}}, upsert=True,
+                {"_id": "config"}, {"$set": {"cat_ids": dict(), "admin_role": None}}, upsert=True,
             )
 
         self.staff_cat = config.get("cat_ids", {})
+        self.admin_role = config.get("admin_role", None)
 
     async def _update_db(self):
         await self.db.find_one_and_update(
@@ -80,6 +82,18 @@ class ClaimThreadPlugin(commands.Cog):
             await ctx.send("Done")
             return
 
+    @comamnds.command()
+    @checks.has_permissions(PermissionLevel.OWNER)
+    async def admin_role(self, ctx: commands.Context, role: discord.Role):
+        """
+        Some stuff. DM `Piyush#4332` for info on this.
+        """
+
+        self.admin_role = role.id
+        await self._update_db()
+        await ctx.send("Done");
+        return
+
     @commands.command(name="claim")
     @checks.thread_only()
     @checks.has_permissions(PermissionLevel.SUPPORTER)
@@ -106,6 +120,11 @@ class ClaimThreadPlugin(commands.Cog):
             sync_permissions=True,
             reason=f"{str(ctx.author)} claimed this thread",
         )
+
+        if self.admin_role is not None:
+            role = ctx.guild.get_role(self.admin_role)
+            for member in role.members:
+                await ctx.channel.set_permissions(member, read_messages=True)
         return
 
     @commands.command(name="allow")
@@ -182,14 +201,6 @@ class ClaimThreadPlugin(commands.Cog):
             category=ctx.guild.get_channel(self.staff_cat[str(member.id)])
         )
 
-    @commands.command()
-    @checks.has_permissions(PermissionLevel.ADMIN)
-    async def hr(self, ctx, role: discord.Role):
-      for member in role.members:
-        entries = await self.bot.api.get_responded_logs(member.id)
-        closed = await self.bot.db.logs.find({"guild_id": str(self.bot.guild_id), "open": False, "closer.id": str(member.id)}, {"messages": {"$slice": 5}}).to_list(None)
-        await ctx.send(f"**{member}** -> Responded {len(tuple(entries))}  && Closed {len(tuple(closed))}")
-
     @commands.Cog.listener()
     async def on_user_update(self, before: discord.User, after: discord.User):
         if str(before.id) in self.staff_cat:
@@ -202,6 +213,11 @@ class ClaimThreadPlugin(commands.Cog):
             )
             return
 
+    @commands.Cog.listener()
+    async def on_guild_channel_delete(self, channel):
+        for key, value in self.cat_ids.items():
+            if value == channel.id:
+                self.cat_ids.pop(key)
 
 def setup(bot):
     bot.add_cog(ClaimThreadPlugin(bot))
