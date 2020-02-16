@@ -82,7 +82,7 @@ class ClaimThreadPlugin(commands.Cog):
             await ctx.send("Done")
             return
 
-    @comamnds.command()
+    @commands.command()
     @checks.has_permissions(PermissionLevel.OWNER)
     async def admin_role(self, ctx: commands.Context, role: discord.Role):
         """
