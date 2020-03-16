@@ -164,7 +164,7 @@ class TagsPlugin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):
-        if not msg.content.startswith(self.bot.prefix):
+        if not msg.content.startswith(self.bot.prefix) or msg.author.bot:
             return
         content = msg.content.replace(self.bot.prefix, "")
         names = content.split(" ")
