@@ -183,7 +183,7 @@ class AnnoucementPlugin(commands.Cog):
             elif cancel_check(th_res) is False and th_res.content.lower() == "y":
                 await ctx.send(
                     embed=await self.generate_embed(
-                        "What'sthe thumbnail of the embed? Enter a " "valid URL"
+                        "What's the thumbnail of the embed? Enter a " "valid URL"
                     )
                 )
                 thu = await self.bot.wait_for("message", check=check)
