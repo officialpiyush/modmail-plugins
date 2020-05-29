@@ -19,7 +19,7 @@ class DmOnJoinPlugin(commands.Cog):
         """Set a message to DM a user after they join.
         Available Formats:
         `mention` - Mention the member
-        `name` - Name of the member
+        `member` - Name of the member
         `id` - ID of the member
         `server` - Server Name
         """
@@ -53,7 +53,7 @@ class DmOnJoinPlugin(commands.Cog):
             id = member.id
             server = member.guild.name
             message = config["dm-message"]["message"]
-            await member.send(message.format(mention=mention, id=id, name=name, server=server))
+            await member.send(message.format(mention=mention, id=id, member=name, server=server))
         except:
             return
 
