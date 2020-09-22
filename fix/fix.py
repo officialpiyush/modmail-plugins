@@ -22,8 +22,15 @@ class TopicFixPlugin(commands.Cog):
         **Usage:**
         {prefix}fix
         """
-        genesis_message = await ctx.channel.history(oldest_first=True, limit=1).flatten()
-        if genesis_message[0].embeds and genesis_message[0].embeds[0] and genesis_message[0].embeds[0].footer.text and "User ID:" in genesis_message[0].embeds[0].footer.text:
+        genesis_message = await ctx.channel.history(
+            oldest_first=True, limit=1
+        ).flatten()
+        if (
+            genesis_message[0].embeds
+            and genesis_message[0].embeds[0]
+            and genesis_message[0].embeds[0].footer.text
+            and "User ID:" in genesis_message[0].embeds[0].footer.text
+        ):
             await ctx.channel.edit(
                 topic=f"User ID: {genesis_message[0].embeds[0].footer.text}",
                 reason=f"Fix the thread. Command used by {ctx.author.name}#{ctx.author.discriminator}",

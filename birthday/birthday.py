@@ -4,7 +4,7 @@ import discord
 import logging
 import pytz
 
-from difflib import get_close_matches 
+from difflib import get_close_matches
 from discord.ext import commands
 from pytz import timezone
 
@@ -12,6 +12,7 @@ from core import checks
 from core.models import PermissionLevel
 
 logger = logging.getLogger("Modmail")
+
 
 class BirthdayPlugin(commands.Cog):
     """
@@ -94,7 +95,9 @@ class BirthdayPlugin(commands.Cog):
             if self.booted:
                 custom_timezone = timezone(self.timezone)
                 now = datetime.datetime.now(custom_timezone)
-                sleep_time = (now.replace(hour=0, minute=15, second=0, microsecond=0) - now).seconds
+                sleep_time = (
+                    now.replace(hour=0, minute=15, second=0, microsecond=0) - now
+                ).seconds
                 self.booted = False
                 await asyncio.sleep(sleep_time)
                 continue
@@ -121,16 +124,20 @@ class BirthdayPlugin(commands.Cog):
                     if channel is None:
                         continue
                     age = today[2] - obj["year"]
-                    await channel.send(self.messages[obj["guild"]].replace("{user.mention}", member.mention).replace("{user}", str(member)).replcae("{age}", age))
+                    await channel.send(
+                        self.messages[obj["guild"]]
+                        .replace("{user.mention}", member.mention)
+                        .replace("{user}", str(member))
+                        .replcae("{age}", age)
+                    )
                     continue
 
             custom_timezone = timezone(self.timezone)
             now = datetime.datetime.now(custom_timezone)
-            sleep_time = (now.replace(hour=0, minute=0, second=0, microsecond=0) - now).seconds
+            sleep_time = (
+                now.replace(hour=0, minute=0, second=0, microsecond=0) - now
+            ).seconds
             await asyncio.sleep(sleep_time)
-
-
-
 
     @commands.group(invoke_without_command=True)
     async def birthday(self, ctx: commands.Context):
@@ -254,7 +261,7 @@ class BirthdayPlugin(commands.Cog):
             matches = get_close_matches(timezone, pytz.all_timezones)
             if len(matches) > 0:
                 embed = discord.Embed()
-                embed.color = 0xeb3446
+                embed.color = 0xEB3446
                 embed.description = f"Did you mean: \n`{'`, `'.join(matches)}`"
                 await ctx.send(embed=embed)
                 return

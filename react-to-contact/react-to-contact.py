@@ -79,19 +79,19 @@ class ReactToContact(commands.Cog):
         config = await self.db.find_one({"_id": "config"})
 
         if config is None:
-          #  print("No Config")
+            #  print("No Config")
             return
 
         if config["reaction"] is None or (payload.emoji.name != config["reaction"]):
-          #  print("No Reaction")
+            #  print("No Reaction")
             return
 
         if config["channel"] is None or (payload.channel_id != int(config["channel"])):
-          #  print("No Channel")
+            #  print("No Channel")
             return
 
         if config["message"] is None or (payload.message_id != int(config["message"])):
-          #  print("No Message")
+            #  print("No Message")
             return
 
         guild: discord.Guild = discord.utils.find(
@@ -117,9 +117,9 @@ class ReactToContact(commands.Cog):
                 logger.info("Contacting user %s when Modmail DM is disabled.", user)
 
                 embed = discord.Embed(
-                title="Created Thread",
-                description=f"Thread started by {user.mention}.",
-                color=self.bot.main_color,
+                    title="Created Thread",
+                    description=f"Thread started by {user.mention}.",
+                    color=self.bot.main_color,
                 )
                 await thread.wait_until_ready()
                 await thread.channel.send(embed=embed)

@@ -11,8 +11,8 @@ logger = getLogger(__name__)
 
 class ReminderPlugin(commands.Cog):
     """
-	Create Reminders.
-	"""
+    Create Reminders.
+    """
 
     def __init__(self, bot):
         self.bot = bot
@@ -30,7 +30,9 @@ class ReminderPlugin(commands.Cog):
         config = await self.db.find_one({"_id": "reminders"})
         if config is None:
             await self.db.find_one_and_update(
-                {"_id": "reminders"}, {"$set": {"reminders": dict()}}, upsert=True,
+                {"_id": "reminders"},
+                {"$set": {"reminders": dict()}},
+                upsert=True,
             )
 
         for key, reminder in config.get("reminders", {}).items():
@@ -77,11 +79,11 @@ class ReminderPlugin(commands.Cog):
     @checks.has_permissions(PermissionLevel.REGULAR)
     async def reminder(self, ctx: commands.Context, *, message: str):
         """
-		Create a reminder
+        Create a reminder
 
-		**Example:**
-		{prefix}remind in 2 hours Test This
-		"""
+        **Example:**
+        {prefix}remind in 2 hours Test This
+        """
         resp = await self.bot.session.get(
             "https://dateparser.piyush.codes/fromstr",
             params={

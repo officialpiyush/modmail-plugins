@@ -26,7 +26,11 @@ class AnnoucementPlugin(commands.Cog):
 
     @announcement.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def start(self, ctx: commands.Context, role: typing.Optional[typing.Union[discord.Role, str]] = None):
+    async def start(
+        self,
+        ctx: commands.Context,
+        role: typing.Optional[typing.Union[discord.Role, str]] = None,
+    ):
         """
         Start an interactive session to create announcement
         Add the role in the command if you want to enable mentions

@@ -18,15 +18,13 @@ class Polls(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-    
-   
+
     @commands.group(name="poll", invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def poll(self, ctx: commands.Context):
-        """Easily create Polls.
-        """
+        """Easily create Polls."""
         await ctx.send_help(ctx.command)
-        
+
     @poll.command()
     @commands.guild_only()
     @checks.has_permissions(PermissionLevel.MODERATOR)
@@ -37,9 +35,7 @@ class Polls(commands.Cog):
         """
         perms = ctx.channel.permissions_for(ctx.me)
         if not perms.add_reactions:
-            return await ctx.send(
-                "Need Add Reactions permissions."
-            )
+            return await ctx.send("Need Add Reactions permissions.")
 
         # a list of messages to delete when we're all done
         messages = [ctx.message]
@@ -75,9 +71,13 @@ class Polls(commands.Cog):
             await ctx.channel.delete_messages(messages)
         except:
             pass  # oh well
-        
+
         answer = "\n".join(f"{keycap}: {content}" for keycap, content in answers)
-        embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{question}**\n{answer}")
+        embed = discord.Embed(
+            color=self.bot.main_color,
+            timestamp=datetime.datetime.utcnow(),
+            description=f"**{question}**\n{answer}",
+        )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         poll = await ctx.send(embed=embed)
         for emoji, _ in answers:
@@ -95,7 +95,7 @@ class Polls(commands.Cog):
         """Makes a poll quickly.
         The first argument is the question and the rest are the choices.
         for example: `?poll quick "Green or Light Green?" Green "Light Green"`
-        
+
         or it can be a simple yes or no poll, like:
         `?poll quick "Do you watch Anime?"`
         """
@@ -109,33 +109,39 @@ class Polls(commands.Cog):
 
         perms = ctx.channel.permissions_for(ctx.me)
         if not perms.add_reactions:
-            return await ctx.send(
-                "Need Add Reactions permissions."
-            )
+            return await ctx.send("Need Add Reactions permissions.")
         try:
             await ctx.message.delete()
         except:
             pass
         question = questions_and_choices[0]
-        
+
         if len(questions_and_choices) == 1:
-            embed = discord.Embed(color=self.bot.main_color, description=f"**{question}**")
+            embed = discord.Embed(
+                color=self.bot.main_color, description=f"**{question}**"
+            )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             poll = await ctx.send(embed=embed)
             reactions = ["👍", "👎"]
             for emoji in reactions:
                 await poll.add_reaction(emoji)
-                   
+
         else:
-            choices = [(to_emoji(e), v) for e, v in enumerate(questions_and_choices[1:])]
+            choices = [
+                (to_emoji(e), v) for e, v in enumerate(questions_and_choices[1:])
+            ]
 
             body = "\n".join(f"{key}: {c}" for key, c in choices)
-            embed = discord.Embed(color=self.bot.main_color, timestamp=datetime.datetime.utcnow(), description=f"**{question}**\n{body}")
+            embed = discord.Embed(
+                color=self.bot.main_color,
+                timestamp=datetime.datetime.utcnow(),
+                description=f"**{question}**\n{body}",
+            )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             poll = await ctx.send(embed=embed)
             for emoji, _ in choices:
                 await poll.add_reaction(emoji)
 
-        
+
 def setup(bot):
     bot.add_cog(Polls(bot))

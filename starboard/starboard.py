@@ -162,7 +162,7 @@ class StarboardPlugin(commands.Cog):
         channel: discord.TextChannel = guild.get_channel(int(payload.channel_id))
         user: discord.User = await self.bot.fetch_user(payload.user_id)
 
-        if channel is None or starboard_channel is None:#
+        if channel is None or starboard_channel is None:  #
             print(164)
             return
 
@@ -198,7 +198,7 @@ class StarboardPlugin(commands.Cog):
 
                     if not mesg.embeds[0].footer.text or (
                         "⭐" not in mesg.embeds[0].footer.text
-                    ):  
+                    ):
                         print(198)
                         continue
 

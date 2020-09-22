@@ -11,13 +11,16 @@ class AntiStealClosePlugin(commands.Cog):
     """
     An initiative to stop people stealing thread closes kthx.
     """
+
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(aliases=["asc", "notclosedbyme", "antisteal", "anti-steal"])
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
-    async def anti_steal_close(self, ctx, user: discord.User, *, after: UserFriendlyTime = None):
+    async def anti_steal_close(
+        self, ctx, user: discord.User, *, after: UserFriendlyTime = None
+    ):
         """
         Close the thread on the behalf of another user.
 
@@ -91,9 +94,7 @@ class AntiStealClosePlugin(commands.Cog):
         if channel is None:
             return
         else:
-            embed = discord.Embed(
-                color=self.bot.main_color
-            )
+            embed = discord.Embed(color=self.bot.main_color)
             embed.description = f"Thread closed by {ctx.author.name}#{ctx.author.discriminator} on the behalf of {user.username}#{user.discriminator} "
 
             await channel.send(embed)

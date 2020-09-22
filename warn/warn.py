@@ -139,11 +139,13 @@ class WarnPlugin(commands.Cog):
         embed = discord.Embed(color=discord.Color.blue())
 
         embed.set_author(
-            name=f"Pardon | {member}", icon_url=member.avatar_url,
+            name=f"Pardon | {member}",
+            icon_url=member.avatar_url,
         )
         embed.add_field(name="User", value=f"{member}")
         embed.add_field(
-            name="Moderator", value=f"<@{ctx.author.id}> - `{ctx.author}`",
+            name="Moderator",
+            value=f"<@{ctx.author.id}> - `{ctx.author}`",
         )
         embed.add_field(name="Reason", value=reason)
         embed.add_field(name="Total Warnings", value="0")
@@ -157,7 +159,8 @@ class WarnPlugin(commands.Cog):
         embed = discord.Embed(color=discord.Color.red())
 
         embed.set_author(
-            name=f"Warn | {member}", icon_url=member.avatar_url,
+            name=f"Warn | {member}",
+            icon_url=member.avatar_url,
         )
         embed.add_field(name="User", value=f"{member}")
         embed.add_field(name="Moderator", value=f"<@{modid}>` - ({mod})`")

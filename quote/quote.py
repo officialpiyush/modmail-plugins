@@ -11,7 +11,12 @@ class QuotePlugin(commands.Cog):
         self.i18n = Translator("")
 
     @commands.command(aliases=["q"])
-    async def quote(self, ctx: commands.Context, channel: typing.Optional[discord.TextChannel], message_id: str):
+    async def quote(
+        self,
+        ctx: commands.Context,
+        channel: typing.Optional[discord.TextChannel],
+        message_id: str,
+    ):
         if not channel:
             channel = ctx.channel
         try:
@@ -27,7 +32,7 @@ class QuotePlugin(commands.Cog):
                 await ctx.send(self.i18n.get("ERROR"))
                 return
         except KeyNotFoundError:
-            await ctx.send("Seems Like the command isn't localised for your language yet.")
+            await ctx.send(
+                "Seems Like the command isn't localised for your language yet."
+            )
             return
-
-

@@ -41,7 +41,9 @@ class Plugin:
 
     @property
     def path(self):
-        return PurePath("plugins") / self.user / self.repo / f"{self.name}-{self.branch}"
+        return (
+            PurePath("plugins") / self.user / self.repo / f"{self.name}-{self.branch}"
+        )
 
     @property
     def abs_path(self):
@@ -74,7 +76,9 @@ class Plugin:
             m = match(r"^(.+?)/(.+?)/(.+?)@(.+?)$", s)
         if m is not None:
             return Plugin(*m.groups())
-        raise InvalidPluginError("Cannot decipher %s.", s)  # pylint: disable=raising-format-tuple
+        raise InvalidPluginError(
+            "Cannot decipher %s.", s
+        )  # pylint: disable=raising-format-tuple
 
     def __hash__(self):
         return hash((self.user, self.repo, self.name, self.branch))
@@ -126,10 +130,14 @@ class PrivatePlugins(commands.Cog):
                     # For backwards compat
                     plugin = Plugin.from_string(plugin_name)
                 except InvalidPluginError:
-                    logger.error("Failed to parse plugin name: %s.", plugin_name, exc_info=True)
+                    logger.error(
+                        "Failed to parse plugin name: %s.", plugin_name, exc_info=True
+                    )
                     continue
 
-                logger.info("Migrated legacy plugin name: %s, now %s.", plugin_name, str(plugin))
+                logger.info(
+                    "Migrated legacy plugin name: %s, now %s.", plugin_name, str(plugin)
+                )
                 self.bot.config["plugins"].append(str(plugin))
 
             try:
@@ -225,7 +233,9 @@ class PrivatePlugins(commands.Cog):
             if stderr:
                 logger.debug("[stderr]\n%s.", stderr.decode())
                 logger.error(
-                    "Failed to download requirements for %s.", plugin.ext_string, exc_info=True
+                    "Failed to download requirements for %s.",
+                    plugin.ext_string,
+                    exc_info=True,
                 )
                 raise InvalidPluginError(
                     f"Unable to download requirements: ```\n{stderr.decode()}\n```"
@@ -264,7 +274,9 @@ class PrivatePlugins(commands.Cog):
             if check_version:
                 required_version = details.get("bot_version", False)
 
-                if required_version and self.bot.version < parse_version(required_version):
+                if required_version and self.bot.version < parse_version(
+                    required_version
+                ):
                     embed = discord.Embed(
                         description="Your bot's version is too low. "
                         f"This plugin requires version `{required_version}`.",
@@ -315,7 +327,8 @@ class PrivatePlugins(commands.Cog):
 
         if str(plugin) in self.bot.config["plugins"]:
             embed = discord.Embed(
-                description="This plugin is already installed.", color=self.bot.error_color
+                description="This plugin is already installed.",
+                color=self.bot.error_color,
             )
             return await ctx.send(embed=embed)
 
@@ -421,7 +434,8 @@ class PrivatePlugins(commands.Cog):
             pass  # dir not empty
 
         embed = discord.Embed(
-            description="The plugin is successfully uninstalled.", color=self.bot.main_color
+            description="The plugin is successfully uninstalled.",
+            color=self.bot.main_color,
         )
         await ctx.send(embed=embed)
 
@@ -447,7 +461,8 @@ class PrivatePlugins(commands.Cog):
                 await self.load_plugin(plugin)
             logger.debug("Updated %s.", plugin_name)
             embed = discord.Embed(
-                description=f"Successfully updated {plugin.name}.", color=self.bot.main_color
+                description=f"Successfully updated {plugin.name}.",
+                color=self.bot.main_color,
             )
             return await ctx.send(embed=embed)
 
@@ -494,7 +509,8 @@ class PrivatePlugins(commands.Cog):
 
         if not self.loaded_plugins:
             embed = discord.Embed(
-                description="There are no plugins currently loaded.", color=self.bot.error_color
+                description="There are no plugins currently loaded.",
+                color=self.bot.error_color,
             )
             return await ctx.send(embed=embed)
 
@@ -520,9 +536,13 @@ class PrivatePlugins(commands.Cog):
         paginator = EmbedPaginatorSession(ctx, *embeds)
         await paginator.run()
 
-    @plugins.group(invoke_without_command=True, name="registry", aliases=["list", "info"])
+    @plugins.group(
+        invoke_without_command=True, name="registry", aliases=["list", "info"]
+    )
     @checks.has_permissions(PermissionLevel.OWNER)
-    async def plugins_registry(self, ctx, *, plugin_name: typing.Union[int, str] = None):
+    async def plugins_registry(
+        self, ctx, *, plugin_name: typing.Union[int, str] = None
+    ):
         """
         Shows a list of all approved plugins.
 
@@ -545,7 +565,9 @@ class PrivatePlugins(commands.Cog):
             if index >= len(registry):
                 index = len(registry) - 1
         else:
-            index = next((i for i, (n, _) in enumerate(registry) if plugin_name == n), 0)
+            index = next(
+                (i for i, (n, _) in enumerate(registry) if plugin_name == n), 0
+            )
 
         if not index and plugin_name is not None:
             embed = discord.Embed(
@@ -557,7 +579,8 @@ class PrivatePlugins(commands.Cog):
 
             if matches:
                 embed.add_field(
-                    name="Perhaps you meant:", value="\n".join(f"`{m}`" for m in matches)
+                    name="Perhaps you meant:",
+                    value="\n".join(f"`{m}`" for m in matches),
                 )
 
             return await ctx.send(embed=embed)
@@ -594,7 +617,9 @@ class PrivatePlugins(commands.Cog):
                 embed.set_footer(text="This plugin is currently loaded.")
             else:
                 required_version = details.get("bot_version", False)
-                if required_version and self.bot.version < parse_version(required_version):
+                if required_version and self.bot.version < parse_version(
+                    required_version
+                ):
                     embed.set_footer(
                         text="Your bot is unable to install this plugin, "
                         f"minimum required version is v{required_version}."
@@ -628,7 +653,9 @@ class PrivatePlugins(commands.Cog):
 
             plugin = Plugin(user, repo, plugin_name, branch)
 
-            desc = discord.utils.escape_markdown(details["description"].replace("\n", ""))
+            desc = discord.utils.escape_markdown(
+                details["description"].replace("\n", "")
+            )
 
             name = f"[`{plugin.name}`]({plugin.link})"
             fmt = f"{name} - {desc}"

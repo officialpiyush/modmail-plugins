@@ -10,7 +10,7 @@ class LeaveGuildPlugin(commands.Cog):
     @commands.is_owner()
     async def leaveguild(self, ctx, guild_id: int):
         """
-            Force your bot to leave a specified server
+        Force your bot to leave a specified server
         """
         try:
             await self.bot.get_guild(guild_id).leave()

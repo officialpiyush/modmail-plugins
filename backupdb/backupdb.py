@@ -116,10 +116,10 @@ class BackupDB(commands.Cog):
     @checks.has_permissions(PermissionLevel.OWNER)
     async def restore(self, ctx: commands.Context):
         """
-            Restore Your Mongodb database using this command.
+        Restore Your Mongodb database using this command.
 
-            **Deletes Existing data from the original db and overwrites it with data in backup db**
-            """
+        **Deletes Existing data from the original db and overwrites it with data in backup db**
+        """
 
         def check(msg: discord.Message):
             return ctx.author == msg.author and ctx.channel == msg.channel

@@ -8,6 +8,7 @@ logger = logging.getLogger("Modmail")
 from core import checks
 from core.models import PermissionLevel
 
+
 class DmOnJoinPlugin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -36,7 +37,7 @@ class DmOnJoinPlugin(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         config = await self.db.find_one({"_id": "dm-config"})
-        
+
         if config is None:
             logger.info("User joined, but no DM message was set.")
             return

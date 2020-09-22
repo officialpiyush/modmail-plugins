@@ -26,7 +26,9 @@ class GiveawayPlugin(commands.Cog):
         config = await self.db.find_one({"_id": "config"})
         if config is None:
             await self.db.find_one_and_update(
-                {"_id": "config"}, {"$set": {"giveaways": dict()}}, upsert=True,
+                {"_id": "config"},
+                {"$set": {"giveaways": dict()}},
+                upsert=True,
             )
 
         for key, giveaway in config.get("giveaways", {}).items():
