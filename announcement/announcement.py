@@ -343,6 +343,7 @@ class AnnoucementPlugin(commands.Cog):
         embed = discord.Embed()
         embed.colour = discord.Colour.blurple()
         embed.description = description
+        embed.set_author(name=client.user.name, icon=Embed.Empty, icon_url=client.user.avatar_url)
 
         return embed
 
