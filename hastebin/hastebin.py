@@ -14,7 +14,7 @@ class HastebinCog(commands.Cog):
     @commands.command()
     async def hastebin(self, ctx, *, message):
         """Upload text to hastebin"""
-        haste_url = os.environ.get("HASTE_URL", "https://hasteb.in")
+        haste_url = os.environ.get("HASTE_URL", "https://hastebin.cc")
 
         try:
             async with self.bot.session.post(
