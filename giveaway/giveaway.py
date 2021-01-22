@@ -248,7 +248,7 @@ class GiveawayPlugin(commands.Cog):
                 await ctx.send("Cancelled.")
                 break
             resp = await self.bot.session.get(
-                "https://dateparser.piyush.codes",
+                "https://dateparser.hastebin.cc",
                 params={"date": f"in {giveaway_time.content}"},
             )
             if resp.status == 400:
