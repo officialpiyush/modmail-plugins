@@ -82,10 +82,6 @@ class Starboard(commands.Cog):
             f"Done.Now this server needs `{stars}` :star: to appear on the starboard channel."
         )
 
-    @starboard.command(alises=["as"])
-    @checks.has_permissions(PermissionLevel.ADMIN)
-    async def add_stars(self, message_id: str):
-
     @starboard.group()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def blacklist(self, ctx: commands.Context):
