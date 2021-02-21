@@ -169,7 +169,6 @@ class Starboard(commands.Cog):
 
         found_emote = False
         for emote in message.reactions:
-            await channel.send(f"`{emote.emoji}` & {isinstance(emote.emoji, str)}")
             if emote.emoji == "⭐":
                 found_emote = True
                 reaction: discord.Reaction = emote
