@@ -224,7 +224,6 @@ class Starboard(commands.Cog):
                         name=f"{user.name}#{user.discriminator}",
                         icon_url=user.avatar_url,
                     )
-                    embed.set_title()
                     embed.set_footer(text=f"⭐ {count} | {payload.message_id}")
                     if len(message.attachments) > 1:
                         try:
