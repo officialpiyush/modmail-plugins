@@ -216,12 +216,15 @@ class Starboard(commands.Cog):
                     embed = discord.Embed(
                         color=discord.Colour.gold(),
                         description=message.content,
-                        timestamp=datetime.utcnow()
+                        timestamp=datetime.utcnow(),
+                        title="Jump to message ►",
+                        url=message.jump_url
                     )
                     embed.set_author(
                         name=f"{user.name}#{user.discriminator}",
                         icon_url=user.avatar_url,
                     )
+                    embed.set_title()
                     embed.set_footer(text=f"⭐ {count} | {payload.message_id}")
                     if len(message.attachments) > 1:
                         try:
