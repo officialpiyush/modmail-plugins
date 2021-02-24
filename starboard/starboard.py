@@ -180,7 +180,7 @@ class Starboard(commands.Cog):
                     should_delete = True
 
                 messages = await starboard_channel.history(
-                    limit=30,
+                    limit=70,
                     around=message.created_at
                 ).flatten()
                 found = False
@@ -235,7 +235,7 @@ class Starboard(commands.Cog):
 
         if not found_emote:
             messages = await starboard_channel.history(
-                limit=30,
+                limit=70,
                 around=message.created_at
             ).flatten()
             found = False
