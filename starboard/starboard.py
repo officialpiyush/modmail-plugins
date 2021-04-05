@@ -1,9 +1,9 @@
+import typing
 from datetime import datetime
 
 import discord
 from discord import Client
 from discord.ext import commands
-from pymongo.collection import Collection
 
 from core import checks
 from core.models import PermissionLevel, getLogger
@@ -14,7 +14,7 @@ logger = getLogger(__name__)
 class Starboard(commands.Cog):
     def __init__(self, bot):
         self.bot: Client = bot
-        self.db: Collection = bot.plugin_db.get_partition(self)
+        self.db = bot.plugin_db.get_partition(self)
         self.channel = None
         self.stars = 2
         self.user_blacklist: list = list()
@@ -173,6 +173,10 @@ class Starboard(commands.Cog):
                 found_emote = True
                 reaction: discord.Reaction = emote
                 count = reaction.count
+                reacted_users: typing.List[discord.User] = await reaction.users().flatten()
+                has_author_reacted = discord.utils.find(lambda u: u.id == message.author.id, reacted_users)
+                if has_author_reacted:
+                    count = count - 1
 
                 should_delete = False
 
@@ -221,8 +225,8 @@ class Starboard(commands.Cog):
                         url=message.jump_url
                     )
                     embed.set_author(
-                        name=f"{user.name}#{user.discriminator}",
-                        icon_url=user.avatar_url,
+                        name=str(message.author),
+                        icon_url=message.author.avatar_url,
                     )
                     embed.set_footer(text=f"⭐ {count} | {payload.message_id}")
                     if len(message.attachments) > 1:
