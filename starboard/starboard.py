@@ -12,6 +12,9 @@ logger = getLogger(__name__)
 
 
 class Starboard(commands.Cog):
+    """
+    Basically a starboard . Leave a ⭐ if you like this plugin https://github.com/officialpiyush/modmail-plugins
+    """
     def __init__(self, bot):
         self.bot: Client = bot
         self.db = bot.plugin_db.get_partition(self)
@@ -85,6 +88,9 @@ class Starboard(commands.Cog):
     @starboard.group()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def blacklist(self, ctx: commands.Context):
+        """
+        Blacklist users and channels
+        """
         if ctx.invoked_subcommand is None:
             await ctx.send_help()
 
