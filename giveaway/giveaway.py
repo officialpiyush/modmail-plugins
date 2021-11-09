@@ -183,8 +183,9 @@ class GiveawayPlugin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
-        if user.bot:
+        if user.bot or str(reaction.message.id) not in self.active_giveaways.keys():
             return
+
         giveaway = self.active_giveaways[str(reaction.message.id)]
         member = reaction.message.guild.get_member(user.id)
 
