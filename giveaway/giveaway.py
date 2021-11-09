@@ -6,6 +6,7 @@ import random
 import time
 from datetime import datetime
 from discord.ext import commands
+from discord.ext.commands.errors import BadArgument
 
 from core import checks
 from core.models import PermissionLevel
@@ -45,7 +46,7 @@ class GiveawayPlugin(commands.Cog):
         )
 
     async def _handle_giveaway(self, giveaway):
-        if str(giveaway["message"]) not in self.active_giveaways:
+        if str(giveaway["message"]) not in self.active_giveaways or giveaway['ended']:
             return
 
         async def get_random_user(users, _guild, _winners):
@@ -59,7 +60,7 @@ class GiveawayPlugin(commands.Cog):
             return win
 
         while True:
-            if str(giveaway["message"]) not in self.active_giveaways:
+            if str(giveaway["message"]) not in self.active_giveaways or giveaway['ended']:
                 break
             channel: discord.TextChannel = self.bot.get_channel(
                 int(giveaway["channel"])
@@ -82,7 +83,7 @@ class GiveawayPlugin(commands.Cog):
             guild: discord.Guild = self.bot.get_guild(giveaway["guild"])
             g_time = giveaway["time"] - time.time()
 
-            if g_time <= 0:
+            if g_time <= 0 and not giveaway["ended"]:
                 if len(message.reactions) <= 0:
                     embed = message.embeds[0]
                     embed.description = (
@@ -92,6 +93,9 @@ class GiveawayPlugin(commands.Cog):
                         text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | Ended at"
                     )
                     await message.edit(embed=embed)
+                    giveaway['ended'] = True
+                    self.active_giveaways[str(giveaway["message"])] = giveaway
+                    await self._update_db()
                     break
 
                 to_break = False
@@ -113,6 +117,9 @@ class GiveawayPlugin(commands.Cog):
                                 f"Ended at"
                             )
                             await message.edit(embed=embed)
+                            giveaway['ended'] = True
+                            self.active_giveaways[str(giveaway["message"])] = giveaway
+                            await self._update_db()
                             del guild, channel, reacted_users, embed
                             break
 
@@ -145,7 +152,8 @@ class GiveawayPlugin(commands.Cog):
                             f"🎉 Congratulations {winners_text}, you have won **{giveaway['item']}**!"
                         )
                         try:
-                            self.active_giveaways.pop(str(giveaway["message"]))
+                            giveaway['ended'] = True
+                            self.active_giveaways[str(giveaway["message"])] = giveaway
                             await self._update_db()
                         except:
                             pass
@@ -158,12 +166,13 @@ class GiveawayPlugin(commands.Cog):
             else:
 
                 time_remaining = f"{math.floor(g_time // 86400)} Days, {math.floor(g_time // 3600 % 24)} Hours, {math.floor(g_time // 60 % 60)} Minutes, {math.floor(g_time % 60)} Seconds "
+                description =  f"React with 🎉 to enter the giveaway!\nTime Remaining: **{time_remaining}**"
+
+                if giveaway['role'] is not None:
+                    description = description + f"\nMust have role: <@&{giveaway['role']}>"
 
                 embed = message.embeds[0]
-                embed.description = (
-                    f"React with 🎉 to enter the giveaway!\n\n"
-                    f"Time Remaining: **{time_remaining}**"
-                )
+                embed.description = description
                 await message.edit(embed=embed)
                 del channel, guild
                 await asyncio.sleep(
@@ -171,6 +180,22 @@ class GiveawayPlugin(commands.Cog):
                 )
 
         return
+
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
+        if user.bot:
+            return
+        giveaway = self.active_giveaways[str(reaction.message.id)]
+        member = reaction.message.guild.get_member(user.id)
+
+        if giveaway['role'] is not None:
+            role: discord.Role = reaction.message.guild.get_role(giveaway['role'])
+            if role is not None and member not in role.members:
+                try:
+                    await reaction.remove(user=user)
+                    await user.send(f"You do not have role **{role.name}**. So you can't participate in the giveaway. ")
+                except:
+                    pass
 
     @commands.group(
         name="giveaway",
@@ -264,14 +289,34 @@ class GiveawayPlugin(commands.Cog):
                 json = await resp.json()
                 giveaway_time = json["message"]
                 break
+        await ctx.send(embed=self.generate_embed("Roles member must have to participate in the giveaway.\n\nIf no requirements then type `No`"))
+        while True:
+            giveaway_role = await self.bot.wait_for("message", check=check)
+
+            if giveaway_role.content.lower() == 'no':
+                giveaway_role = None
+                break
+
+            if cancel_check(giveaway_role) is True:
+                time_cancel = True
+                await ctx.send("Cancelled.")
+                break
+
+            try:
+                giveaway_role = await commands.RoleConverter().convert(ctx, giveaway_role.content)
+                break
+            except BadArgument:
+                await ctx.send(embed=self.generate_embed(f"Not able to find any role with argument '{giveaway_role.content}'. Try again!"))
 
         if time_cancel is True:
             return
+        
+        description = f"React with 🎉 to enter the giveaway!\n\n"
+        description = description+ f"Time Remaining: **{datetime.fromtimestamp(giveaway_time).strftime('%d %H:%M:%S')}**"
+        if giveaway_role is not None:
+            description = description + f"\nMust have role: <@&{giveaway_role.id}>"
 
-        embed.description = (
-            f"React with 🎉 to enter the giveaway!\n\n"
-            f"Time Remaining: **{datetime.fromtimestamp(giveaway_time).strftime('%d %H:%M:%S')}**"
-        )
+        embed.description = (description)
         embed.set_footer(
             text=f"{giveaway_winners} {'winners' if giveaway_winners > 1 else 'winner'} | Ends at"
         )
@@ -279,15 +324,21 @@ class GiveawayPlugin(commands.Cog):
         msg: discord.Message = await channel.send(embed=embed)
         await msg.add_reaction("🎉")
         giveaway_obj = {
+            "ended": False,
             "item": giveaway_item.content,
             "winners": giveaway_winners,
             "time": giveaway_time,
             "guild": ctx.guild.id,
             "channel": channel.id,
-            "message": msg.id,
+            "message": msg.id
         }
+        if giveaway_role is not None:
+            giveaway_obj["role"] = giveaway_role.id
+        else:
+            giveaway_obj['role'] = None
+        
         self.active_giveaways[str(msg.id)] = giveaway_obj
-        await ctx.send("Done!")
+        await ctx.send(f"Done! Giveaway started [here](<{msg.jump_url}>)")
         await self._update_db()
         await self._start_new_giveaway_thread(giveaway_obj)
 
