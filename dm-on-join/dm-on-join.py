@@ -17,7 +17,13 @@ class DmOnJoinPlugin(commands.Cog):
     @commands.command(aliases=["sdms"])
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def setdmmessage(self, ctx, *, message):
-        """Set a message to DM a user after they join."""
+        """Set a message to DM a user after they join.
+        Available Formats:
+        `mention` - Mention the member
+        `member` - Name of the member
+        `id` - ID of the member
+        `server` - Server Name
+        """
         if message.startswith("https://") or message.startswith("http://"):
             # message is a URL
             if message.startswith("https://hasteb.in/"):
@@ -43,8 +49,12 @@ class DmOnJoinPlugin(commands.Cog):
             return
 
         try:
+            name = member.name
+            mention = member.mention
+            id = member.id
+            server = member.guild.name
             message = config["dm-message"]["message"]
-            await member.send(message.replace("{user}", str(member)))
+            await member.send(message.format(mention=mention, id=id, member=name, server=server))
         except:
             return
 
