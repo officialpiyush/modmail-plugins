@@ -21,7 +21,7 @@ class TagsPlugin(commands.Cog):
         await ctx.send_help(ctx.command)
 
     @tags.command()
-    async def add(self, ctx: commands.Context, name: str, *, content: str):
+    async def add(self, ctx: commands.Context, name: commands.clean_content, *, content: commands.clean_content):
         """
         Make a new tag
         """
@@ -29,11 +29,10 @@ class TagsPlugin(commands.Cog):
             await ctx.send(f":x: | Tag with name `{name}` already exists!")
             return
         else:
-            ctx.message.content = content
             await self.db.insert_one(
                 {
                     "name": name,
-                    "content": ctx.message.clean_content,
+                    "content": content,
                     "createdAt": datetime.utcnow(),
                     "updatedAt": datetime.utcnow(),
                     "author": ctx.author.id,
@@ -47,7 +46,7 @@ class TagsPlugin(commands.Cog):
             return
 
     @tags.command()
-    async def edit(self, ctx: commands.Context, name: str, *, content: str):
+    async def edit(self, ctx: commands.Context, name: commands.clean_content, *, content: commands.clean_content):
         """
         Edit an existing tag
 
@@ -73,7 +72,7 @@ class TagsPlugin(commands.Cog):
                 await ctx.send("You don't have enough permissions to edit that tag")
 
     @tags.command()
-    async def delete(self, ctx: commands.Context, name: str):
+    async def delete(self, ctx: commands.Context, name: commands.clean_content):
         """
         Delete a tag.
 
@@ -96,7 +95,7 @@ class TagsPlugin(commands.Cog):
                 await ctx.send("You don't have enough permissions to delete that tag")
 
     @tags.command()
-    async def claim(self, ctx: commands.Context, name: str):
+    async def claim(self, ctx: commands.Context, name: commands.clean_content):
         """
         Claim a tag if the user has left the server
         """
@@ -122,7 +121,7 @@ class TagsPlugin(commands.Cog):
                 )
 
     @tags.command()
-    async def info(self, ctx: commands.Context, name: str):
+    async def info(self, ctx: commands.Context, name: commands.clean_content):
         """
         Get info on a tag
         """
@@ -147,7 +146,7 @@ class TagsPlugin(commands.Cog):
             return
 
     @commands.command()
-    async def tag(self, ctx: commands.Context, name: str):
+    async def tag(self, ctx: commands.Context, name: commands.clean_content):
         """
         Use a tag!
         """
